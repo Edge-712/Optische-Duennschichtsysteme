@@ -1,29 +1,36 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from PyQt6.QtWidgets import *
+
 
 class Material:
     """Material-Klasse für simplere Bearbeitung über GUI"""
+
     def __init__(self, name, d, n):
         self.d = d
         self.n = n
-        self.material = name
+        self.name = name
 
-#Fresnel-Formeln & Transfermatrix
+    def __str__(self):
+        return self.n
+    
 
+# Fresnel-Formeln & Transfermatrix
 def fresnel_coefficients(n1, n2, theta1, polarization="s"):
     """Berechne Fresnel-Koeffizienten (Reflexion & Transmission)"""
     theta2 = np.arcsin(n1 / n2 * np.sin(theta1))
     if polarization == "s":
-        r = (n1 * np.cos(theta1) - n2 * np.cos(theta2)) / (n1 * np.cos(theta1) + n2 * np.cos(theta2))
+        r = (n1 * np.cos(theta1) - n2 * np.cos(theta2)) / (
+            n1 * np.cos(theta1) + n2 * np.cos(theta2)
+        )
         t = (2 * n1 * np.cos(theta1)) / (n1 * np.cos(theta1) + n2 * np.cos(theta2))
     elif polarization == "p":
-        r = (n2 * np.cos(theta1) - n1 * np.cos(theta2)) / (n2 * np.cos(theta1) + n1 * np.cos(theta2))
+        r = (n2 * np.cos(theta1) - n1 * np.cos(theta2)) / (
+            n2 * np.cos(theta1) + n1 * np.cos(theta2)
+        )
         t = (2 * n1 * np.cos(theta1)) / (n2 * np.cos(theta1) + n1 * np.cos(theta2))
     else:
         raise ValueError("Polarization must be 's' or 'p'")
     return r, t, theta2
-
 
 def transfer_matrix(n_list, d_list, wavelength, theta0=0, polarization="s"):
     """Berechnet die Gesamttransfermatrix eines Mehrschichtsystems."""
@@ -39,8 +46,9 @@ def transfer_matrix(n_list, d_list, wavelength, theta0=0, polarization="s"):
         if i < len(d_list):  # Schichten mit endlicher Dicke
             k0 = 2 * np.pi / wavelength
             beta = k0 * n2 * np.cos(theta2) * d_list[i]
-            P = np.array([[np.exp(-1j * beta), 0],
-                          [0, np.exp(1j * beta)]], dtype=complex)
+            P = np.array(
+                [[np.exp(-1j * beta), 0], [0, np.exp(1j * beta)]], dtype=complex
+            )
             M = M @ D @ P
         else:
             M = M @ D
@@ -51,35 +59,32 @@ def reflectance(material_list, wavelengths, theta0=0, polarization="s"):
     R = []
 
     n_list = [i.n for i in material_list]
-    d_list = [i.d * 1e-9 for i in material_list if i.d != 0 ]
+    d_list = [i.d * 1e-9 for i in material_list if i.d != 0]
 
     for wl in wavelengths:
         M = transfer_matrix(n_list, d_list, wl, theta0, polarization)
         r = M[1, 0] / M[0, 0]
-        R.append(np.abs(r)**2)
+        R.append(np.abs(r) ** 2)
     return np.array(R)
 
-#System im sichtbaren Bereich (MgF2, TiO2, Al2O3)
 
+# System im sichtbaren Bereich (MgF2, TiO2, Al2O3)
 material_list = [
     Material("Luft", 0, 1.00),
     Material("MgF2", 102, 1.38),
     Material("TiO2", 105, 2.40),
-    Material("AL2O3", 79, 1.76),
-    Material("Glas", 0, 1.52)
+    Material("Al2O3", 79, 1.76),
+    Material("Glas", 0, 1.52),
 ]
 
-print("=== Sichtbares System ===")
-for i, material in enumerate(material_list):
-    if i == 0:
-        print(f"{i+1:2d}: {material.material} (Einfallsmedium, n = {material.n})")
-    elif i == len(material_list) - 1:
-        print(f"{i+1:2d}: {material.material} (Substrat, n = {material.n})")
-    else:
-        print(f"{i+1:2d}: {material.material} (n = {material.n}, d = {material.d} nm)")
-
-wavelengths_vis = np.linspace(400e-9, 800e-9, 400)
-R_vis = reflectance(material_list, wavelengths_vis)
+# print("=== Sichtbares System ===")
+# for i, material in enumerate(material_list):
+#     if i == 0:
+#         print(f"{i+1:2d}: {material.material} (Einfallsmedium, n = {material.n})")
+#     elif i == len(material_list) - 1:
+#         print(f"{i+1:2d}: {material.material} (Substrat, n = {material.n})")
+#     else:
+#         print(f"{i+1:2d}: {material.material} (n = {material.n}, d = {material.d} nm)")
 
 # #EUV-Spiegel (Mo/Si-Mehrschichtsystem)
 
