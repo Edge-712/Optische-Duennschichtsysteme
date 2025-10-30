@@ -79,8 +79,8 @@ R_vis = reflectance(n_list_vis, d_list_vis, wavelengths_vis)
 #EUV-Spiegel (Mo/Si-Mehrschichtsystem)
 
 # Komplexe Brechzahlen bei 13.5 nm
-n_Mo = 1 - 7.6044e-2 - 6.4100e-3j
-n_Si = 1 - 9.3781e-4 - 1.7260e-3j
+n_Mo = 1 - 7.6044e-2 + 6.4100e-3j
+n_Si = 1 - 9.3781e-4 + 1.7260e-3j
 n_sub = 1.00  # z. B. Quarz oder Vakuum
 
 # 40 Bilagen Mo/Si
