@@ -2,7 +2,7 @@ import sys
 import numpy as np
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
-from main import material_list, reflectance
+from main import material_list, reflectance, Material
 from PyQt6.QtWidgets import (
     QApplication,
     QComboBox,
@@ -12,11 +12,11 @@ from PyQt6.QtWidgets import (
     QHBoxLayout,
     QVBoxLayout,
     QToolButton,
-    QStyle,
+    QPushButton,
+    QLineEdit,
+    QMessageBox,
 )
-from PyQt6.QtGui import QColor, QPalette, QIcon
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import *
+from PyQt6.QtGui import QIcon
 
 
 class MainWindow(QMainWindow):
@@ -28,10 +28,10 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Optische Dünnschichtsysteme")
         self.resize(1280, 720)
         self.central_widget = QWidget()
-        self.create_graph()
+        self.default_page()
         self.setCentralWidget(self.central_widget)
 
-    def create_graph(self):
+    def default_page(self):
         """Anzeige der erstellten Graphen"""
         # Darstellung der ausgewählten Material-Werte in Tabelle und zusätzliche UI-Elemente
         self.grid = QTableWidget()
@@ -51,33 +51,113 @@ class MainWindow(QMainWindow):
         remove_button.setIcon(QIcon.fromTheme("list-remove"))
         remove_button.clicked.connect(self.remove_Row)
 
-        # Plot als UI-Element
-        canvas = PlotCanvas()
-        canvas.axes.plot(2 * 1e9, 3, color="blue")
-        canvas.axes.set_title("Reflexionsspektrum (sichtbar)")
-        canvas.axes.set_xlabel("Wellenlänge [nm]")
-        canvas.axes.set_ylabel("Reflexionsgrad R")
-        canvas.axes.grid(True)
+        wavelength0 = QLineEdit()
+        wavelength0.setPlaceholderText("1. Wellenlänge in nm")
+
+        wavelength1 = QLineEdit()
+        wavelength1.setPlaceholderText("2. Wellenlänge in nm")
+
+        angle = QLineEdit()
+        angle.setPlaceholderText("Einfallswinkel: 0-90°C")
+
+        polarization = QComboBox()
+        polarization.addItem("Senkrecht")
+        polarization.addItem("Parallel")
+
+        run_button = QPushButton("Bestätigen")
+        run_button.clicked.connect(
+            lambda: self.create_Graph(
+                wavelength0,
+                wavelength1,
+                polarization,
+                angle,
+            )
+        )
+
+        self.canvas = PlotCanvas()
+        self.canvas.axes.set_title("Reflexionsspektrum (sichtbar)")
+        self.canvas.axes.set_xlabel("Wellenlänge [nm]")
+        self.canvas.axes.set_ylabel("Reflexionsgrad R")
+        self.canvas.axes.grid(True)
 
         # Layout
         layout_v = QVBoxLayout()
-        layout_h = QHBoxLayout()
-        layout_h.addWidget(self.grid)
-        layout_h.addWidget(canvas)
-        layout_h.setStretch(0, 1)
-        layout_h.setStretch(1, 3)
-        layout_v.addLayout(layout_h)
+        self.layout_h0 = QHBoxLayout()
+        self.layout_h0.addWidget(self.grid)
+        self.layout_h0.addWidget(self.canvas)
+        self.layout_h0.setStretch(0, 1)
+        self.layout_h0.setStretch(1, 3)
+        layout_v.addLayout(self.layout_h0)
 
         layout_h = QHBoxLayout()
         layout_h.addWidget(add_button)
         layout_h.addWidget(remove_button)
+        layout_h.addWidget(wavelength0)
+        layout_h.addWidget(wavelength1)
+        layout_h.addWidget(angle)
+        layout_h.addWidget(polarization)
+        layout_h.addWidget(run_button)
         layout_h.addStretch()
 
         layout_v.addLayout(layout_h)
 
         self.central_widget.setLayout(layout_v)
 
+    def create_Graph(
+        self,
+        wavelength0: QLineEdit,
+        wavelength1: QLineEdit,
+        polarization: QComboBox,
+        angle: QLineEdit,
+    ):
+        """Erstellt den nötigen Graph und aktualisiert die Plots"""
+        try:
+            if (
+                float(angle.text()) > 90
+                or float(angle.text()) < 0
+                or float(wavelength0.text()) <= 0
+                or float(wavelength1.text()) <= 0
+            ):
+                raise ValueError()
+
+            new_material_list = []
+
+            for i in range(0, self.grid.rowCount()):
+                name = self.grid.cellWidget(i, 0).currentText()
+                d = float(self.grid.cellWidget(i, 1).text())
+                n = float(self.grid.cellWidget(i, 2).text())
+                if n == 0 or n < 0 or d < 0:
+                    raise ValueError
+                new_material_list.append(Material(name, d, n))
+
+            wavelength_list = []
+            reflect_list = []
+
+            wavelength_list = np.linspace(
+                float(wavelength0.text()) * 1e-9, float(wavelength1.text()) * 1e-9, 400
+            )
+            reflect_list = reflectance(
+                new_material_list,
+                wavelength_list,
+                polarization.currentText(),
+                float(angle.text()) * (np.pi / 180),
+            )
+            self.canvas.axes.clear()
+            self.canvas.axes.plot(wavelength_list * 1e9, reflect_list, color="blue")
+            self.canvas.axes.set_title("Reflexionsspektrum (sichtbar)")
+            self.canvas.axes.set_xlabel("Wellenlänge [nm]")
+            self.canvas.axes.set_ylabel("Reflexionsgrad R")
+            self.canvas.axes.grid(True)
+            self.canvas.draw()
+        except ValueError:
+            QMessageBox.warning(self, "Fehlermeldung", "Ungültige Auswahl")
+        except ZeroDivisionError:
+            QMessageBox.warning(self, "Fehlermeldung", "Ungültige Auswahl")
+        except AttributeError:
+            QMessageBox.warning(self, "Fehlermeldung", "Ungültige Auswahl")
+
     def add_Row(self):
+        """Fügt beim Betätigen des + Buttons neue Zeilen hinzu"""
         self.grid.setRowCount(self.grid.rowCount() + 1)
 
         textfield_n = QLineEdit()
@@ -86,7 +166,7 @@ class MainWindow(QMainWindow):
         combobox = QComboBox()
         combobox.setPlaceholderText("Presets")
         combobox.currentIndexChanged.connect(
-            lambda text: self.set_values(combobox, textfield_d, textfield_n)
+            lambda: self.set_values(combobox, textfield_d, textfield_n)
         )
 
         for material in material_list:
@@ -97,11 +177,13 @@ class MainWindow(QMainWindow):
         self.grid.setCellWidget(self.grid.rowCount() - 1, 2, textfield_n)
 
     def remove_Row(self):
+        """Entfernt beim entfernen des - Buttons eine Zeile"""
         self.grid.setRowCount(self.grid.rowCount() - 1)
 
     def set_values(
         self, combobox: QComboBox, textfield_d: QLineEdit, textfield_n: QLineEdit
     ):
+        """Passt die Leeren Textboxen bei Auswahl einer der Presets an"""
         textfield_d.setText(str(combobox.currentData().d))
         textfield_n.setText(str(combobox.currentData().n))
 

@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 class Material:
@@ -12,18 +11,18 @@ class Material:
 
     def __str__(self):
         return self.n
-    
+
 
 # Fresnel-Formeln & Transfermatrix
-def fresnel_coefficients(n1, n2, theta1, polarization="s"):
+def fresnel_coefficients(n1, n2, theta1, polarization):
     """Berechne Fresnel-Koeffizienten (Reflexion & Transmission)"""
     theta2 = np.arcsin(n1 / n2 * np.sin(theta1))
-    if polarization == "s":
+    if polarization == "Senkrecht":
         r = (n1 * np.cos(theta1) - n2 * np.cos(theta2)) / (
             n1 * np.cos(theta1) + n2 * np.cos(theta2)
         )
         t = (2 * n1 * np.cos(theta1)) / (n1 * np.cos(theta1) + n2 * np.cos(theta2))
-    elif polarization == "p":
+    elif polarization == "Parallel":
         r = (n2 * np.cos(theta1) - n1 * np.cos(theta2)) / (
             n2 * np.cos(theta1) + n1 * np.cos(theta2)
         )
@@ -32,7 +31,8 @@ def fresnel_coefficients(n1, n2, theta1, polarization="s"):
         raise ValueError("Polarization must be 's' or 'p'")
     return r, t, theta2
 
-def transfer_matrix(n_list, d_list, wavelength, theta0=0, polarization="s"):
+
+def transfer_matrix(n_list, d_list, wavelength, polarization, theta0):
     """Berechnet die Gesamttransfermatrix eines Mehrschichtsystems."""
     M = np.identity(2, dtype=complex)
     theta = [theta0]
@@ -54,7 +54,8 @@ def transfer_matrix(n_list, d_list, wavelength, theta0=0, polarization="s"):
             M = M @ D
     return M
 
-def reflectance(material_list, wavelengths, theta0=0, polarization="s"):
+
+def reflectance(material_list, wavelengths, polarization, theta0):
     """Berechnet den Reflexionsgrad R(λ)"""
     R = []
 
@@ -62,7 +63,7 @@ def reflectance(material_list, wavelengths, theta0=0, polarization="s"):
     d_list = [i.d * 1e-9 for i in material_list if i.d != 0]
 
     for wl in wavelengths:
-        M = transfer_matrix(n_list, d_list, wl, theta0, polarization)
+        M = transfer_matrix(n_list, d_list, wl, polarization, theta0)
         r = M[1, 0] / M[0, 0]
         R.append(np.abs(r) ** 2)
     return np.array(R)
@@ -75,4 +76,5 @@ material_list = [
     Material("TiO2", 105, 2.40),
     Material("Al2O3", 79, 1.76),
     Material("Glas", 0, 1.52),
+    Material("Bliebig", 0, 0),
 ]
