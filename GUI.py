@@ -4,19 +4,19 @@ from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 from main import material_list, reflectance
 from PyQt6.QtWidgets import (
-    QStackedWidget,
-    QMainWindow,
+    QApplication,
+    QComboBox,
+    QTableWidget,
     QWidget,
+    QMainWindow,
     QHBoxLayout,
     QVBoxLayout,
-    QLabel,
-    QComboBox,
-    QPushButton,
-    QTableWidget,
-    QTableWidgetItem,
-    QApplication,
-    QMessageBox,
+    QToolButton,
+    QStyle,
 )
+from PyQt6.QtGui import QColor, QPalette, QIcon
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import *
 
 
 class MainWindow(QMainWindow):
@@ -25,151 +25,85 @@ class MainWindow(QMainWindow):
     ):
         super().__init__()
 
-        # Später einzulesene Variablen
         self.setWindowTitle("Optische Dünnschichtsysteme")
-        self.dropdown_list = []
-        self.material_count = QComboBox()
-
-        # Layout-Konfiguration
-        self.stack = QStackedWidget()
-        self.home = self.create_home()
-        self.settings = self.create_graph()
-        self.graph = self.create_graph()
-        self.stack.addWidget(self.home)
-        self.stack.addWidget(self.settings)
-        self.stack.addWidget(self.graph)
-        self.setCentralWidget(self.stack)
-
-    def create_home(self):
-        """Default State der GUI"""
-        # UI-Elemente
-        label = QLabel("Anzahl der Schichten: ")
-
-        dropdown = QComboBox()
-        dropdown.addItems([str(i) for i in range(1, 20)])
-        self.material_count = dropdown
-
-        button = QPushButton("Bestätigen")
-        button.clicked.connect(self.go_settings)
-
-        # Layout
-        page = QWidget()
-        layout_v = QVBoxLayout(page)
-
-        layout_h = QHBoxLayout()
-        layout_h.addWidget(label)
-        layout_h.addWidget(dropdown)
-        layout_h.addWidget(button)
-        layout_h.addStretch()
-
-        layout_v.addLayout(layout_h)
-        layout_v.addStretch()
-
-        return page
-
-    def create_settings(self):
-        """Auswahl der nötigen Parameter"""
-        page = QWidget()
-        layout_v = QVBoxLayout(page)
-
-        # Generation angegebener Menge an Dropdown-Menüs und andere UI-Elemente
-        for i in range(1, int(self.material_count.currentText()) + 1):
-            layout_h = QHBoxLayout()
-            text = QLabel(f"{i}. Material: \t")
-            dropdown = QComboBox()
-            dropdown.setPlaceholderText("Presets")
-            self.dropdown_list.append(dropdown)
-            for material in material_list:
-                dropdown.addItem(material.name, material)
-
-            layout_h.addWidget(text)
-            layout_h.addWidget(dropdown)
-            layout_h.addStretch()
-            layout_v.addLayout(layout_h)
-
-        button = QPushButton("Bestätigen")
-        button.clicked.connect(self.go_graph)
-
-        # Layout
-        layout_h = QHBoxLayout()
-        layout_h.addWidget(button)
-        layout_h.addStretch()
-
-        layout_v.addLayout(layout_h)
-        layout_v.addStretch()
-
-        return page
+        self.resize(1280, 720)
+        self.central_widget = QWidget()
+        self.create_graph()
+        self.setCentralWidget(self.central_widget)
 
     def create_graph(self):
         """Anzeige der erstellten Graphen"""
         # Darstellung der ausgewählten Material-Werte in Tabelle und zusätzliche UI-Elemente
-        new_material_list = []
-        for menus in self.dropdown_list:
-            new_material_list.append(menus.currentData())
-        grid = QTableWidget()
-        grid.setRowCount(len(new_material_list))
-        grid.setColumnCount(3)
-        grid.setHorizontalHeaderLabels(["Material", "Dicke in nm", "Brechungsindex"])
-        grid.resizeColumnsToContents()
-        grid.horizontalHeader().setStretchLastSection(True)
-        for i, material in enumerate(new_material_list):
-            grid.setItem(i, 0, QTableWidgetItem(material.name))
-            grid.setItem(i, 1, QTableWidgetItem(str(material.d)))
-            grid.setItem(i, 2, QTableWidgetItem(str(material.n)))
+        self.grid = QTableWidget()
+        self.grid.setColumnCount(3)
+        self.grid.setHorizontalHeaderLabels(
+            ["Material", "Dicke in nm", "Brechungsindex"]
+        )
+        self.grid.resizeColumnsToContents()
+        self.grid.horizontalHeader().setStretchLastSection(True)
 
-        button = QPushButton("Zurücksetzen")
-        button.clicked.connect(self.go_home)
+        # Restliche UI-Elemente
+        add_button = QToolButton()
+        add_button.setIcon(QIcon.fromTheme("list-add"))
+        add_button.clicked.connect(self.add_Row)
 
-        # Berechnung der Reflektion
-        wavelengths_vis = np.linspace(400e-9, 800e-9, 400)
-        r_vis = reflectance(new_material_list, wavelengths_vis)
+        remove_button = QToolButton()
+        remove_button.setIcon(QIcon.fromTheme("list-remove"))
+        remove_button.clicked.connect(self.remove_Row)
 
         # Plot als UI-Element
         canvas = PlotCanvas()
-        canvas.axes.plot(wavelengths_vis * 1e9, r_vis, color="blue")
+        canvas.axes.plot(2 * 1e9, 3, color="blue")
         canvas.axes.set_title("Reflexionsspektrum (sichtbar)")
         canvas.axes.set_xlabel("Wellenlänge [nm]")
         canvas.axes.set_ylabel("Reflexionsgrad R")
         canvas.axes.grid(True)
 
         # Layout
-        page = QWidget()
-        layout_v = QVBoxLayout(page)
+        layout_v = QVBoxLayout()
+        layout_h = QHBoxLayout()
+        layout_h.addWidget(self.grid)
+        layout_h.addWidget(canvas)
+        layout_h.setStretch(0, 1)
+        layout_h.setStretch(1, 3)
+        layout_v.addLayout(layout_h)
 
         layout_h = QHBoxLayout()
-        layout_h.addWidget(grid)
-        layout_h.addWidget(canvas)
+        layout_h.addWidget(add_button)
+        layout_h.addWidget(remove_button)
+        layout_h.addStretch()
 
         layout_v.addLayout(layout_h)
-        layout_v.addWidget(button)
 
-        return page
+        self.central_widget.setLayout(layout_v)
 
-    def go_graph(self):
-        """Wechselt Stack-Widget zur Graphenanzeige und übernimmt die Gewählten Parameter"""
-        try:
-            self.graph = self.create_graph()
-            self.stack.addWidget(self.graph)
-            self.stack.setCurrentWidget(self.graph)
-        except AttributeError:
-            QMessageBox.warning(
-                self, "Ungültige Auswahl", "Wählen Sie Ihre Materialien aus!"
-            )
+    def add_Row(self):
+        self.grid.setRowCount(self.grid.rowCount() + 1)
 
-    def go_home(self):
-        """Wechselt Stack-Widget auf Startseite"""
-        self.dropdown_list.clear()
-        self.stack.removeWidget(self.home)
-        self.home = self.create_home()
-        self.stack.addWidget(self.home)
-        self.stack.setCurrentWidget(self.home)
+        textfield_n = QLineEdit()
+        textfield_d = QLineEdit()
 
-    def go_settings(self):
-        """Wechselt Stack-Widget zur Parameterauswahl"""
-        self.stack.removeWidget(self.settings)
-        self.settings = self.create_settings()
-        self.stack.addWidget(self.settings)
-        self.stack.setCurrentWidget(self.settings)
+        combobox = QComboBox()
+        combobox.setPlaceholderText("Presets")
+        combobox.currentIndexChanged.connect(
+            lambda text: self.set_values(combobox, textfield_d, textfield_n)
+        )
+
+        for material in material_list:
+            combobox.addItem(material.name, material)
+
+        self.grid.setCellWidget(self.grid.rowCount() - 1, 0, combobox)
+        self.grid.setCellWidget(self.grid.rowCount() - 1, 1, textfield_d)
+        self.grid.setCellWidget(self.grid.rowCount() - 1, 2, textfield_n)
+
+    def remove_Row(self):
+        self.grid.setRowCount(self.grid.rowCount() - 1)
+
+    def set_values(
+        self, combobox: QComboBox, textfield_d: QLineEdit, textfield_n: QLineEdit
+    ):
+        textfield_d.setText(str(combobox.currentData().d))
+        textfield_n.setText(str(combobox.currentData().n))
 
 
 class PlotCanvas(FigureCanvasQTAgg):
@@ -178,7 +112,6 @@ class PlotCanvas(FigureCanvasQTAgg):
     def __init__(self, width=5, height=4, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
-
         super(PlotCanvas, self).__init__(fig)
 
 
