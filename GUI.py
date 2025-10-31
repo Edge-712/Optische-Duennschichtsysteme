@@ -15,6 +15,8 @@ from PyQt6.QtWidgets import (
     QPushButton,
     QLineEdit,
     QMessageBox,
+    QSizePolicy,
+    QHeaderView,
 )
 from PyQt6.QtGui import QIcon
 
@@ -40,12 +42,13 @@ class MainWindow(QMainWindow):
             [
                 "Material",
                 "Dicke in nm",
-                "Brechungsindex-Real",
-                "Brechungsindex-Imaginär",
+                "n-Real",
+                "n-Imaginär",
             ]
         )
-        self.grid.resizeColumnsToContents()
-        self.grid.horizontalHeader().setStretchLastSection(True)
+        self.grid.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeMode.Stretch
+        )
 
         # Restliche UI-Elemente
         add_button = QToolButton()
@@ -90,8 +93,8 @@ class MainWindow(QMainWindow):
         self.layout_h0 = QHBoxLayout()
         self.layout_h0.addWidget(self.grid)
         self.layout_h0.addWidget(self.canvas)
-        self.layout_h0.setStretch(0, 1)
-        self.layout_h0.setStretch(1, 2)
+        self.layout_h0.setStretch(0, 2)
+        self.layout_h0.setStretch(1, 4)
         layout_v.addLayout(self.layout_h0)
 
         layout_h = QHBoxLayout()
@@ -102,7 +105,6 @@ class MainWindow(QMainWindow):
         layout_h.addWidget(angle)
         layout_h.addWidget(polarization)
         layout_h.addWidget(run_button)
-        layout_h.addStretch()
 
         layout_v.addLayout(layout_h)
 
@@ -125,6 +127,7 @@ class MainWindow(QMainWindow):
             ):
                 raise ValueError()
 
+            # Speichern der User-Inputs
             new_material_list = []
 
             for i in range(0, self.grid.rowCount()):
@@ -137,9 +140,6 @@ class MainWindow(QMainWindow):
                 if n.real == 0 or n.real < 0 or d < 0:
                     raise ValueError
                 new_material_list.append(Material(name, d, n))
-
-            wavelength_list = []
-            reflect_list = []
 
             wavelength_list = np.linspace(
                 float(wavelength0.text()) * 1e-9, float(wavelength1.text()) * 1e-9, 400
@@ -157,6 +157,16 @@ class MainWindow(QMainWindow):
             self.canvas.axes.set_ylabel("Reflexionsgrad R")
             self.canvas.axes.grid(True)
             self.canvas.draw()
+
+            self.grid.setSizePolicy(
+                QSizePolicy.Policy.Preferred,  # Horizontal: Bevorzugte Größe (schmal)
+                QSizePolicy.Policy.Expanding,  # Vertikal: Darf wachsen
+            )
+            self.canvas.setSizePolicy(
+                QSizePolicy.Policy.Expanding,  # Horizontal wachsen
+                QSizePolicy.Policy.Expanding,  # Vertikal wachsen
+            )
+
         except ValueError:
             QMessageBox.warning(self, "Fehlermeldung", "Ungültige Auswahl")
         except ZeroDivisionError:
@@ -165,7 +175,7 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, "Fehlermeldung", "Ungültige Auswahl")
 
     def add_Row(self):
-        """Fügt beim Betätigen des + Buttons neue Zeilen hinzu"""
+        """Fügt beim Bestätigen des + Buttons neue Zeilen hinzu"""
         self.grid.setRowCount(self.grid.rowCount() + 1)
 
         textfield_n_r = QLineEdit()
