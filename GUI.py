@@ -158,20 +158,7 @@ class MainWindow(QMainWindow):
             self.canvas.axes.grid(True)
             self.canvas.draw()
 
-            self.grid.setSizePolicy(
-                QSizePolicy.Policy.Preferred,  # Horizontal: Bevorzugte Größe (schmal)
-                QSizePolicy.Policy.Expanding,  # Vertikal: Darf wachsen
-            )
-            self.canvas.setSizePolicy(
-                QSizePolicy.Policy.Expanding,  # Horizontal wachsen
-                QSizePolicy.Policy.Expanding,  # Vertikal wachsen
-            )
-
-        except ValueError:
-            QMessageBox.warning(self, "Fehlermeldung", "Ungültige Auswahl")
-        except ZeroDivisionError:
-            QMessageBox.warning(self, "Fehlermeldung", "Ungültige Auswahl")
-        except AttributeError:
+        except (ValueError, ZeroDivisionError, ArithmeticError):
             QMessageBox.warning(self, "Fehlermeldung", "Ungültige Auswahl")
 
     def add_Row(self):
@@ -184,7 +171,7 @@ class MainWindow(QMainWindow):
 
         combobox = QComboBox()
         combobox.setPlaceholderText("Presets")
-        combobox.currentIndexChanged.connect(
+        combobox.activated.connect(
             lambda: self.set_values(combobox, textfield_d, textfield_n_r, textfield_n_i)
         )
 
