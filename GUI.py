@@ -15,6 +15,8 @@ from PyQt6.QtWidgets import (
     QPushButton,
     QLineEdit,
     QMessageBox,
+    QSizePolicy,
+    QHeaderView,
 )
 from PyQt6.QtGui import QIcon
 
@@ -35,12 +37,18 @@ class MainWindow(QMainWindow):
         """Anzeige der erstellten Graphen"""
         # Darstellung der ausgewählten Material-Werte in Tabelle und zusätzliche UI-Elemente
         self.grid = QTableWidget()
-        self.grid.setColumnCount(3)
+        self.grid.setColumnCount(4)
         self.grid.setHorizontalHeaderLabels(
-            ["Material", "Dicke in nm", "Brechungsindex"]
+            [
+                "Material",
+                "Dicke in nm",
+                "n-Real",
+                "n-Imaginär",
+            ]
         )
-        self.grid.resizeColumnsToContents()
-        self.grid.horizontalHeader().setStretchLastSection(True)
+        self.grid.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeMode.Stretch
+        )
 
         # Restliche UI-Elemente
         add_button = QToolButton()
@@ -85,8 +93,8 @@ class MainWindow(QMainWindow):
         self.layout_h0 = QHBoxLayout()
         self.layout_h0.addWidget(self.grid)
         self.layout_h0.addWidget(self.canvas)
-        self.layout_h0.setStretch(0, 1)
-        self.layout_h0.setStretch(1, 3)
+        self.layout_h0.setStretch(0, 2)
+        self.layout_h0.setStretch(1, 4)
         layout_v.addLayout(self.layout_h0)
 
         layout_h = QHBoxLayout()
@@ -97,7 +105,6 @@ class MainWindow(QMainWindow):
         layout_h.addWidget(angle)
         layout_h.addWidget(polarization)
         layout_h.addWidget(run_button)
-        layout_h.addStretch()
 
         layout_v.addLayout(layout_h)
 
@@ -120,18 +127,19 @@ class MainWindow(QMainWindow):
             ):
                 raise ValueError()
 
+            # Speichern der User-Inputs
             new_material_list = []
 
             for i in range(0, self.grid.rowCount()):
                 name = self.grid.cellWidget(i, 0).currentText()
                 d = float(self.grid.cellWidget(i, 1).text())
-                n = float(self.grid.cellWidget(i, 2).text())
-                if n == 0 or n < 0 or d < 0:
+                n_r = self.grid.cellWidget(i, 2).text()
+                n_i = self.grid.cellWidget(i, 3).text()
+                n_string = n_r + "+" + n_i + "j"
+                n = complex(n_string)
+                if n.real == 0 or n.real < 0 or d < 0:
                     raise ValueError
                 new_material_list.append(Material(name, d, n))
-
-            wavelength_list = []
-            reflect_list = []
 
             wavelength_list = np.linspace(
                 float(wavelength0.text()) * 1e-9, float(wavelength1.text()) * 1e-9, 400
@@ -149,24 +157,22 @@ class MainWindow(QMainWindow):
             self.canvas.axes.set_ylabel("Reflexionsgrad R")
             self.canvas.axes.grid(True)
             self.canvas.draw()
-        except ValueError:
-            QMessageBox.warning(self, "Fehlermeldung", "Ungültige Auswahl")
-        except ZeroDivisionError:
-            QMessageBox.warning(self, "Fehlermeldung", "Ungültige Auswahl")
-        except AttributeError:
+
+        except (ValueError, ZeroDivisionError, ArithmeticError):
             QMessageBox.warning(self, "Fehlermeldung", "Ungültige Auswahl")
 
     def add_Row(self):
-        """Fügt beim Betätigen des + Buttons neue Zeilen hinzu"""
+        """Fügt beim Bestätigen des + Buttons neue Zeilen hinzu"""
         self.grid.setRowCount(self.grid.rowCount() + 1)
 
-        textfield_n = QLineEdit()
+        textfield_n_r = QLineEdit()
+        textfield_n_i = QLineEdit()
         textfield_d = QLineEdit()
 
         combobox = QComboBox()
         combobox.setPlaceholderText("Presets")
-        combobox.currentIndexChanged.connect(
-            lambda: self.set_values(combobox, textfield_d, textfield_n)
+        combobox.activated.connect(
+            lambda: self.set_values(combobox, textfield_d, textfield_n_r, textfield_n_i)
         )
 
         for material in material_list:
@@ -174,18 +180,24 @@ class MainWindow(QMainWindow):
 
         self.grid.setCellWidget(self.grid.rowCount() - 1, 0, combobox)
         self.grid.setCellWidget(self.grid.rowCount() - 1, 1, textfield_d)
-        self.grid.setCellWidget(self.grid.rowCount() - 1, 2, textfield_n)
+        self.grid.setCellWidget(self.grid.rowCount() - 1, 2, textfield_n_r)
+        self.grid.setCellWidget(self.grid.rowCount() - 1, 3, textfield_n_i)
 
     def remove_Row(self):
         """Entfernt beim entfernen des - Buttons eine Zeile"""
         self.grid.setRowCount(self.grid.rowCount() - 1)
 
     def set_values(
-        self, combobox: QComboBox, textfield_d: QLineEdit, textfield_n: QLineEdit
+        self,
+        combobox: QComboBox,
+        textfield_d: QLineEdit,
+        textfield_n_r: QLineEdit,
+        textfield_n_i: QLineEdit,
     ):
         """Passt die Leeren Textboxen bei Auswahl einer der Presets an"""
         textfield_d.setText(str(combobox.currentData().d))
-        textfield_n.setText(str(combobox.currentData().n))
+        textfield_n_r.setText(str(combobox.currentData().n.real))
+        textfield_n_i.setText(str(combobox.currentData().n.imag))
 
 
 class PlotCanvas(FigureCanvasQTAgg):
