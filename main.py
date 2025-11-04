@@ -1,5 +1,12 @@
 import numpy as np
 
+# /////////////////////////
+#   d: Dicke in m
+#   n: Brechungsindex
+#   theta: Winkel in rad
+#   wavelength: Wellenlänge in m
+# ////////////////////////
+
 
 class Material:
     """Material-Klasse für simplere Bearbeitung über GUI"""

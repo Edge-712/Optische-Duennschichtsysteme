@@ -11,7 +11,6 @@ from PyQt6.QtWidgets import (
     QMainWindow,
     QHBoxLayout,
     QVBoxLayout,
-    QToolButton,
     QPushButton,
     QLineEdit,
     QMessageBox,
@@ -36,28 +35,24 @@ class MainWindow(QMainWindow):
         """Anzeige der erstellten Graphen"""
         # Darstellung der ausgewählten Material-Werte in Tabelle und zusätzliche UI-Elemente
         self.grid = QTableWidget()
-        self.grid.setColumnCount(4)
+        self.grid.setColumnCount(5)
         self.grid.setHorizontalHeaderLabels(
             [
                 "Material",
                 "Dicke in nm",
                 "n-Real",
                 "n-Imaginär",
+                "",
             ]
         )
         self.grid.horizontalHeader().setSectionResizeMode(
             QHeaderView.ResizeMode.Stretch
         )
 
+        self.insert_Row(None, 0)
+        self.insert_Row(None, 1)
+
         # Restliche UI-Elemente
-        add_button = QToolButton()
-        add_button.setIcon(QIcon.fromTheme("list-add"))
-        add_button.clicked.connect(self.add_Row)
-
-        remove_button = QToolButton()
-        remove_button.setIcon(QIcon.fromTheme("list-remove"))
-        remove_button.clicked.connect(self.remove_Row)
-
         wavelength0 = QLineEdit()
         wavelength0.setPlaceholderText("1. Wellenlänge in nm")
 
@@ -97,8 +92,6 @@ class MainWindow(QMainWindow):
         layout_v.addLayout(self.layout_h0)
 
         layout_h = QHBoxLayout()
-        layout_h.addWidget(add_button)
-        layout_h.addWidget(remove_button)
         layout_h.addWidget(wavelength0)
         layout_h.addWidget(wavelength1)
         layout_h.addWidget(angle)
@@ -157,7 +150,7 @@ class MainWindow(QMainWindow):
             )
             self.canvas.axes.clear()
             self.canvas.axes.plot(wavelength_list * 1e9, reflect_list, color="blue")
-            self.canvas.axes.set_title("Reflexionsspektrum (sichtbar)")
+            self.canvas.axes.set_title("Reflexionsspektrum")
             self.canvas.axes.set_xlabel("Wellenlänge [nm]")
             self.canvas.axes.set_ylabel("Reflexionsgrad R")
             self.canvas.axes.grid(True)
@@ -166,31 +159,78 @@ class MainWindow(QMainWindow):
         except (ValueError, ZeroDivisionError, ArithmeticError):
             QMessageBox.warning(self, "Fehlermeldung", "Ungültige Auswahl")
 
-    def add_Row(self):
-        """Fügt beim Bestätigen des + Buttons neue Zeilen hinzu"""
-        self.grid.setRowCount(self.grid.rowCount() + 1)
+    def delete_Row(self, combobox: QComboBox):
+        """Entfernt nach Drücken des - Buttons die aktuelle Zeile"""
+        for i in range(0, self.grid.rowCount() + 1):
+            temp = self.grid.cellWidget(i, 0)
+            if temp == combobox:
+                self.canvas.setFocus()  # nicht Löschen, Mauszeigerfokus springt sonst zufällig hin und her
+                self.grid.removeRow(i)
+                break
+
+    def insert_Row(self, combobox: QComboBox = None, counter: int = None):
+        """Fügt nach Drücken des + Buttons eine neue Zeile zwischen der aktuellen Zeile und der danach ein"""
+        index = 0
+        for i in range(0, self.grid.rowCount() + 1):
+            temp = self.grid.cellWidget(i, 0)
+            if temp == combobox:
+                index += i + 1
+                self.grid.insertRow(i + 1)
+                break
 
         textfield_n_r = QLineEdit()
         textfield_n_i = QLineEdit()
         textfield_d = QLineEdit()
 
-        combobox = QComboBox()
-        combobox.setPlaceholderText("Presets")
-        combobox.activated.connect(
-            lambda: self.set_values(combobox, textfield_d, textfield_n_r, textfield_n_i)
+        button_widget = QWidget()
+        button_box = QHBoxLayout()
+
+        combobox0 = QComboBox()
+        combobox0.setPlaceholderText("Presets")
+        combobox0.activated.connect(
+            lambda: self.set_values(
+                combobox0, textfield_d, textfield_n_r, textfield_n_i
+            )
         )
 
         for material in material_list:
-            combobox.addItem(material.name, material)
+            combobox0.addItem(material.name, material)
 
-        self.grid.setCellWidget(self.grid.rowCount() - 1, 0, combobox)
-        self.grid.setCellWidget(self.grid.rowCount() - 1, 1, textfield_d)
-        self.grid.setCellWidget(self.grid.rowCount() - 1, 2, textfield_n_r)
-        self.grid.setCellWidget(self.grid.rowCount() - 1, 3, textfield_n_i)
+        add_button = QPushButton()
+        add_button.setIcon(QIcon.fromTheme("list-add"))
+        add_button.clicked.connect(
+            lambda checked=False, c=combobox0: self.insert_Row(c)
+        )
 
-    def remove_Row(self):
-        """Entfernt beim entfernen des - Buttons eine Zeile"""
-        self.grid.setRowCount(self.grid.rowCount() - 1)
+        remove_button = QPushButton()
+        remove_button.setIcon(QIcon.fromTheme("list-remove"))
+        remove_button.clicked.connect(
+            lambda checked=False, c=combobox0: self.delete_Row(c)
+        )
+
+        button_box.addWidget(remove_button)
+        button_box.addWidget(add_button)
+        button_box.setContentsMargins(0, 0, 0, 0)
+        button_widget.setLayout(button_box)
+
+        # Zum erstellen der ersten 2 Zeilen
+        if combobox is None:
+            self.grid.insertRow(counter)
+            self.grid.setCellWidget(counter, 0, combobox0)
+            self.grid.setCellWidget(counter, 1, textfield_d)
+            self.grid.setCellWidget(counter, 2, textfield_n_r)
+            self.grid.setCellWidget(counter, 3, textfield_n_i)
+            if counter == 0:
+                self.grid.setCellWidget(counter, 4, add_button)
+            else:
+                self.grid.setCellWidget(counter, 4, QLineEdit(""))
+                self.grid.cellWidget(counter, 4).setEnabled(False)
+        else:
+            self.grid.setCellWidget(index, 0, combobox0)
+            self.grid.setCellWidget(index, 1, textfield_d)
+            self.grid.setCellWidget(index, 2, textfield_n_r)
+            self.grid.setCellWidget(index, 3, textfield_n_i)
+            self.grid.setCellWidget(index, 4, button_widget)
 
     def set_values(
         self,
