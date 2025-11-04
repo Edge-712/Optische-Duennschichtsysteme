@@ -120,7 +120,7 @@ class MainWindow(QMainWindow):
         """Erstellt den nötigen Graph und aktualisiert die Plots"""
         try:
             if (
-                float(angle.text()) > 90
+                float(angle.text()) > 89
                 or float(angle.text()) < 0
                 or float(wavelength0.text()) <= 0
                 or float(wavelength1.text()) <= 0
@@ -137,7 +137,11 @@ class MainWindow(QMainWindow):
                 n_i = self.grid.cellWidget(i, 3).text()
                 n_string = n_r + "+" + n_i + "j"
                 n = complex(n_string)
-                if n.real == 0 or n.real < 0 or d < 0:
+                if self.grid.rowCount() == 1:
+                    raise ValueError
+                if (i != 0 and i != self.grid.rowCount() - 1) and (n.real == 0 or n.real < 0 or d <= 0 or d == np.inf):
+                    raise ValueError
+                if (i == 0 or i == self.grid.rowCount() - 1) and d != np.inf:
                     raise ValueError
                 new_material_list.append(Material(name, d, n))
 

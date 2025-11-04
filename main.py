@@ -60,7 +60,7 @@ def reflectance(material_list, wavelengths, polarization, theta0):
     R = []
 
     n_list = [i.n for i in material_list]
-    d_list = [i.d * 1e-9 for i in material_list if i.d != 0]
+    d_list = [i.d * 1e-9 for i in material_list if i.d != np.inf]
 
     for wl in wavelengths:
         M = transfer_matrix(n_list, d_list, wl, polarization, theta0)
@@ -71,10 +71,10 @@ def reflectance(material_list, wavelengths, polarization, theta0):
 
 # System im sichtbaren Bereich (MgF2, TiO2, Al2O3)
 material_list = [
-    Material("Luft", 0, 1.00 + 0j),
-    Material("MgF2", 0, 1.38 + 0j),
-    Material("TiO2", 0, 2.40 + 0j),
-    Material("Al2O3", 0, 1.76 + 0j),
-    Material("Glas", 0, 1.52 + 0j),
+    Material("Luft", np.inf, 1.00 + 0j),
+    Material("MgF2", 100, 1.38 + 0j),
+    Material("TiO2", 100, 2.40 + 0j),
+    Material("Al2O3", 100, 1.76 + 0j),
+    Material("Glas", np.inf, 1.52 + 0j),
     Material("Beliebig", 0, 0 + 0j),
 ]
