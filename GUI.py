@@ -15,7 +15,6 @@ from PyQt6.QtWidgets import (
     QPushButton,
     QLineEdit,
     QMessageBox,
-    QSizePolicy,
     QHeaderView,
 )
 from PyQt6.QtGui import QIcon
@@ -139,7 +138,9 @@ class MainWindow(QMainWindow):
                 n = complex(n_string)
                 if self.grid.rowCount() == 1:
                     raise ValueError
-                if (i != 0 and i != self.grid.rowCount() - 1) and (n.real == 0 or n.real < 0 or d <= 0 or d == np.inf):
+                if (i != 0 and i != self.grid.rowCount() - 1) and (
+                    n.real == 0 or n.real < 0 or d <= 0 or d == np.inf
+                ):
                     raise ValueError
                 if (i == 0 or i == self.grid.rowCount() - 1) and d != np.inf:
                     raise ValueError
