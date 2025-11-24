@@ -45,12 +45,12 @@ class MainWindow(QMainWindow):
                 "",
             ]
         )
-        self.grid.horizontalHeader().setSectionResizeMode(
+        self.grid.horizontalHeader().setSectionResizeMode(  # type: ignore
             QHeaderView.ResizeMode.Stretch
         )
 
-        self.insert_Row(None, 0)
-        self.insert_Row(None, 1)
+        self.insert_Row(None, 0)  # type: ignore
+        self.insert_Row(None, 1)  # type: ignore
 
         # Restliche UI-Elemente
         wavelength0 = QLineEdit()
@@ -123,10 +123,10 @@ class MainWindow(QMainWindow):
             new_material_list = []
 
             for i in range(0, self.grid.rowCount()):
-                name = self.grid.cellWidget(i, 0).currentText()
-                d = float(self.grid.cellWidget(i, 1).text())
-                n_r = self.grid.cellWidget(i, 2).text()
-                n_i = self.grid.cellWidget(i, 3).text()
+                name = self.grid.cellWidget(i, 0).currentText()  # type: ignore
+                d = float(self.grid.cellWidget(i, 1).text())  # type: ignore
+                n_r = self.grid.cellWidget(i, 2).text()  # type: ignore
+                n_i = self.grid.cellWidget(i, 3).text()  # type: ignore
                 n_string = n_r + "+" + n_i + "j"
                 n = complex(n_string)
                 if self.grid.rowCount() == 1:
@@ -168,7 +168,7 @@ class MainWindow(QMainWindow):
                 self.grid.removeRow(i)
                 break
 
-    def insert_Row(self, combobox: QComboBox = None, counter: int = None):
+    def insert_Row(self, combobox: QComboBox = None, counter: int = None):  # type: ignore
         """Fügt nach Drücken des + Buttons eine neue Zeile zwischen der aktuellen Zeile und der danach ein"""
         index = 0
         for i in range(0, self.grid.rowCount() + 1):
