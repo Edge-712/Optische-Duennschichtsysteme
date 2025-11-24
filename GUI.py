@@ -118,7 +118,6 @@ class MainWindow(QMainWindow):
 
         try:
             wavelength_splits = wavelength0.text().split(",")
-            # for pairs in wavelength_splits:
             wavelengths = [i.split("-") for i in wavelength_splits]
 
             if float(angle.text()) > 89 or float(angle.text()) < 0:
