@@ -2,6 +2,8 @@ import sys
 import numpy as np
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt import NavigationToolbar2QT as NavigationToolbar
 from main import material_list, reflectance, Material
 from PyQt6.QtWidgets import (
     QApplication,
@@ -72,11 +74,18 @@ class MainWindow(QMainWindow):
             )
         )
 
+        # Plot
         self.canvas = PlotCanvas()
-        self.canvas.axes.set_title("Reflexionsspektrum (sichtbar)")
+        self.canvas.axes = self.canvas.figure.add_subplot()
+
+        self.canvas.axes.set_title("Reflexionsspektrum")
         self.canvas.axes.set_xlabel("Wellenlänge [nm]")
         self.canvas.axes.set_ylabel("Reflexionsgrad R")
         self.canvas.axes.grid(True)
+
+        toolbar = NavigationToolbar(self.canvas, self)
+        reset_button = QPushButton("Zurücksetzen")
+        reset_button.clicked.connect(self.reset)
 
         # Layout
         layout_v = QVBoxLayout()
@@ -85,6 +94,11 @@ class MainWindow(QMainWindow):
         self.layout_h0.addWidget(self.canvas)
         self.layout_h0.setStretch(0, 2)
         self.layout_h0.setStretch(1, 4)
+
+        layout_h = QHBoxLayout()
+        layout_h.addWidget(toolbar)
+        layout_h.addWidget(reset_button)
+        layout_v.addLayout(layout_h)
         layout_v.addLayout(self.layout_h0)
 
         layout_h = QHBoxLayout()
@@ -106,17 +120,14 @@ class MainWindow(QMainWindow):
         """Erstellt den nötigen Graph und aktualisiert die Plots"""
 
         try:
-            wavelengths = wavelength0.text().split("-")
-            wavelength_list = np.linspace(
-                float(wavelengths[0]) * 1e-9,
-                float(wavelengths[1]) * 1e-9,
-                400,
-            )
+            wavelength_splits = wavelength0.text().split(",")
+            # for pairs in wavelength_splits:
+            wavelengths = [i.split("-") for i in wavelength_splits]
 
             if float(angle.text()) > 89 or float(angle.text()) < 0:
                 raise ValueError()
             for items in wavelengths:
-                if float(items) <= 0:
+                if float(items[0]) <= 0 or float(items[1]) <= 0:
                     raise ValueError()
 
             # Speichern der User-Inputs
@@ -139,18 +150,27 @@ class MainWindow(QMainWindow):
                     raise ValueError
                 new_material_list.append(Material(name, d, n))
 
-            reflect_list = reflectance(
-                new_material_list,
-                wavelength_list,
-                polarization.currentText(),
-                float(angle.text()) * (np.pi / 180),
-            )
-            self.canvas.axes.clear()
-            self.canvas.axes.plot(wavelength_list * 1e9, reflect_list, color="blue")
-            self.canvas.axes.set_title("Reflexionsspektrum")
-            self.canvas.axes.set_xlabel("Wellenlänge [nm]")
-            self.canvas.axes.set_ylabel("Reflexionsgrad R")
-            self.canvas.axes.grid(True)
+            wavelength_lists = [
+                np.linspace(
+                    float(pairs[0]) * 1e-9,
+                    float(pairs[1]) * 1e-9,
+                    400,
+                )
+                for pairs in wavelengths
+            ]
+            label = [i.name for i in new_material_list]
+            for wavelength_list in wavelength_lists:
+                reflect_list = reflectance(
+                    new_material_list,
+                    wavelength_list,
+                    polarization.currentText(),
+                    float(angle.text()) * (np.pi / 180),
+                )
+                self.canvas.axes.plot(
+                    wavelength_list * 1e9, reflect_list, label=str(label)
+                )
+                self.canvas.axes.legend()
+
             self.canvas.draw()
 
         except (ValueError, ZeroDivisionError, ArithmeticError):
@@ -241,14 +261,20 @@ class MainWindow(QMainWindow):
         textfield_n_r.setText(str(combobox.currentData().n.real))
         textfield_n_i.setText(str(combobox.currentData().n.imag))
 
+    def reset(self):
+        self.canvas.axes.clear()
+        self.canvas.axes.set_title("Reflexionsspektrum")
+        self.canvas.axes.set_xlabel("Wellenlänge [nm]")
+        self.canvas.axes.set_ylabel("Reflexionsgrad R")
+        self.canvas.axes.grid(True)
+        self.canvas.draw()
+
 
 class PlotCanvas(FigureCanvasQTAgg):
     """Klasse zum Einfügen des Plots in UI"""
 
-    def __init__(self, width=5, height=4, dpi=100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)
-        super(PlotCanvas, self).__init__(fig)
+    def __init__(self, width=5, height=4, dpi=100, parent=None):
+        super(PlotCanvas, self).__init__()
 
 
 app = QApplication(sys.argv)
