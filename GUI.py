@@ -27,6 +27,7 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Optische Dünnschichtsysteme")
         self.resize(1280, 720)
+        self.setWindowIcon(QIcon("./python.png"))
         self.central_widget = QWidget()
         self.default_page()
         self.setCentralWidget(self.central_widget)
@@ -37,12 +38,7 @@ class MainWindow(QMainWindow):
         self.grid = QTableWidget()
         self.grid.setColumnCount(5)
         self.grid.setHorizontalHeaderLabels(
-            [
-                "Material",
-                "Dicke in nm",
-                "n-Real",
-                "n-Imaginär",
-            ]
+            ["Material", "Dicke in nm", "n-Real", "n-Imaginär", ""]
         )
         self.grid.horizontalHeader().setSectionResizeMode(  # type: ignore
             QHeaderView.ResizeMode.Stretch
@@ -53,10 +49,10 @@ class MainWindow(QMainWindow):
 
         # Restliche UI-Elemente
         wavelength0 = QLineEdit()
-        wavelength0.setPlaceholderText("Wellenlänge1 - Wällenlänge2 (in nm)")
+        wavelength0.setPlaceholderText("1. Wellenlänge - 2. Wellenlänge (in nm)")
 
         angle = QLineEdit()
-        angle.setPlaceholderText("Einfallswinkel: 0-90°C")
+        angle.setPlaceholderText("Einfallswinkel: 0-89°C")
 
         polarization = QComboBox()
         polarization.addItem("Senkrecht")
