@@ -1,8 +1,6 @@
 import sys
 import numpy as np
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt import NavigationToolbar2QT as NavigationToolbar
 from main import material_list, reflectance, Material
 from PyQt6.QtWidgets import (
@@ -44,7 +42,6 @@ class MainWindow(QMainWindow):
                 "Dicke in nm",
                 "n-Real",
                 "n-Imaginär",
-                "",
             ]
         )
         self.grid.horizontalHeader().setSectionResizeMode(  # type: ignore
