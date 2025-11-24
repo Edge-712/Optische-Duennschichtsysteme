@@ -54,10 +54,7 @@ class MainWindow(QMainWindow):
 
         # Restliche UI-Elemente
         wavelength0 = QLineEdit()
-        wavelength0.setPlaceholderText("1. Wellenlänge in nm")
-
-        wavelength1 = QLineEdit()
-        wavelength1.setPlaceholderText("2. Wellenlänge in nm")
+        wavelength0.setPlaceholderText("Wellenlänge1 - Wällenlänge2 (in nm)")
 
         angle = QLineEdit()
         angle.setPlaceholderText("Einfallswinkel: 0-90°C")
@@ -70,7 +67,6 @@ class MainWindow(QMainWindow):
         run_button.clicked.connect(
             lambda: self.create_Graph(
                 wavelength0,
-                wavelength1,
                 polarization,
                 angle,
             )
@@ -93,7 +89,6 @@ class MainWindow(QMainWindow):
 
         layout_h = QHBoxLayout()
         layout_h.addWidget(wavelength0)
-        layout_h.addWidget(wavelength1)
         layout_h.addWidget(angle)
         layout_h.addWidget(polarization)
         layout_h.addWidget(run_button)
@@ -105,19 +100,24 @@ class MainWindow(QMainWindow):
     def create_Graph(
         self,
         wavelength0: QLineEdit,
-        wavelength1: QLineEdit,
         polarization: QComboBox,
         angle: QLineEdit,
     ):
         """Erstellt den nötigen Graph und aktualisiert die Plots"""
+
         try:
-            if (
-                float(angle.text()) > 89
-                or float(angle.text()) < 0
-                or float(wavelength0.text()) <= 0
-                or float(wavelength1.text()) <= 0
-            ):
+            wavelengths = wavelength0.text().split("-")
+            wavelength_list = np.linspace(
+                float(wavelengths[0]) * 1e-9,
+                float(wavelengths[1]) * 1e-9,
+                400,
+            )
+
+            if float(angle.text()) > 89 or float(angle.text()) < 0:
                 raise ValueError()
+            for items in wavelengths:
+                if float(items) <= 0:
+                    raise ValueError()
 
             # Speichern der User-Inputs
             new_material_list = []
@@ -139,9 +139,6 @@ class MainWindow(QMainWindow):
                     raise ValueError
                 new_material_list.append(Material(name, d, n))
 
-            wavelength_list = np.linspace(
-                float(wavelength0.text()) * 1e-9, float(wavelength1.text()) * 1e-9, 400
-            )
             reflect_list = reflectance(
                 new_material_list,
                 wavelength_list,
