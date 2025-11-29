@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1764426977.90801 "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" "Projektbericht.pdf" "Projektbericht" 1764426978.47306 0
+["pdflatex"] 1764429130.83621 "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" "Projektbericht.pdf" "Projektbericht" 1764429131.28412 0
   "C:/Users/oaygu/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1764426283 82873 a91d9f63007862f29e716a534e85bce5 ""
   "C:/Users/oaygu/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1763041832 13333512 401dd78c9023be05c1b32edec95bfcde ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc" 1458473887 4993 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -26,8 +26,6 @@
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/generic/babel/locale/de/babel-de.ini" 1761147672 4727 d81584578cd605f9a3d9be696ad10783 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/generic/babel/locale/de/babel-ngerman.tex" 1761147672 374 52eab78d5ca566fb72bc7032a27c38d0 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/generic/babel/txtbabel.def" 1761147669 5231 82bb24bf20af7e4d760717f2cadb5170 ""
-  "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/generic/iftex/iftex.sty" 1734114575 7984 7dbb9280f03c0a315425f1b4f35d43ee ""
-  "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/generic/iftex/ifvtex.sty" 1734114575 1057 525c2192b5febbd8c1f662c9468335bb ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/amsmath/amsbsy.sty" 1762695272 2222 27db7d52163edae53881b71ff62e754e ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/amsmath/amsgen.sty" 1762695271 4173 1b3e76addfb8afcb47db4811d66e1dc6 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/amsmath/amsmath.sty" 1762695272 88471 b1bb09142edddebd46ba986341b867bd ""
@@ -39,9 +37,6 @@
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/base/article.cls" 1761900684 20144 b966087dda3b194755eb460d32e2ef75 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/base/size12.clo" 1761900684 8449 8dc66c6c313c8eb2d774af83bca435dd ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/fancyhdr/fancyhdr.sty" 1740138435 31715 19e60610b63819fe670dfa1cd84a4e94 ""
-  "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/geometry/geometry.cfg" 1578053545 1104 7ac475a4e3466b0b43e138e9356bda83 ""
-  "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/geometry/geometry.sty" 1578053545 42759 9cf6c5257b1bc7af01a58859749dd37a ""
-  "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/graphics/keyval.sty" 1749322634 2671 d9941f4bf4750e9b0603c9a2ec54693b ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/l3backend/l3backend-pdftex.def" 1761202581 30662 bfd6e864f4ffc5018b0e2b6260c3181c ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/mathptmx.sty" 1585926771 4760 6e41de2b7a83dfa5d2c4b0a2fe01f046 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/omlztmcm.fd" 1585253778 429 12564a37a279e4e0b533cdf5e03eeb7c ""
@@ -50,10 +45,10 @@
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/ot1ptm.fd" 1585253778 1007 15056f4a61917ceed3a44e4ac11fcc52 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/ot1ztmcm.fd" 1585253778 346 aee7226812ba4138ac67a018466b488d ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/ts1ptm.fd" 1585253778 653 96f56dc5d1ef1fe1121f1cfeec70ee0c ""
-  "Projektbericht.aux" 1764426978 986 ea1ed12ff60b9f707f64769d1c72c49c "pdflatex"
-  "Projektbericht.tex" 1764426978 2707 c7b2026df56809fc58cd18dcd1bcc8cf ""
-  "Projektbericht.toc" 1764426978 559 83146a124774e01ef38e3f3b52de0893 "pdflatex"
-  "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" 1764426978 2707 c7b2026df56809fc58cd18dcd1bcc8cf ""
+  "Projektbericht.aux" 1764429131 986 ea1ed12ff60b9f707f64769d1c72c49c "pdflatex"
+  "Projektbericht.tex" 1764429129 2700 97cc71e6e4062a7bbcd7b5a33950656f ""
+  "Projektbericht.toc" 1764429131 559 83146a124774e01ef38e3f3b52de0893 "pdflatex"
+  "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" 1764429129 2700 97cc71e6e4062a7bbcd7b5a33950656f ""
   (generated)
   "Projektbericht.aux"
   "Projektbericht.log"
