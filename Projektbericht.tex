@@ -4,6 +4,16 @@
 \usepackage{mathptmx}
 \usepackage{amsmath}
 \setlength{\parskip}{0.5em}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\nouppercase{\rightmark}}
+\fancyfoot[R]{\thepage}
+
+\makeatletter
+\renewcommand{\sectionmark}[1]{\markboth{\thesection\ #1}{\thesection\ #1}}
+\renewcommand{\subsectionmark}[1]{\markright{\thesubsection\ #1}}
+\makeatother
 
 \author{Abdul-Malik Jakupi, Oğuzhan Aygün}
 \title{Projektarbeit: Optische Dünnschichtsysteme}
@@ -16,6 +26,7 @@
 \tableofcontents
 
 \break
+
 \section{Das Prinzip optischer Dünnschichtsysteme}
 
 Der Begriff optische Dünnschichtsysteme bezeichnet üblicherweise ein System an
