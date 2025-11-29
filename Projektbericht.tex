@@ -1,72 +1,65 @@
-\documentclass{article}
+\documentclass[12pt]{article}
 \usepackage[ngerman]{babel}
 \usepackage[a4paper]{geometry}
+\usepackage{mathptmx}
+\usepackage{amsmath}
+\setlength{\parskip}{0.5em}
+
 \author{Abdul-Malik Jakupi, Oğuzhan Aygün}
 \title{Projektarbeit: Optische Dünnschichtsysteme}
 \date{WiSe 2025}
 
 \begin{document}
-    \maketitle
-    \break
+\maketitle
 
+\break
 \tableofcontents
+
 \break
 \section{Das Prinzip optischer Dünnschichtsysteme}
 
+Der Begriff optische Dünnschichtsysteme bezeichnet üblicherweise ein System an
+oft nur wenigen Nanometer dünnen Schichten, dessen Zweck darin liegt, Wellen
+und ihre \textit{Interferenz} gezielt zu nutzen, um einen gewünschten
+Reflexions- und Transmissionsgrad zu erreichen. Dünnschichtsysteme sind ein
+wichtiger Bestandteil im Bereich der Optik, da sie einige Anwendungen in
+verschiedenen Fachgebieten haben, wie z.B.:
 
+\begin{itemize}
+    \item Antireflexbeschichtungen in Brillengläsern, Hochreflexschichten wie in Spiegeln
+          oder Kameraobjektiven in der Optik
+    \item Beschichtung von Geräten in der Medizintechnik
+    \item Herstellung von Prozessoren bei Mikroelektronik
+\end{itemize}
+Dafür gebraucht man sich meist an verschiedensten Materialien wie
+z.B.Titanoxid, Magnesiumfluorid oder Aluminiumoxid, von welchen alle einen
+individuellen, sich voneinander unterscheidenden, Brechungsindex besitzen.
+Diese Eigenschaft nutzen wir in allen Anwendungen als unser essentiellstes
+Werkzeug, um unser jeweiliges Ziel im gewünschten Wellenbereich zu erreichen.
 
-
-
-
-
-
-
-
-
-
-
+Im Folgenden haben wir uns mit der Simulation des bereits besprochenen
+Reflektions- und Transmissionsgrades befasst, um ein möglichst realistisches
+Programm zur Erfassung eben dieser zu entwickeln. Das Grundlegende Problem,
+dass es hier zu lösen gilt, ist die \textit{effiziente} Berechnung des
+Reflektions- und Transmissionsgrades, da es durch die Existenz mehrerer
+Schichten, zu einem sehr langen Prozess von Rekalkulationen kommt, bei der bei
+jedem Durchdringen einer der Schichten ein neuer Prozess in beide Richtungen
+gestartet wird, was die Komplexität unserer Berechnung um einiges erhöht.
 
 \break
 \section{Mathematisch-Physikalisches Modell}
 \subsection{Reflexion und Transmission}
 
-
-
-
-
-
-
 \break
 \subsection{Die Transfermatrixmethode}
-
-
-
-
-
-
-
-
-
-
-
-
 
 \break
 \section{Algorithmische Umsetzung}
 
-
-
-
-
-
 \break
 \section{Benutzeroberfläche}
 
-
-
-
 \break
 \section{Simulationsergebnisse}
-
 
 \end{document}
