@@ -42,10 +42,12 @@ Fachgebieten einige Anwendungen, z.B.:
 Dafür gebraucht man sich meist an verschiedensten Materialien wie
 z.B.Titanoxid, Magnesiumfluorid oder Aluminiumoxid, die alle einen
 individuellen, sich voneinander unterscheidenden Brechungsindex besitzen.
-Diese Eigenschaft nutzt man in allen Anwendungen als das essentielle
-Werkzeug, um das jeweilige Ziel im gewünschten Wellenbereich zu erreichen.
+Diese Eigenschaft werden in allen Anwendungen als das essentielle
+Werkzeug genutzt, um das jeweilige Ziel im gewünschten Wellenbereich zu erreichen. 
+Dies kann z.B. im Fall von Brillengläsern destruktive Interferenz sein, bei anderen
+Anwendungen, wie Spiegeln, aber auch konstruktive Interferenz.
 
-Im Folgenden haben wird die Simulation des bereits besprochenen Reflexions- und
+Im Folgenden wird die Simulation des bereits besprochenen Reflexions- und
 Transmissionsgrades beschrieben, um ein möglichst realistisches Programm zur
 Erfassung eben dieser zu entwickeln. Das Grundlegende Problem, dass es hier zu
 lösen gilt, ist die \textit{effiziente} Berechnung des Reflexions- und
@@ -64,16 +66,15 @@ Prozesses ist in Abbildung 1 dargestellt.
 \section{Mathematisch-Physikalisches Modell}
 Wie bereits erwähnt müssen genau zwei Dinge bewältigt werden, um dieses Prinzip
 in eine mathematische Form zu bringen. Die Reflexion- und Transmission muss
-ermittelt werden und um einige Rechenoperationen zu sparen, nutzen wir die
-Transfermatrixmethode.
+ermittelt werden und um einige zusätzliche Rechenoperationen zu vermeiden, muss
+die Transfermatrixmethode genutzt werden.
 \subsection{Reflexion und Transmission}
-Im allgemeinen kann man die Reflexion und Transmission von elektromagnetischen
-Wellen, an einer Grenzfläche zwischen zwei Schichten, mit den
-\textit{fresnelschen Formeln} ermitteln.
+Im allgemeinen werden die Reflexions-und Transmissionskoeffizienten von
+elektromagnetischen Wellen, an einer Grenzfläche zwischen zwei Schichten, mit
+den \textit{fresnelschen Formeln} ermittelt.
 
-Ein wichtiger Aspekt den man hier mit einbezieht ist die Polarisation.
-Abhänhgig davon ob Polarisation senkrecht oder parallel vorliegt, varrieren die
-Formeln.
+Ein wichtiger Aspekt der mit einbezogen wird ist die Polarisation. Abhänhgig
+davon ob Polarisation senkrecht oder parallel vorliegt, variieren die Formeln.
 
 Senkrechte Polarisation:
 \[r_s = \frac{n_1 \cos(\alpha) - n_2 \cos\beta}{n_1 \cos\alpha + n_2 \cos\beta}\]
