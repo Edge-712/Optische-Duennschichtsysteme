@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.11.13)  29 NOV 2025 18:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.11.13)  30 NOV 2025 15:37
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -343,15 +343,12 @@ LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 37
  (C:\Users\oaygu\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
-Overfull \hbox (2.71161pt too wide) in paragraph at lines 48--57
-[]\OT1/ptm/m/n/12 Im Fol-gen-den ha-ben wir uns mit der Si-mu-la-ti-on des be-reits be-spro-che-nen Reflexions-
- []
-
 <Grafik Reflexion.png, id=10, 1209.01688pt x 572.89032pt>
 File: Grafik Reflexion.png Graphic file (type png)
 <use Grafik Reflexion.png>
 Package pdftex.def Info: Grafik Reflexion.png  used on input line 60.
 (pdftex.def)             Requested size: 241.79909pt x 114.57603pt.
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -369,9 +366,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[4
-
-]
+[4]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -401,16 +396,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [7
 
-]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[8
-
 ] (Projektbericht.aux)
  ***********
 LaTeX2e <2025-11-01>
@@ -418,17 +403,17 @@ L3 programming layer <2025-10-24>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 4292 strings out of 467871
- 71377 string characters out of 5418375
- 493775 words of memory out of 5000000
- 33119 multiletter control sequences out of 15000+600000
- 654831 words of font info for 90 fonts, out of 8000000 for 9000
+ 4306 strings out of 467871
+ 71504 string characters out of 5418375
+ 494775 words of memory out of 5000000
+ 33121 multiletter control sequences out of 15000+600000
+ 660183 words of font info for 102 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,12n,65p,276b,379s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Projektbericht.pdf (8 pages, 95293 bytes).
+ 57i,12n,65p,276b,381s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/urw/symbol/usyr.pfb><C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Projektbericht.pdf (7 pages, 118615 bytes).
 PDF statistics:
- 48 PDF objects out of 1000 (max. 8388607)
+ 60 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

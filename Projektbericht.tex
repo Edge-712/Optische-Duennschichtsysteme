@@ -42,18 +42,18 @@ Fachgebieten einige Anwendungen, z.B.:
 Dafür gebraucht man sich meist an verschiedensten Materialien wie
 z.B.Titanoxid, Magnesiumfluorid oder Aluminiumoxid, die alle einen
 individuellen, sich voneinander unterscheidenden Brechungsindex besitzen.
-Diese Eigenschaft nutzen wir in allen Anwendungen als unser essentielles
-Werkzeug, um unser jeweiliges Ziel im gewünschten Wellenbereich zu erreichen.
+Diese Eigenschaft nutzt man in allen Anwendungen als das essentielle
+Werkzeug, um das jeweilige Ziel im gewünschten Wellenbereich zu erreichen.
 
-Im Folgenden haben wir uns mit der Simulation des bereits besprochenen
-Reflexions- und Transmissionsgrades befasst, um ein möglichst realistisches
-Programm zur Erfassung eben dieser zu entwickeln. Das Grundlegende Problem,
-dass es hier zu lösen gilt, ist die \textit{effiziente} Berechnung des
-Reflexions- und Transmissionsgrades, da es durch die Existenz mehrerer
-Schichten, zu einem langen Prozess von Rekalkulationen kommt, bei der bei jedem
-Durchdringen einer der Schichten ein neuer Prozess in beide Richtungen
-gestartet wird, was die Komplexität unserer Berechnung um einiges erhöht. Eine
-Visualisierung dieses Prozesses ist in Abbildung 1 dargestellt.
+Im Folgenden haben wird die Simulation des bereits besprochenen Reflexions- und
+Transmissionsgrades beschrieben, um ein möglichst realistisches Programm zur
+Erfassung eben dieser zu entwickeln. Das Grundlegende Problem, dass es hier zu
+lösen gilt, ist die \textit{effiziente} Berechnung des Reflexions- und
+Transmissionsgrades, da es durch die Existenz mehrerer Schichten, zu einem
+langen Prozess von Rekalkulationen kommt, bei der bei jedem Durchdringen einer
+der Schichten ein neuer Prozess in beide Richtungen gestartet wird, was die
+Komplexität dieser Berechnung um einiges erhöht. Eine Visualisierung dieses
+Prozesses ist in Abbildung 1 dargestellt.
 
 \begin{figure}[b]
     \centering
@@ -61,11 +61,26 @@ Visualisierung dieses Prozesses ist in Abbildung 1 dargestellt.
     \caption{Darstellung der Reflexion und Transmission im Mehrschichtsystem}
     \label{fig:reflexion}
 \end{figure}
-
-\clearpage
 \section{Mathematisch-Physikalisches Modell}
+Wie bereits erwähnt müssen genau zwei Dinge bewältigt werden, um dieses Prinzip
+in eine mathematische Form zu bringen. Die Reflexion- und Transmission muss
+ermittelt werden und um einige Rechenoperationen zu sparen, nutzen wir die
+Transfermatrixmethode.
 \subsection{Reflexion und Transmission}
-\clearpage
+Im allgemeinen kann man die Reflexion und Transmission von elektromagnetischen
+Wellen, an einer Grenzfläche zwischen zwei Schichten, mit den
+\textit{fresnelschen Formeln} ermitteln.
+
+Ein wichtiger Aspekt den man hier mit einbezieht ist die Polarisation.
+Abhänhgig davon ob Polarisation senkrecht oder parallel vorliegt, varrieren die
+Formeln.
+
+Senkrechte Polarisation:
+\[r_s = \frac{n_1 \cos(\alpha) - n_2 \cos\beta}{n_1 \cos\alpha + n_2 \cos\beta}\]
+
+Parallele Polarisation:
+\[r_p = \frac{n_2 \cos(\alpha) - n_1 \cos\beta}{n_2 \cos\alpha + n_1 \cos\beta}\]
+
 \subsection{Die Transfermatrixmethode}
 \clearpage
 \section{Algorithmische Umsetzung}
