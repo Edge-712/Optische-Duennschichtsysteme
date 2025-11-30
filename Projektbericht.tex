@@ -1,6 +1,6 @@
-\documentclass[12pt]{article}
+\documentclass[12pt, oneside, final]{article}
 \usepackage[ngerman]{babel}
-\usepackage[a4paper]{geometry}
+\usepackage[a4paper, left=35mm,top=26mm,right=26mm,bottom=15mm]{geometry}
 \usepackage{mathptmx}
 \usepackage{amsmath}
 \usepackage{graphicx}
@@ -43,19 +43,25 @@ Dafür gebraucht man sich meist an verschiedensten Materialien wie
 z.B.Titanoxid, Magnesiumfluorid oder Aluminiumoxid, die alle einen
 individuellen, sich voneinander unterscheidenden Brechungsindex besitzen.
 Diese Eigenschaft werden in allen Anwendungen als das essentielle
-Werkzeug genutzt, um das jeweilige Ziel im gewünschten Wellenbereich zu erreichen. 
+Werkzeug genutzt, um das jeweilige Ziel im gewünschten Wellenbereich zu erreichen.
 Dies kann z.B. im Fall von Brillengläsern destruktive Interferenz sein, bei anderen
 Anwendungen, wie Spiegeln, aber auch konstruktive Interferenz.
 
-Im Folgenden wird die Simulation des bereits besprochenen Reflexions- und
+Im Folgenden wird die Berechnung des bereits besprochenen Reflexions- und
 Transmissionsgrades beschrieben, um ein möglichst realistisches Programm zur
-Erfassung eben dieser zu entwickeln. Das Grundlegende Problem, dass es hier zu
-lösen gilt, ist die \textit{effiziente} Berechnung des Reflexions- und
-Transmissionsgrades, da es durch die Existenz mehrerer Schichten, zu einem
-langen Prozess von Rekalkulationen kommt, bei der bei jedem Durchdringen einer
-der Schichten ein neuer Prozess in beide Richtungen gestartet wird, was die
-Komplexität dieser Berechnung um einiges erhöht. Eine Visualisierung dieses
-Prozesses ist in Abbildung 1 dargestellt.
+Erfassung eben dieser zu entwickeln. Sie wird in Abhägigkeit der vorliegenden
+Brechungsindize, dicke der Schichten und dem Einfallswinkel berechnet.
+
+Das Grundlegende Problem, dass es hier zu lösen gilt, ist die
+\textit{effiziente} Berechnung des Reflexions- und Transmissionsgrades, da es
+durch die Existenz mehrerer Schichten, zu einem langen Prozess von
+Rekalkulationen kommt, bei der bei jedem Durchdringen einer der Schichten ein
+neuer Prozess in beide Richtungen gestartet wird, was die Komplexität dieser
+Berechnung um einiges erhöht. Eine Visualisierung des Prozesses in einem
+Mehrschichtsystem ist in Abbildung 1 dargestellt. Genutzt wird dafür die
+Transfermatrixmethode, welche anhand der Polarisation, des Einfallswinkels und
+den Reflexions- und Transmissionskoeffizienten, an jeder Grenzfläche, ein
+endgültiges Resultat zum Reflexionspektrum liefert.
 
 \begin{figure}[b]
     \centering
@@ -63,31 +69,52 @@ Prozesses ist in Abbildung 1 dargestellt.
     \caption{Darstellung der Reflexion und Transmission im Mehrschichtsystem}
     \label{fig:reflexion}
 \end{figure}
+
 \section{Mathematisch-Physikalisches Modell}
 Wie bereits erwähnt müssen genau zwei Dinge bewältigt werden, um dieses Prinzip
 in eine mathematische Form zu bringen. Die Reflexion- und Transmission muss
 ermittelt werden und um einige zusätzliche Rechenoperationen zu vermeiden, muss
 die Transfermatrixmethode genutzt werden.
 \subsection{Reflexion und Transmission}
-Im allgemeinen werden die Reflexions-und Transmissionskoeffizienten von
+Im Allgemeinen werden die Reflexions-und Transmissionskoeffizienten von
 elektromagnetischen Wellen, an einer Grenzfläche zwischen zwei Schichten, mit
-den \textit{fresnelschen Formeln} ermittelt.
-
-Ein wichtiger Aspekt der mit einbezogen wird ist die Polarisation. Abhänhgig
-davon ob Polarisation senkrecht oder parallel vorliegt, variieren die Formeln.
+den \textit{fresnelschen Formeln} ermittelt. Dabei ist $n$ der (komplexe)
+Brechungsindex der jeweiligen Schicht. Ihr reeler Teil ist verantwortlich für
+die Darstellung der Brechung des Lichts an der Grenzfläche, während ihr
+imaginärer Teil die Absorption des Lichts beschreibt. Sie kann durch den Term
+\[e^{i\frac{(n + i\kappa)\omega}{c}z}\]
+formuliert werden, aber um einen Term zu erhalten, der jeweils den reelen- und
+den komplexen Brechungsindex beschreibt, wird wie folgt umgestellt:
+\[e^{i\frac{n \omega}{c}z} \cdot e^{-\frac{\kappa\omega}{c}z}.\]
+Dabei handelt es sich um die Phasenverschiebung
+\[e^{-\frac{\kappa\omega}{c}z}\]
+und die Absorption
+\[e^{i\frac{n \omega}{c}z}.\]
+Das $\alpha$ ist der Einfallswinkel in die Grenzfläche und $\beta$ der
+Brechungswinkel zwischen den beiden Schichten. Der Brechungswinkel lässt sich
+durch das Snelliussche Brechungsgesetz definieren:
+\[n_1 \sin\alpha = n_2 \sin\beta\]
+Wird nun schlicht nach $\beta$ aufgelöst entsteht folgende Definition:
+\[\beta = \arcsin(\frac{n_1}{n_2}\sin\alpha)\]
+Der letzte wichtige Aspekt der mit einbezogen wird ist die Polarisation.
+Abhängig davon ob das Licht senkrecht oder parallel zur Einfallsebene schwingt,
+variieren die Formeln.
 
 Senkrechte Polarisation:
-\[r_s = \frac{n_1 \cos(\alpha) - n_2 \cos\beta}{n_1 \cos\alpha + n_2 \cos\beta}\]
+\[r_s = \frac{n_1 \cos\alpha - n_2 \cos\beta}{n_1 \cos\alpha + n_2 \cos\beta}\]
+\[t_s = \frac{2n_1 \cos\alpha}{n_1 \cos\alpha + n_2 \cos\beta}\]
 
 Parallele Polarisation:
-\[r_p = \frac{n_2 \cos(\alpha) - n_1 \cos\beta}{n_2 \cos\alpha + n_1 \cos\beta}\]
-
+\[r_p = \frac{n_2 \cos\alpha - n_1 \cos\beta}{n_2 \cos\alpha + n_1 \cos\beta}\]
+\[t_p = \frac{2n_1 \cos\alpha}{n_2 \cos\alpha + n_1 \cos\beta}\]
+Dieser Prozess liefert nun die Koeffizienten an der Grenzfläche zwischen zwei
+Schichten und muss für jede Schicht, bzw. Grenzüberschreitung in die nächste
+Schicht erfolgen. Die Resultate werden während der Transfermatrixmethode
+verwertet.
 \subsection{Die Transfermatrixmethode}
-\clearpage
+
 \section{Algorithmische Umsetzung}
-\clearpage
 \section{Benutzeroberfläche}
-\clearpage
 \section{Simulationsergebnisse}
 
 \end{document}

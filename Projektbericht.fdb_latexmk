@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1764514635.02886 "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" "Projektbericht.pdf" "Projektbericht" 1764514635.56869 0
+["pdflatex"] 1764524756.74594 "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" "Projektbericht.pdf" "Projektbericht" 1764524757.4083 0
   "C:/Users/oaygu/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1764512251 82873 a91d9f63007862f29e716a534e85bce5 ""
   "C:/Users/oaygu/AppData/Local/MiKTeX/fonts/tfm/public/rsfs/rsfs10.tfm" 1764513171 688 37338d6ab346c2f1466b29e195316aa4 ""
   "C:/Users/oaygu/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1763041832 13333512 401dd78c9023be05c1b32edec95bfcde ""
@@ -21,6 +21,7 @@
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmr10.tfm" 1136765053 1296 45809c5a464d5f32c8f98ba97c1bb47f ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmr12.tfm" 1136765053 1288 655e228510b4c2a1abe905c368440826 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmsy10.tfm" 1136765053 1124 6c73e740cf17375f03eec0ee63599741 ""
+  "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1247596667 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1247596667 35752 024fb6c41858982481f6968b5fc26508 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1247596667 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/urw/symbol/usyr.pfb" 1136849748 33709 b09d2e140b7e807d3a97058263ab6693 ""
@@ -71,10 +72,10 @@
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/ot1ztmcm.fd" 1585253778 346 aee7226812ba4138ac67a018466b488d ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/ts1ptm.fd" 1585253778 653 96f56dc5d1ef1fe1121f1cfeec70ee0c ""
   "Grafik Reflexion.png" 1764507264 26968 fdc18c112ac1a28e55f141cd3f8f7260 ""
-  "Projektbericht.aux" 1764514635 1199 eef3e704308ae41686f9d39864a74a4f "pdflatex"
-  "Projektbericht.tex" 1764514634 3984 383a921e9e5523dd103173e3340f857f ""
-  "Projektbericht.toc" 1764514635 559 fbfd8df38ebc0af40558bfe38ef5c3e1 "pdflatex"
-  "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" 1764514634 3984 383a921e9e5523dd103173e3340f857f ""
+  "Projektbericht.aux" 1764524757 1199 ead5870bde9386a22ff956e440af5044 "pdflatex"
+  "Projektbericht.tex" 1764524757 5794 d13dd1774c169f01b0c711be7e3d7203 ""
+  "Projektbericht.toc" 1764524757 559 32b727253a5b8cc62d2376e69731d4a1 "pdflatex"
+  "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" 1764524757 5794 d13dd1774c169f01b0c711be7e3d7203 ""
   (generated)
   "Projektbericht.aux"
   "Projektbericht.log"
