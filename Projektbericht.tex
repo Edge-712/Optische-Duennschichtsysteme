@@ -82,14 +82,14 @@ den \textit{fresnelschen Formeln} ermittelt. Dabei ist $n$ der (komplexe)
 Brechungsindex der jeweiligen Schicht. Ihr reeler Teil ist verantwortlich für
 die Darstellung der Brechung des Lichts an der Grenzfläche, während ihr
 imaginärer Teil die Absorption des Lichts beschreibt. Sie kann durch den Term
-\[e^{i\frac{(n + i\kappa)\omega}{c}z}\]
+\[e^{i\frac{(n + i\kappa)\varphi}{c}z}\]
 formuliert werden, aber um einen Term zu erhalten, der jeweils den reelen- und
 den komplexen Brechungsindex beschreibt, wird wie folgt umgestellt:
-\[e^{i\frac{n \omega}{c}z} \cdot e^{-\frac{\kappa\omega}{c}z}.\]
+\[e^{i\frac{n \varphi}{c}z} \cdot e^{-\frac{\kappa\varphi}{c}z}.\]
 Dabei handelt es sich um die Absorption
-\[e^{-\frac{\kappa\omega}{c}z}\]
+\[e^{-\frac{\kappa\varphi}{c}z}\]
 und die Phasenverschiebung
-\[e^{i\frac{n \omega}{c}z}.\]
+\[e^{i\frac{n \varphi}{c}z}.\]
 Das $\alpha$ ist der Einfallswinkel in die Grenzfläche und $\beta$ der
 Brechungswinkel zwischen den beiden Schichten. Der Brechungswinkel lässt sich
 durch das Snelliussche Brechungsgesetz definieren:
@@ -101,18 +101,48 @@ Abhängig davon ob das Licht senkrecht oder parallel zur Einfallsebene schwingt,
 variieren die Formeln.
 
 Senkrechte Polarisation:
-\[r_s = \frac{n_1 \cos\alpha - n_2 \cos\beta}{n_1 \cos\alpha + n_2 \cos\beta}\]
-\[t_s = \frac{2n_1 \cos\alpha}{n_1 \cos\alpha + n_2 \cos\beta}\]
+\[r_s = \frac{n_1 \cos\alpha - n_2 \cos\beta}{n_1 \cos\alpha + n_2 \cos\beta}, \quad t_s = \frac{2n_1 \cos\alpha}{n_1 \cos\alpha + n_2 \cos\beta}\]
 
 Parallele Polarisation:
-\[r_p = \frac{n_2 \cos\alpha - n_1 \cos\beta}{n_2 \cos\alpha + n_1 \cos\beta}\]
-\[t_p = \frac{2n_1 \cos\alpha}{n_2 \cos\alpha + n_1 \cos\beta}\]
+\[r_p = \frac{n_2 \cos\alpha - n_1 \cos\beta}{n_2 \cos\alpha + n_1 \cos\beta}, \quad t_p = \frac{2n_1 \cos\alpha}{n_2 \cos\alpha + n_1 \cos\beta}\]
+\[\]
 Dieser Prozess liefert nun die Koeffizienten an der Grenzfläche zwischen zwei
 Schichten und muss für jede Schicht, bzw. Grenzüberschreitung in die nächste
-Schicht erfolgen. Die Resultate werden während der Transfermatrixmethode
-verwertet.
+Schicht erfolgen. Die Resultate werden in der Transfermatrixmethode verwertet.
 \subsection{Die Transfermatrixmethode}
+Es handelt sich bei der Transfermatrixmethode um eine elegante mathematische
+Lösung für das Problem der unendlichen Teilwellen. Anstatt schlicht den Verlauf
+des Lichtstrahls zu verfolgen, wird das gesamte Mehrschichtsystem betrachtet.
+Die Grundlage hierfür sind die fresnelschen Formeln, da sie das Verhältnis der
+Amplituden auf der linken und rechten Seite der Grenzfläche beschreiben. Das
+resultierende Gleichungssystem kann auch in Matrixschreibweise geschrieben
+werden, sodass klar wird, dass durch Matrixmultiplikation in den wie folgt
+definierten Matrizen, der Reflexionsgrad berechnet werden kann.
 
+Es werden jeweils zwei Arten von Matrizen gebildet, dabei bestimmt die Matrix D
+die Reflexion und Transmission an der Grenzfläche, während die Matrix P die
+Phasenverschiebung innerhalb einer Schicht beschreibt. Die Matrix D besitzt die
+Form
+\[D = \frac{1}{t}\begin{pmatrix}
+        1 & r \\
+        r & 1
+    \end{pmatrix},\]
+wobei $r$ dem berechneten Reflexions- und $t$ dem Transmissionskoeffizienten
+aus den fresnelschen Formeln entsprechen. Die Matrix P hat die Form
+\[P = \begin{pmatrix}
+        e^{-i \varphi} & 0             \\
+        0              & e^{i \varphi}
+    \end{pmatrix}\]
+mit
+\[\varphi = \frac{2 \pi n d \cos(\beta)}{\lambda},\]
+wobei d die Dicke, n der Brechungsindex und $\beta$ der Brechungswinkel der
+Schicht sind. Die Transfermatrix selbst ergibt sich nun aus der Multiplikation
+der enstandenen Matrizen
+\[M = D_0 \cdot P_0 \cdot D_{1} \cdot P_{1} \dots D_{n-1} \cdot P_n \cdot D_n\]
+und wird anschließend genutzt um den Reflexionsgrad R, nach der Definition der
+Intensität einer elektromagnetischen Welle,
+\[R = \left| \frac{M_{21}}{M_{11}} \right|^2\]
+zu bestimmen.
 \section{Algorithmische Umsetzung}
 \section{Benutzeroberfläche}
 \section{Simulationsergebnisse}

@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1764525765.48125 "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" "Projektbericht.pdf" "Projektbericht" 1764525766.07768 0
+["pdflatex"] 1764535400.86687 "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" "Projektbericht.pdf" "Projektbericht" 1764535401.44415 0
   "C:/Users/oaygu/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1764512251 82873 a91d9f63007862f29e716a534e85bce5 ""
   "C:/Users/oaygu/AppData/Local/MiKTeX/fonts/tfm/public/rsfs/rsfs10.tfm" 1764513171 688 37338d6ab346c2f1466b29e195316aa4 ""
   "C:/Users/oaygu/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1763041832 13333512 401dd78c9023be05c1b32edec95bfcde ""
@@ -17,10 +17,12 @@
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/tfm/adobe/times/zptmcm7t.tfm" 1136768654 2172 1d00c2a0d10f23031be62329457a870c ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/tfm/adobe/times/zptmcm7v.tfm" 1136768654 1032 20febbd0f0c9a48eb78616f897008286 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/tfm/adobe/times/zptmcm7y.tfm" 1136768654 1520 ad7b3c1a480a03b3e41b5fbb13d938f2 ""
+  "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmex10.tfm" 1136765053 992 662f679a0b3d2d53c1b94050fdaa3f50 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmmi10.tfm" 1136765053 1528 abec98dbc43e172678c11b3b9031252a ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmr10.tfm" 1136765053 1296 45809c5a464d5f32c8f98ba97c1bb47f ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmr12.tfm" 1136765053 1288 655e228510b4c2a1abe905c368440826 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmsy10.tfm" 1136765053 1124 6c73e740cf17375f03eec0ee63599741 ""
+  "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb" 1247596667 30251 6afa5cb1d0204815a708a080681d4674 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1247596667 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1247596667 35752 024fb6c41858982481f6968b5fc26508 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1247596667 32569 5e5ddc8df908dea60932f3c484a54c0d ""
@@ -34,6 +36,7 @@
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/vf/adobe/times/ptmri7t.vf" 1136768654 1384 a9d8adaf491ce34e5fba99dc7bbe5f39 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/vf/adobe/times/zptmcm7m.vf" 1136768654 1132 27520247d3fe18d4266a226b461885c2 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/vf/adobe/times/zptmcm7t.vf" 1136768654 1108 d271d6f9de4122c3f8d3b65666167fac ""
+  "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/vf/adobe/times/zptmcm7v.vf" 1136768654 1012 046369ac6a83af997c3aa05a43256ad5 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/vf/adobe/times/zptmcm7y.vf" 1136768654 964 5673178ff30617b900214de28ab32b38 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/context/base/mkii/supp-pdf.mkii" 1580390158 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/generic/babel/babel.sty" 1761147669 145885 784cdd1ebbc3dbacabd5ee30707617a3 ""
@@ -72,10 +75,10 @@
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/ot1ztmcm.fd" 1585253778 346 aee7226812ba4138ac67a018466b488d ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/ts1ptm.fd" 1585253778 653 96f56dc5d1ef1fe1121f1cfeec70ee0c ""
   "Grafik Reflexion.png" 1764507264 26968 fdc18c112ac1a28e55f141cd3f8f7260 ""
-  "Projektbericht.aux" 1764525765 1199 ead5870bde9386a22ff956e440af5044 "pdflatex"
-  "Projektbericht.tex" 1764525764 5740 87d772dd06c07f20039a0a52e09f0f11 ""
-  "Projektbericht.toc" 1764525765 559 32b727253a5b8cc62d2376e69731d4a1 "pdflatex"
-  "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" 1764525764 5740 87d772dd06c07f20039a0a52e09f0f11 ""
+  "Projektbericht.aux" 1764535401 1199 ead5870bde9386a22ff956e440af5044 "pdflatex"
+  "Projektbericht.tex" 1764535400 7489 fe89f2dccb269340c8365d7c327e89c7 ""
+  "Projektbericht.toc" 1764535401 559 32b727253a5b8cc62d2376e69731d4a1 "pdflatex"
+  "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" 1764535400 7489 fe89f2dccb269340c8365d7c327e89c7 ""
   (generated)
   "Projektbericht.aux"
   "Projektbericht.log"
