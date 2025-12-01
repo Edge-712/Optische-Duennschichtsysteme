@@ -150,13 +150,13 @@ INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\tex\latex\psnfss\ts1ptm.fd
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\tex\latex\psnfss\ts1ptm.fd
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\tex\latex\psnfss\ts1ptm.fd
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmr8c.tfm
-INPUT .\Grafik Reflexion.png
-INPUT .\Grafik Reflexion.png
-INPUT .\Grafik Reflexion.png
-INPUT .\Grafik Reflexion.png
-INPUT .\Grafik Reflexion.png
-INPUT .\Grafik Reflexion.png
-INPUT .\Grafik Reflexion.png
+INPUT .\assets\Grafik Reflexion.png
+INPUT .\assets\Grafik Reflexion.png
+INPUT .\assets\Grafik Reflexion.png
+INPUT .\assets\Grafik Reflexion.png
+INPUT .\assets\Grafik Reflexion.png
+INPUT .\assets\Grafik Reflexion.png
+INPUT .\assets\Grafik Reflexion.png
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmri7t.vf
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmri8r.tfm
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmr8c.vf
@@ -195,6 +195,13 @@ INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\zptmcm7v
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmex10.tfm
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmex10.tfm
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\symbol\psyr.tfm
+INPUT .\assets\GUI.png
+INPUT .\assets\GUI.png
+INPUT .\assets\GUI.png
+INPUT .\assets\GUI.png
+INPUT .\assets\GUI.png
+INPUT .\assets\GUI.png
+INPUT .\assets\GUI.png
 INPUT Projektbericht.aux
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmex10.pfb
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmex10.pfb
@@ -206,6 +213,8 @@ INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\c
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy10.pfb
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmtt12.pfb
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmtt12.pfb
+INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\type1\urw\symbol\usyr.pfb
+INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\type1\urw\symbol\usyr.pfb
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\type1\urw\symbol\usyr.pfb
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\type1\urw\symbol\usyr.pfb
 INPUT C:\Users\oaygu\AppData\Local\Programs\MiKTeX\fonts\type1\urw\times\utmb8a.pfb

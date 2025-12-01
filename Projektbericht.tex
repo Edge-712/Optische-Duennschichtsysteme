@@ -65,9 +65,9 @@ Reflexionspektrum als Resultat liefert.
 
 \begin{figure}[b]
     \centering
-    \includegraphics[scale=0.2]{Grafik Reflexion.png}
+    \includegraphics[scale=0.2]{./assets/Grafik Reflexion.png}
     \caption{Darstellung der Reflexion und Transmission im Mehrschichtsystem}
-    \label{fig:reflexion}
+    \label{fig:Reflexion}
 \end{figure}
 
 \section{Mathematisch-Physikalisches Modell}
@@ -164,8 +164,83 @@ Installation mit
 ausgeführt.
 
 Nun sollte eine GUI zu sehen sein, welche aus einer Tabelle, einem Graphen und
-einzelnen zu bestimmenden Parametern unter beiden Flächen besteht.
+einzelnen zu bestimmenden Parametern unter beiden Flächen besteht. Dies ist
+zusätzlich in Abbildung 2 zusehen.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=0.4]{./assets/GUI.png}
+    \caption{Screenshot der Benutzeroberfläche beim Start}
+    \label{fig:GUI}
+\end{figure}
+
+Es stehen in der Tabelle bereits 2 Zeilen vorangefertigt zur verfügung. Sie
+stellen in unserer Simulation das Einfallsmedium und Substrat da und können
+entsprechend nicht entfernt werden. Am Einfallsmedium befindet sich in der
+letzten Spalte ein Button, welcher eine weitere Zeile, bzw. Schicht, direkt
+nach ihr selbst generiert und einfügt. Alle Zeilen, die eine Schicht
+repräsentieren, welche weder das Einfallsmedium, noch das Substrat sind,
+besitzen zwei Buttons in ihrer letzten Spalte. Das Pluszeichen hat die selbe
+Funktion, wie beim Einfallsmedium, während das Minuszeichen die Schicht, in der
+sie beeinhaltet ist, aus der Simulation löscht.
+
+In der ersten Spalte unter \texttt{Material} ist ein Dropdown-Menü mit der
+Aufschrifft Presets zu sehen. Benutzer können hier eine Auswahl von 5
+vorgefertigten Schichten wählen, welche bereits alle Parameter belegt haben. Es
+steht dem Nutzer natürlich offen, die Parameter dennoch wie gewünscht in der
+Tabelle abzuändern. Alternativ besteht auch die möglichkeit im selben Menü
+\texttt{Beliebig} auszuwählen, was eine Zeile ohne Vorangaben generiert. In
+Tabelle 1 sind alle Parameter aufgelistet, zusammen mit einer jeweiligen
+Beschreibung.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Beschreibung der Eingabeparameter im Programm}
+    \label{tab:Parameter}
+    \begin{tabular}{|l|p{9cm}|}
+        \hline
+        Parameter           & Beschreibung                                                     \\
+        \hline
+        Dicke               & Dicke der entsprechenden Schicht in Nanometern                   \\
+        \hline
+        n-Real              & Reeler Teil des (komplexen) Brechungsindex der
+        entsprechenden Schicht                                                                 \\
+        \hline
+        n-imaginärer        & Imaginärer Teil des (komplexen) Brechungsindex
+        der entsprechenden Schicht                                                             \\
+        \hline
+        Wellenlängenbereich & Gewünschter Wellenlängenbereich, der im Graphen
+        geplottet werden soll. Kann angegeben in der Form: \texttt{1.Bereich-1.Bereich(,
+        2.Bereich-2.Bereich, \dots)}                                                           \\
+        \hline
+        Einfallswinkel      & Einfallswinkel in Gradmaß im Intervall $0-79^\circ$              \\
+        \hline
+        Polarisation        & Art der Polarisation mit Auswahl zwischen senkrecht und parallel \\
+        \hline
+    \end{tabular}
+\end{table}
 
 \section{Simulationsergebnisse}
+
+Die erste zu simulierende Schicht ist in Tabella 2 zu sehen, aufgeteilt in die
+jeweilen Materialien und ihre individuellen Dicken.
+
+\begin{table}[h]
+    \centering
+    \caption{Zu simulierendes Schichtsystem}
+    \label{tab:Angabe1}
+    \begin{tabular}{|l |c|}
+        \hline
+        Material    & Dicke    \\
+        \hline
+        Luft        & $\infty$ \\
+        \hline
+        MgF$_2$     & 102      \\
+        TiO$_2$     & 105      \\
+        AL$_2$O$_3$ & 79       \\
+        \hline
+        Glas        & $\infty$ \\
+        \hline
+    \end{tabular}
+\end{table}
 
 \end{document}
