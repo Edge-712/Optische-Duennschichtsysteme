@@ -106,6 +106,7 @@ Senkrechte Polarisation:
 Parallele Polarisation:
 \[r_p = \frac{n_2 \cos\alpha - n_1 \cos\beta}{n_2 \cos\alpha + n_1 \cos\beta}, \quad t_p = \frac{2n_1 \cos\alpha}{n_2 \cos\alpha + n_1 \cos\beta}\]
 \[\]
+
 Dieser Prozess liefert nun die Koeffizienten an der Grenzfläche zwischen zwei
 Schichten und muss für jede Schicht, bzw. Grenzüberschreitung in die nächste
 Schicht erfolgen. Die Resultate werden in der Transfermatrixmethode verwertet.
@@ -145,6 +146,26 @@ Intensität einer elektromagnetischen Welle,
 zu bestimmen.
 \section{Algorithmische Umsetzung}
 \section{Benutzeroberfläche}
+Hier wird die grafische Nutzeroberfläche der Software präsentiert, zusammen mit
+einzelnen Funktionen, denen es eine Erläuterung bedarft.
+
+Zu aller erst müssen die Abhägigkeiten installiert werden. Da die Software auf
+Python basiert, kann dies am einfachsten über das Paketverwaltungsprogramm pip
+getätigt werden. In der Repository ist eine \texttt{requirements.txt} dafür zu
+finden, welche über pip mit dem Befehl
+\begin{center}
+    \texttt{pip install -r requirements.txt}
+\end{center}
+zu installieren sind. Anschließend wird das Programm nach erfolgreicher
+Installation mit
+\begin{center}
+    \texttt{Python GUI.py}
+\end{center}
+ausgeführt.
+
+Nun sollte eine GUI zu sehen sein, welche aus einer Tabelle, einem Graphen und
+einzelnen zu bestimmenden Parametern unter beiden Flächen besteht.
+
 \section{Simulationsergebnisse}
 
 \end{document}
