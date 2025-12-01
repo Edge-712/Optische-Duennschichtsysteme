@@ -151,6 +151,8 @@ class MainWindow(QMainWindow):
                 for pairs in wavelengths
             ]
             label = [i.name for i in new_material_list]
+            label.append(angle.text() + "\u00b0")
+            label.append(polarization.currentText())
             for wavelength_list in wavelength_lists:
                 reflect_list = reflectance(
                     new_material_list,
