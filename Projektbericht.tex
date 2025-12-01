@@ -221,26 +221,44 @@ Beschreibung.
 
 \section{Simulationsergebnisse}
 
-Die erste zu simulierende Schicht ist in Tabella 2 zu sehen, aufgeteilt in die
-jeweilen Materialien und ihre individuellen Dicken.
-
+Die erste zu simulierende Schicht ist in Tabelle 2 zu sehen. Sie ist aufgeteilt
+in die jeweilen Materialien und ihre individuellen Dicken.
 \begin{table}[h]
     \centering
     \caption{Zu simulierendes Schichtsystem}
     \label{tab:Angabe1}
     \begin{tabular}{|l |c|}
         \hline
-        Material    & Dicke    \\
+        Material    & Dicke in nm \\
         \hline
-        Luft        & $\infty$ \\
+        Luft        & $\infty$    \\
         \hline
-        MgF$_2$     & 102      \\
-        TiO$_2$     & 105      \\
-        AL$_2$O$_3$ & 79       \\
+        MgF$_2$     & 102         \\
+        TiO$_2$     & 105         \\
+        AL$_2$O$_3$ & 79          \\
         \hline
-        Glas        & $\infty$ \\
+        Glas        & $\infty$    \\
         \hline
     \end{tabular}
 \end{table}
+
+Für die übrigen Parameter wird von einem Wellenlängenbereich von 400nm bis
+700nm ausgegangen. Dieser Bereich wird in vierer Schritten von 0$^\circ$ bis
+75$^\circ$ geplottet, wobei dieser Prozess zwei mal wiederholt wird, um die
+beiden Graphen in Abbildung 3 und Abbildung 4 zu generieren, die senkrecht und
+parallel polarisieren.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=0.3]{./assets/Ergebnisse Parallel.png}
+    \caption{Simulationsergebnisse für paralelle Polarisation}
+    \label{fig:Ergebnis Parallel}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=0.3]{./assets/Ergebnisse Senkrecht.png}
+    \caption{Simulationsergebnisse für senkrechte Polarisation}
+    \label{fig:Ergebnis Senkrecht}
+\end{figure}
 
 \end{document}

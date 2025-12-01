@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1764599717.44955 "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" "Projektbericht.pdf" "Projektbericht" 1764599718.06765 0
+["pdflatex"] 1764604202.98648 "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" "Projektbericht.pdf" "Projektbericht" 1764604204.08555 0
   "C:/Users/oaygu/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1764512251 82873 a91d9f63007862f29e716a534e85bce5 ""
   "C:/Users/oaygu/AppData/Local/MiKTeX/fonts/tfm/public/rsfs/rsfs10.tfm" 1764513171 688 37338d6ab346c2f1466b29e195316aa4 ""
   "C:/Users/oaygu/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1763041832 13333512 401dd78c9023be05c1b32edec95bfcde ""
@@ -76,12 +76,14 @@
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/ot1ptm.fd" 1585253778 1007 15056f4a61917ceed3a44e4ac11fcc52 ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/ot1ztmcm.fd" 1585253778 346 aee7226812ba4138ac67a018466b488d ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/ts1ptm.fd" 1585253778 653 96f56dc5d1ef1fe1121f1cfeec70ee0c ""
-  "Projektbericht.aux" 1764599717 1757 9c9d36149e3f01568a3f80c736ccbf26 "pdflatex"
-  "Projektbericht.tex" 1764599716 11717 17882a99a6d9a3383b6321a464e06934 ""
-  "Projektbericht.toc" 1764599717 559 3f0882648a33d16ceeb07db072d49c97 "pdflatex"
-  "assets/GUI.png" 1764594165 36616 ff8e2958875301bde30cac876b89f165 ""
-  "assets/Grafik Reflexion.png" 1764593774 26968 fdc18c112ac1a28e55f141cd3f8f7260 ""
-  "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" 1764599716 11717 17882a99a6d9a3383b6321a464e06934 ""
+  "Projektbericht.aux" 1764604203 2173 3b4de4da2dd0386b10a8ff75b6fec989 "pdflatex"
+  "Projektbericht.tex" 1764604202 12524 405e246ae154a9457db8dc3177ac2b83 ""
+  "Projektbericht.toc" 1764604203 559 3f0882648a33d16ceeb07db072d49c97 "pdflatex"
+  "assets/Ergebnisse Parallel.png" 1764602088 213583 d0acfdb6c56d524913471d5e79f3eb70 ""
+  "assets/Ergebnisse Senkrecht.png" 1764602167 196513 582fd25435d47f1789912cce96f62686 ""
+  "assets/GUI.png" 1764602319 36616 ff8e2958875301bde30cac876b89f165 ""
+  "assets/Grafik Reflexion.png" 1764602319 26968 fdc18c112ac1a28e55f141cd3f8f7260 ""
+  "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" 1764604202 12524 405e246ae154a9457db8dc3177ac2b83 ""
   (generated)
   "Projektbericht.aux"
   "Projektbericht.log"

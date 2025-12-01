@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.11.13)  1 DEC 2025 15:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.11.13)  1 DEC 2025 16:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -407,6 +407,20 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [6 <./assets/GUI.png>]
+Overfull \hbox (3.73987pt too wide) in paragraph at lines 245--250
+[]\OT1/ptm/m/n/12 F[]ur die []ubrigen Pa-ra-me-ter wird von ei-nem Wel-lenl[]angenbereich von 400nm bis 700nm
+ []
+
+<./assets/Ergebnisse Parallel.png, id=34, 1222.0857pt x 922.1652pt>
+File: ./assets/Ergebnisse Parallel.png Graphic file (type png)
+<use ./assets/Ergebnisse Parallel.png>
+Package pdftex.def Info: ./assets/Ergebnisse Parallel.png  used on input line 253.
+(pdftex.def)             Requested size: 366.62854pt x 276.6517pt.
+<./assets/Ergebnisse Senkrecht.png, id=35, 1222.0857pt x 922.1652pt>
+File: ./assets/Ergebnisse Senkrecht.png Graphic file (type png)
+<use ./assets/Ergebnisse Senkrecht.png>
+Package pdftex.def Info: ./assets/Ergebnisse Senkrecht.png  used on input line 259.
+(pdftex.def)             Requested size: 366.62854pt x 276.6517pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -414,24 +428,32 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[7] (Projektbericht.aux)
+[7]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[8 <./assets/Ergebnisse Parallel.png> <./assets/Ergebnisse Senkrecht.png>] (Projektbericht.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-10-24>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 4343 strings out of 467871
- 72135 string characters out of 5418375
- 499010 words of memory out of 5000000
- 33146 multiletter control sequences out of 15000+600000
+ 4359 strings out of 467871
+ 72733 string characters out of 5418375
+ 499054 words of memory out of 5000000
+ 33162 multiletter control sequences out of 15000+600000
  665124 words of font info for 114 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,12n,65p,282b,436s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb><C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/urw/symbol/usyr.pfb><C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/urw/symbol/usyr.pfb><C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/oaygu/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Projektbericht.pdf (7 pages, 188787 bytes).
+Output written on Projektbericht.pdf (8 pages, 586902 bytes).
 PDF statistics:
- 82 PDF objects out of 1000 (max. 8388607)
+ 89 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
