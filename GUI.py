@@ -268,7 +268,7 @@ class MainWindow(QMainWindow):
 
         index = QLabel("Brechungsindex: ")
         real = QLineEdit()
-        real.setPlaceholderText("Reel")
+        real.setPlaceholderText("Reell")
         imaginary = QLineEdit()
         imaginary.setPlaceholderText("Imaginär")
         imaginary.setDisabled(True)
