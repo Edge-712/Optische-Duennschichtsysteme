@@ -15,6 +15,9 @@ from PyQt6.QtWidgets import (
     QLineEdit,
     QMessageBox,
     QHeaderView,
+    QDialog,
+    QLabel,
+    QCheckBox,
 )
 from PyQt6.QtGui import QIcon, QPalette, QColor
 
@@ -44,6 +47,10 @@ class MainWindow(QMainWindow):
 
         self.insert_Row(None, 0)  # type: ignore
         self.insert_Row(None, 1)  # type: ignore
+
+        # Neues Material erstellen
+        new_material = QPushButton("Neues Material anlegen")
+        new_material.clicked.connect(self.create_material)
 
         # Restliche UI-Elemente
         wavelength0 = QLineEdit()
@@ -79,9 +86,13 @@ class MainWindow(QMainWindow):
         reset_button.clicked.connect(self.reset)
 
         # Layout
+        gridmat_layout = QVBoxLayout()
+        gridmat_layout.addWidget(self.grid)
+        gridmat_layout.addWidget(new_material)
+
         layout_v = QVBoxLayout()
         self.layout_h0 = QHBoxLayout()
-        self.layout_h0.addWidget(self.grid)
+        self.layout_h0.addLayout(gridmat_layout)
         self.layout_h0.addWidget(self.canvas)
 
         self.layout_h0.setStretch(1, 4)
@@ -124,17 +135,17 @@ class MainWindow(QMainWindow):
             new_material_list = []
 
             for i in range(0, self.grid.rowCount()):
-                name = self.grid.cellWidget(i, 0).currentText()  # type: ignore
-                d = float(self.grid.cellWidget(i, 1).text())  # type: ignore
+                m = self.grid.cellWidget(i, 0).currentData()  # type: ignore
+
                 if self.grid.rowCount() == 1:
                     raise ValueError
                 if (i != 0 and i != self.grid.rowCount() - 1) and (
-                    d <= 0 or d == np.inf
+                    m.d <= 0 or m.d == np.inf
                 ):
                     raise ValueError
-                if (i == 0 or i == self.grid.rowCount() - 1) and d != np.inf:
+                if (i == 0 or i == self.grid.rowCount() - 1) and m.d != np.inf:
                     raise ValueError
-                new_material_list.append(Material(name, d))
+                new_material_list.append(m)
 
             wavelength_lists = [
                 np.linspace(
@@ -184,7 +195,6 @@ class MainWindow(QMainWindow):
                 break
 
         textfield_d = QLineEdit()
-
         button_widget = QWidget()
         button_box = QHBoxLayout()
 
@@ -243,6 +253,59 @@ class MainWindow(QMainWindow):
         self.canvas.axes.grid(True)
         self.canvas.draw()
 
+    def create_material(self):
+        dialog = QDialog()
+        layoutv = QVBoxLayout()
+
+        name = QLabel("Name: ")
+        namef = QLineEdit()
+        namef.setPlaceholderText("Material")
+        layouth = QHBoxLayout()
+        layouth.addWidget(name)
+        layouth.addWidget(namef)
+        layoutv.addLayout(layouth)
+
+        index = QLabel("Brechungsindex: ")
+        real = QLineEdit()
+        real.setPlaceholderText("Reel")
+        imaginary = QLineEdit()
+        imaginary.setPlaceholderText("Imaginär")
+        imaginary.setDisabled(True)
+        check = QCheckBox()
+        check.clicked.connect(lambda: imaginary.setDisabled(imaginary.isEnabled()))
+        check.clicked.connect(lambda: imaginary.clear())
+
+        layouth = QHBoxLayout()
+        layouth.addWidget(index)
+        layouth.addWidget(real)
+        layouth.addWidget(imaginary)
+        layouth.addWidget(check)
+
+        layoutv.addLayout(layouth)
+
+        confirm = QPushButton("Bestätigen")
+        confirm.clicked.connect(
+            lambda: material_list.append(
+                Material(
+                    namef.text(),
+                    100,
+                    self.check_index(real, imaginary),
+                )
+            )
+        )
+
+        layoutv.addWidget(confirm)
+
+        dialog.setLayout(layoutv)
+
+        dialog.exec()
+
+    def check_index(self, real: QLineEdit, imaginary: QLineEdit):
+        if imaginary.isEnabled():
+            return complex(float(real.text()), float(imaginary.text()))
+        else:
+            return float(real.text())
+
 
 class PlotCanvas(FigureCanvasQTAgg):
     """Klasse zum Einfügen des Plots in UI"""
@@ -253,16 +316,16 @@ class PlotCanvas(FigureCanvasQTAgg):
 
 app = QApplication(sys.argv)
 app.setStyle("Fusion")
-palette = QPalette()
-palette.setColor(QPalette.ColorRole.Window, QColor(240, 240, 240))
-palette.setColor(QPalette.ColorRole.WindowText, QColor(0, 0, 0))
-palette.setColor(QPalette.ColorRole.Text, QColor(0, 0, 0))
-palette.setColor(QPalette.ColorRole.ButtonText, QColor(0, 0, 0))
-palette.setColor(QPalette.ColorRole.Button, QColor(240, 240, 240))
-palette.setColor(QPalette.ColorRole.Base, QColor(255, 255, 255))
-palette.setColor(QPalette.ColorRole.PlaceholderText, QColor(118, 118, 118))
+# palette = QPalette()
+# palette.setColor(QPalette.ColorRole.Window, QColor(240, 240, 240))
+# palette.setColor(QPalette.ColorRole.WindowText, QColor(0, 0, 0))
+# palette.setColor(QPalette.ColorRole.Text, QColor(0, 0, 0))
+# palette.setColor(QPalette.ColorRole.ButtonText, QColor(0, 0, 0))
+# palette.setColor(QPalette.ColorRole.Button, QColor(240, 240, 240))
+# palette.setColor(QPalette.ColorRole.Base, QColor(255, 255, 255))
+# palette.setColor(QPalette.ColorRole.PlaceholderText, QColor(118, 118, 118))
 
-app.setPalette(palette)
+# app.setPalette(palette)
 
 window = MainWindow()
 window.show()
