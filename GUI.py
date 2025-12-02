@@ -1,4 +1,5 @@
 import sys
+import json
 import numpy as np
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.backends.backend_qt import NavigationToolbar2QT as NavigationToolbar
@@ -284,15 +285,7 @@ class MainWindow(QMainWindow):
         layoutv.addLayout(layouth)
 
         confirm = QPushButton("Bestätigen")
-        confirm.clicked.connect(
-            lambda: material_list.append(
-                Material(
-                    namef.text(),
-                    100,
-                    self.check_index(real, imaginary),
-                )
-            )
-        )
+        confirm.clicked.connect(lambda: self.check_index(namef.text(), real, imaginary))
 
         layoutv.addWidget(confirm)
 
@@ -300,11 +293,17 @@ class MainWindow(QMainWindow):
 
         dialog.exec()
 
-    def check_index(self, real: QLineEdit, imaginary: QLineEdit):
+    def check_index(self, name: str, real: QLineEdit, imaginary: QLineEdit):
         if imaginary.isEnabled():
-            return complex(float(real.text()), float(imaginary.text()))
+            n = complex(float(real.text()), float(imaginary.text()))
         else:
-            return float(real.text())
+            n = float(real.text())
+
+        material_list.append(Material(name, 100, n))
+        jsonlist = [i.toJson() for i in material_list]
+
+        with open("Material.json", "w") as file:
+            json.dump(jsonlist, file, indent=4)
 
 
 class PlotCanvas(FigureCanvasQTAgg):

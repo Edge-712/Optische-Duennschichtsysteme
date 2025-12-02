@@ -1,4 +1,5 @@
 import numpy as np
+import json
 
 # /////////////////////////
 #   d: Dicke in m
@@ -48,6 +49,21 @@ class Material:
 
     def __str__(self):
         return self.name
+
+    def toJson(self):
+        return {"name": self.name, "d": self.d, "n": str(self.n)}
+
+    @staticmethod
+    def toMaterial():
+        with open("Material.json", "r") as file:
+            data = json.load(file)
+            material_list = [
+                Material(i["name"], i["d"])
+                if i["n"] == "None"
+                else Material(i["name"], i["d"], complex(i["n"]))
+                for i in data
+            ]
+            return material_list
 
 
 # Fresnel-Formeln & Transfermatrix
@@ -108,11 +124,12 @@ def reflectance(material_list, wavelengths, polarization, theta0):
     return np.array(R)
 
 
-# System im sichtbaren Bereich (MgF2, TiO2, Al2O3)
-material_list = [
-    Material("Luft", np.inf),
-    Material("MgF\u2082", 100),
-    Material("TiO\u2082", 100),
-    Material("Al\u2082O\u2083", 100),
-    Material("Glas", np.inf),
-]
+# material_list = [
+#     Material("Luft", np.inf),
+#     Material("MgF\u2082", 100),
+#     Material("TiO\u2082", 100),
+#     Material("Al\u2082O\u2083", 100),
+#     Material("Glas", np.inf),
+# ]
+
+material_list = Material.toMaterial()
