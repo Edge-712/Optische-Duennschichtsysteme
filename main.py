@@ -110,10 +110,9 @@ def reflectance(material_list, wavelengths, polarization, theta0):
 
 # System im sichtbaren Bereich (MgF2, TiO2, Al2O3)
 material_list = [
-    Material("Luft", np.inf, 1.00 + 0j),
-    Material("MgF\u2082", 100, 1.38 + 0j),
-    Material("TiO\u2082", 100, 2.40 + 0j),
-    Material("Al\u2082O\u2083", 100, 1.76 + 0j),
-    Material("Glas", np.inf, 1.52 + 0j),
-    Material("Beliebig", 0, 0 + 0j),
+    Material("Luft", np.inf),
+    Material("MgF\u2082", 100),
+    Material("TiO\u2082", 100),
+    Material("Al\u2082O\u2083", 100),
+    Material("Glas", np.inf),
 ]

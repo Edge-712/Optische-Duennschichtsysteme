@@ -16,7 +16,7 @@ from PyQt6.QtWidgets import (
     QMessageBox,
     QHeaderView,
 )
-from PyQt6.QtGui import QIcon
+from PyQt6.QtGui import QIcon, QPalette, QColor
 
 
 class MainWindow(QMainWindow):
@@ -36,10 +36,8 @@ class MainWindow(QMainWindow):
         """Anzeige der erstellten Graphen"""
         # Darstellung der ausgewählten Material-Werte in Tabelle und zusätzliche UI-Elemente
         self.grid = QTableWidget()
-        self.grid.setColumnCount(5)
-        self.grid.setHorizontalHeaderLabels(
-            ["Material", "Dicke in nm", "n-Real", "n-Imaginär", ""]
-        )
+        self.grid.setColumnCount(3)
+        self.grid.setHorizontalHeaderLabels(["Material", "Dicke in nm", ""])
         self.grid.horizontalHeader().setSectionResizeMode(  # type: ignore
             QHeaderView.ResizeMode.Stretch
         )
@@ -85,7 +83,7 @@ class MainWindow(QMainWindow):
         self.layout_h0 = QHBoxLayout()
         self.layout_h0.addWidget(self.grid)
         self.layout_h0.addWidget(self.canvas)
-        self.layout_h0.setStretch(0, 2)
+
         self.layout_h0.setStretch(1, 4)
 
         layout_h = QHBoxLayout()
@@ -128,19 +126,15 @@ class MainWindow(QMainWindow):
             for i in range(0, self.grid.rowCount()):
                 name = self.grid.cellWidget(i, 0).currentText()  # type: ignore
                 d = float(self.grid.cellWidget(i, 1).text())  # type: ignore
-                n_r = self.grid.cellWidget(i, 2).text()  # type: ignore
-                n_i = self.grid.cellWidget(i, 3).text()  # type: ignore
-                n_string = n_r + "+" + n_i + "j"
-                n = complex(n_string)
                 if self.grid.rowCount() == 1:
                     raise ValueError
                 if (i != 0 and i != self.grid.rowCount() - 1) and (
-                    n.real == 0 or n.real < 0 or d <= 0 or d == np.inf
+                    d <= 0 or d == np.inf
                 ):
                     raise ValueError
                 if (i == 0 or i == self.grid.rowCount() - 1) and d != np.inf:
                     raise ValueError
-                new_material_list.append(Material(name, d, n))
+                new_material_list.append(Material(name, d))
 
             wavelength_lists = [
                 np.linspace(
@@ -189,8 +183,6 @@ class MainWindow(QMainWindow):
                 self.grid.insertRow(i + 1)
                 break
 
-        textfield_n_r = QLineEdit()
-        textfield_n_i = QLineEdit()
         textfield_d = QLineEdit()
 
         button_widget = QWidget()
@@ -198,11 +190,7 @@ class MainWindow(QMainWindow):
 
         combobox0 = QComboBox()
         combobox0.setPlaceholderText("Presets")
-        combobox0.activated.connect(
-            lambda: self.set_values(
-                combobox0, textfield_d, textfield_n_r, textfield_n_i
-            )
-        )
+        combobox0.activated.connect(lambda: self.set_values(combobox0, textfield_d))
 
         for material in material_list:
             combobox0.addItem(material.name, material)
@@ -229,31 +217,23 @@ class MainWindow(QMainWindow):
             self.grid.insertRow(counter)
             self.grid.setCellWidget(counter, 0, combobox0)
             self.grid.setCellWidget(counter, 1, textfield_d)
-            self.grid.setCellWidget(counter, 2, textfield_n_r)
-            self.grid.setCellWidget(counter, 3, textfield_n_i)
             if counter == 0:
-                self.grid.setCellWidget(counter, 4, add_button)
+                self.grid.setCellWidget(counter, 2, add_button)
             else:
-                self.grid.setCellWidget(counter, 4, QLineEdit(""))
-                self.grid.cellWidget(counter, 4).setEnabled(False)
+                self.grid.setCellWidget(counter, 2, QLineEdit(""))
+                self.grid.cellWidget(counter, 2).setEnabled(False)
         else:
             self.grid.setCellWidget(index, 0, combobox0)
             self.grid.setCellWidget(index, 1, textfield_d)
-            self.grid.setCellWidget(index, 2, textfield_n_r)
-            self.grid.setCellWidget(index, 3, textfield_n_i)
-            self.grid.setCellWidget(index, 4, button_widget)
+            self.grid.setCellWidget(index, 2, button_widget)
 
     def set_values(
         self,
         combobox: QComboBox,
         textfield_d: QLineEdit,
-        textfield_n_r: QLineEdit,
-        textfield_n_i: QLineEdit,
     ):
         """Passt die Leeren Textboxen bei Auswahl einer der Presets an"""
         textfield_d.setText(str(combobox.currentData().d))
-        textfield_n_r.setText(str(combobox.currentData().n.real))
-        textfield_n_i.setText(str(combobox.currentData().n.imag))
 
     def reset(self):
         self.canvas.axes.clear()
@@ -273,6 +253,16 @@ class PlotCanvas(FigureCanvasQTAgg):
 
 app = QApplication(sys.argv)
 app.setStyle("Fusion")
+palette = QPalette()
+palette.setColor(QPalette.ColorRole.Window, QColor(240, 240, 240))
+palette.setColor(QPalette.ColorRole.WindowText, QColor(0, 0, 0))
+palette.setColor(QPalette.ColorRole.Text, QColor(0, 0, 0))
+palette.setColor(QPalette.ColorRole.ButtonText, QColor(0, 0, 0))
+palette.setColor(QPalette.ColorRole.Button, QColor(240, 240, 240))
+palette.setColor(QPalette.ColorRole.Base, QColor(255, 255, 255))
+palette.setColor(QPalette.ColorRole.PlaceholderText, QColor(118, 118, 118))
+
+app.setPalette(palette)
 
 window = MainWindow()
 window.show()
