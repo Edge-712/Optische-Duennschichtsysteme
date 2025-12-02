@@ -11,6 +11,35 @@ import numpy as np
 class Material:
     """Material-Klasse für simplere Bearbeitung über GUI"""
 
+    def refractive_index(self, wavelength):
+        if self.name == "Luft":
+            return 1 + (1.181494e-4 + (9.708931e-3) / (75.4 - wavelength ** (-2)))
+
+        elif self.name == "MgF\u2082":
+            return np.sqrt(
+                1.27620
+                + (0.60967 * wavelength**2) / (wavelength**2 - 0.08636**2)
+                + (0.0080 * wavelength**2) / (wavelength**2 - 18.0**2)
+                + (2.14973 * wavelength**2) / (wavelength**2 - 25.0**2)
+            )
+        elif self.name == "TiO\u2082":
+            return np.sqrt(5.913 + 0.2441 / (wavelength**2 - 0.0803))
+        elif self.name == "Al\u2082O\u2083":
+            return np.sqrt(
+                (1.4313493 * wavelength**2) / (wavelength**2 - 0.0726631**2)
+                + (0.65054713 * wavelength**2) / (wavelength**2 - 0.1193242**2)
+                + (5.3414021 * wavelength**2) / (wavelength**2 - 18.028251**2)
+            )
+        elif self.name == "Glas":
+            return np.sqrt(
+                1
+                + (1.1273555 * wavelength**2) / (wavelength**2 - 0.00720341707)
+                + (0.124412303 * wavelength**2) / (wavelength**2 - 0.0269835916)
+                + (0.827100531 * wavelength**2) / (wavelength**2 - 100.384588)
+            )
+        else:
+            return self.n
+
     def __init__(self, name, d, n):
         self.d = d
         self.n = n
@@ -39,13 +68,16 @@ def fresnel_coefficients(n1, n2, theta1, polarization):
     return r, t, theta2
 
 
-def transfer_matrix(n_list, d_list, wavelength, polarization, theta0):
+def transfer_matrix(material_list, d_list, wavelength, polarization, theta0):
     """Berechnet die Gesamttransfermatrix eines Mehrschichtsystems."""
     M = np.identity(2, dtype=complex)
     theta = [theta0]
 
-    for i in range(len(n_list) - 1):
-        n1, n2 = n_list[i], n_list[i + 1]
+    for i in range(len(material_list) - 1):
+        n1, n2 = (
+            material_list[i].refractive_index(wavelength),
+            material_list[i + 1].refractive_index(wavelength),
+        )
         r, t, theta2 = fresnel_coefficients(n1, n2, theta[-1], polarization)
         theta.append(theta2)
 
@@ -66,11 +98,10 @@ def reflectance(material_list, wavelengths, polarization, theta0):
     """Berechnet den Reflexionsgrad R(λ)"""
     R = []
 
-    n_list = [i.n for i in material_list]
     d_list = [i.d * 1e-9 for i in material_list if i.d != np.inf]
 
     for wl in wavelengths:
-        M = transfer_matrix(n_list, d_list, wl, polarization, theta0)
+        M = transfer_matrix(material_list, d_list, wl, polarization, theta0)
         r = M[1, 0] / M[0, 0]
         R.append(np.abs(r) ** 2)
     return np.array(R)
