@@ -26,7 +26,8 @@ class Material:
             return np.sqrt(5.913 + 0.2441 / (wavelength**2 - 0.0803))
         elif self.name == "Al\u2082O\u2083":
             return np.sqrt(
-                (1.4313493 * wavelength**2) / (wavelength**2 - 0.0726631**2)
+                1
+                + (1.4313493 * wavelength**2) / (wavelength**2 - 0.0726631**2)
                 + (0.65054713 * wavelength**2) / (wavelength**2 - 0.1193242**2)
                 + (5.3414021 * wavelength**2) / (wavelength**2 - 18.028251**2)
             )
@@ -40,13 +41,13 @@ class Material:
         else:
             return self.n
 
-    def __init__(self, name, d, n):
+    def __init__(self, name, d, n=None):
         self.d = d
         self.n = n
         self.name = name
 
     def __str__(self):
-        return self.n
+        return self.name
 
 
 # Fresnel-Formeln & Transfermatrix
