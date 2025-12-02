@@ -3,6 +3,12 @@
 \usepackage[a4paper, left=35mm,top=26mm,right=26mm,bottom=15mm]{geometry}
 \usepackage{mathptmx}
 \usepackage{amsmath}
+\usepackage[
+    backend = biber,
+    style = numeric,
+    sorting = nty
+]{biblatex}
+\addbibresource{./assets/Quellen.bib}
 \usepackage{graphicx}
 \setlength{\parskip}{0.5em}
 \usepackage{fancyhdr}
@@ -52,16 +58,16 @@ Transmissionsgrades beschrieben, um ein möglichst realistisches Programm zur
 Erfassung eben dieser zu entwickeln. Sie wird in Abhägigkeit der vorliegenden
 Brechungsindize, dicke der Schichten und dem Einfallswinkel berechnet.
 
-Das grundlegende Problem, das es hier zu lösen gilt, ist die
-\textit{effiziente} Berechnung des Reflexions- und Transmissionsgrades, da es
-durch die Existenz mehrerer Schichten, zu einem langen Prozess von
-Rekalkulationen kommt, bei der bei jedem Durchdringen einer der Schichten ein
-neuer Prozess in beide Richtungen gestartet wird, was die Komplexität dieser
-Berechnung um einiges erhöht. Eine Visualisierung des Prozesses in einem
-Mehrschichtsystem ist in Abbildung 1 dargestellt. Genutzt wird dafür die
-Transfermatrixmethode, welche anhand der Polarisation, des Einfallswinkels und
-den Reflexions- und Transmissionskoeffizienten, an jeder Grenzfläche, ein
-Reflexionspektrum als Resultat liefert.
+Das größte Problem, das es hier zu lösen gilt, ist die Berechnung des
+Reflexions- und Transmissionsgrades, da es durch die Existenz mehrerer
+Schichten, zu einem endlosen Prozess von Rekalkulationen durch Teilwellen
+kommt, bei der bei jedem Durchdringen einer der Schichten ein neuer Prozess in
+beide Richtungen gestartet wird, was die Berechnung auf üblichem Wege
+erschwert. Eine Visualisierung des Prozesses in einem Mehrschichtsystem ist in
+Abbildung 1 dargestellt. Um dieses Problem zu lösen wird die
+Transfermatrixmethode angewandt, welche anhand der Brechungsindizes, des
+Einfallswinkels und den Reflexions- und Transmissionskoeffizienten, an jeder
+Grenzfläche, ein Reflexionspektrum als Resultat liefert.
 
 \begin{figure}[b]
     \centering
@@ -71,34 +77,41 @@ Reflexionspektrum als Resultat liefert.
 \end{figure}
 
 \section{Mathematisch-Physikalisches Modell}
-Wie bereits erwähnt müssen genau zwei Dinge bewältigt werden, um dieses Prinzip
-in eine mathematische Form zu bringen. Die Reflexion- und Transmission muss
-ermittelt werden und um einige zusätzliche Rechenoperationen zu vermeiden, muss
-die Transfermatrixmethode genutzt werden.
-\subsection{Reflexion und Transmission}
-Im Allgemeinen werden die Reflexions-und Transmissionskoeffizienten von
-elektromagnetischen Wellen, an einer Grenzfläche zwischen zwei Schichten, mit
-den \textit{fresnelschen Formeln} ermittelt. Dabei ist $n$ der (komplexe)
-Brechungsindex der jeweiligen Schicht. Ihr reeler Teil ist verantwortlich für
-die Darstellung der Brechung des Lichts an der Grenzfläche, während ihr
-imaginärer Teil die Absorption des Lichts beschreibt. Sie kann durch den Term
-\[e^{i\frac{(n + i\kappa)\varphi}{c}z}\]
-formuliert werden, aber um einen Term zu erhalten, der jeweils den reelen- und
-den komplexen Brechungsindex beschreibt, wird wie folgt umgestellt:
-\[e^{i\frac{n \varphi}{c}z} \cdot e^{-\frac{\kappa\varphi}{c}z}.\]
-Dabei handelt es sich um die Absorption
-\[e^{-\frac{\kappa\varphi}{c}z}\]
+\subsection{Brechungsindex}
+Der (komplexe) Brechungsindex der jeweiligen Schicht hat die Form
+\[\tilde{n} = n + i\kappa.\]
+Sein realer Teil bestimmt die Brechung des Lichts an der Grenzfläche, während
+sein imaginärer Teil die Absorption des Lichts beschreibt. Die
+Wellenausbreitung kann durch den Term
+\[e^{i\frac{n \omega}{c}z} \cdot e^{-\frac{\kappa\omega}{c}z}.\]
+beschrieben werden. Dabei ist die Absorption
+\[e^{-\frac{\kappa\omega}{c}z}\]
 und die Phasenverschiebung
-\[e^{i\frac{n \varphi}{c}z}.\]
-Das $\alpha$ ist der Einfallswinkel in die Grenzfläche und $\beta$ der
-Brechungswinkel zwischen den beiden Schichten. Der Brechungswinkel lässt sich
-durch das Snelliussche Brechungsgesetz definieren:
+\[e^{i\frac{n \omega}{c}z}.\]
+Diese beiden Komponenenten sind essentiell für spätere Berechnungen von
+Schichteigenschaft mit der Transfermatrixmethode.
+
+Des Weiteren ist es wichtig den Brechungsindex als Funktion der Wellenlänge
+$n(\lambda)$ zu betrachten, um präzise Resultate zu erlangen, da Dispersion
+berücksichtigt werden muss. Dafür wird im Laufe der Arbeit, wenn möglich, die
+Sellmeier-Gleichung verwendet\cite{10.1063/1.555616}.
+\[n^2(\lambda) = 1 + \sum_{i} \frac{B_i \lambda^2}{\lambda^2 - C_i}\]
+Für manche Materialien wie Gase mussten für ein präziseres Ergebnis andere
+Approximationen genutzt werden\cite{Kren:11}.
+\subsection{Reflexion und Transmission}
+Reflexions- und Transmissionskoeffizienten von elektromagnetischen Wellen an
+einer Grenzfläche zwischen zwei Schichten werden mit den Fresnelschen Formeln
+ermittelt\cite{Hecht+2018}.
+
+$\alpha$ ist der Einfallswinkel des Lichts auf die Grenzfläche und $\beta$ der
+Brechungswinkel. Der Brechungswinkel lässt sich
+durch das Snelliussche Brechungsgesetz definieren\cite{Hecht+2018}:
 \[n_1 \sin\alpha = n_2 \sin\beta\]
-Wird nun schlicht nach $\beta$ aufgelöst entsteht folgende Definition:
+Durch Auflösen nach $\beta$ entsteht folgende Gleichung:
 \[\beta = \arcsin(\frac{n_1}{n_2}\sin\alpha)\]
-Der letzte wichtige Aspekt der mit einbezogen wird ist die Polarisation.
-Abhängig davon ob das Licht senkrecht oder parallel zur Einfallsebene schwingt,
-variieren die Formeln.
+zusätzlich muss die Polarisation berücksichtigt werden. Abhängig davon, ob das
+Licht senkrecht oder parallel zur Einfallsebene schwingt, variieren die
+Formeln.
 
 Senkrechte Polarisation:
 \[r_s = \frac{n_1 \cos\alpha - n_2 \cos\beta}{n_1 \cos\alpha + n_2 \cos\beta}, \quad t_s = \frac{2n_1 \cos\alpha}{n_1 \cos\alpha + n_2 \cos\beta}\]
@@ -106,19 +119,20 @@ Senkrechte Polarisation:
 Parallele Polarisation:
 \[r_p = \frac{n_2 \cos\alpha - n_1 \cos\beta}{n_2 \cos\alpha + n_1 \cos\beta}, \quad t_p = \frac{2n_1 \cos\alpha}{n_2 \cos\alpha + n_1 \cos\beta}\]
 \[\]
+$n_1$ und $n_2$ stellen die Brechungsindizes der linken und rechten Schicht beim Grenzübergang da.
 
 Dieser Prozess liefert nun die Koeffizienten an der Grenzfläche zwischen zwei
-Schichten und muss für jede Schicht, bzw. Grenzüberschreitung in die nächste
-Schicht erfolgen. Die Resultate werden in der Transfermatrixmethode verwertet.
+Schichten und muss für jede Schicht, bzw. jeden Grenzübergang erfolgen. Die
+Resultate werden in der Transfermatrixmethode verwertet.
 \subsection{Die Transfermatrixmethode}
 Es handelt sich bei der Transfermatrixmethode um eine elegante mathematische
-Lösung für das Problem der unendlichen Teilwellen. Anstatt schlicht den Verlauf
-des Lichtstrahls zu verfolgen, wird das gesamte Mehrschichtsystem betrachtet.
-Die Grundlage hierfür sind die fresnelschen Formeln, da sie das Verhältnis der
-Amplituden auf der linken und rechten Seite der Grenzfläche beschreiben. Das
-resultierende Gleichungssystem kann auch in Matrixschreibweise geschrieben
-werden, sodass klar wird, dass durch Matrixmultiplikation in den wie folgt
-definierten Matrizen, der Reflexionsgrad berechnet werden kann.
+Lösung für das Problem der unendlichen Teilwellen\cite{Hecht+2018}. Anstatt den
+Verlauf des Lichtstrahls zu verfolgen, wird das gesamte Mehrschichtsystem
+betrachtet. Die Grundlage hierfür sind die fresnelschen Formeln, da sie das
+Verhältnis der Amplituden auf der linken und rechten Seite der Grenzfläche
+beschreiben. Das resultierende Gleichungssystem kann auch in Matrixschreibweise
+geschrieben werden, sodass klar wird, dass durch Matrixmultiplikation in den
+wie folgt definierten Matrizen, der Reflexionsgrad berechnet werden kann.
 
 Es werden jeweils zwei Arten von Matrizen gebildet, dabei bestimmt die Matrix D
 die Reflexion und Transmission an der Grenzfläche, während die Matrix P die
@@ -145,7 +159,7 @@ Intensität einer elektromagnetischen Welle,
 \[R = \left| \frac{M_{21}}{M_{11}} \right|^2\]
 zu bestimmen.
 \section{Algorithmische Umsetzung}
-\section{Benutzeroberfläche}
+\section{Benutzerhandbuch}
 Hier wird die grafische Nutzeroberfläche der Software präsentiert, zusammen mit
 einzelnen Funktionen, denen es eine Erläuterung bedarft.
 
@@ -168,13 +182,12 @@ einzelnen zu bestimmenden Parametern unter beiden Flächen besteht. Dies ist
 zusätzlich in Abbildung 2 zusehen.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[scale=0.4]{./assets/GUI.png}
-    \caption{Screenshot der Benutzeroberfläche beim Start}
+    \includegraphics[scale=0.45]{./assets/GUI.png}
+    \caption{Beschreibung der Benutzeroberfläche}
     \label{fig:GUI}
 \end{figure}
-
-Es stehen in der Tabelle bereits 2 Zeilen vorangefertigt zur verfügung. Sie
-stellen in unserer Simulation das Einfallsmedium und Substrat da und können
+Es stehen in der Tabelle bereits 2 Zeilen vorangefertigt zur Verfügung. Sie
+stellen in der Software das Einfallsmedium und Substrat da und können
 entsprechend nicht entfernt werden. Am Einfallsmedium befindet sich in der
 letzten Spalte ein Button, welcher eine weitere Zeile, bzw. Schicht, direkt
 nach ihr selbst generiert und einfügt. Alle Zeilen, die eine Schicht
@@ -186,43 +199,62 @@ sie beeinhaltet ist, aus der Simulation löscht.
 In der ersten Spalte unter \texttt{Material} ist ein Dropdown-Menü mit der
 Aufschrifft Presets zu sehen. Benutzer können hier eine Auswahl von 5
 vorgefertigten Schichten wählen, welche bereits alle Parameter belegt haben. Es
-steht dem Nutzer natürlich offen, die Parameter dennoch wie gewünscht in der
-Tabelle abzuändern. Alternativ besteht auch die möglichkeit im selben Menü
-\texttt{Beliebig} auszuwählen, was eine Zeile ohne Vorangaben generiert. In
-Tabelle 1 sind alle Parameter aufgelistet, zusammen mit einer jeweiligen
-Beschreibung.
+steht dem Nutzer jedoch offen die Dicke der Schicht anzupassen. Alternativ
+besteht auch die Möglichkeit mit dem Button unter der Tabelle ein neues
+Material anzulegen. Das betätigen öffnet ein zusätzliches Fenster, in dem der
+Nutzer einen Namen für das Material und einen komplexen Brechungsindex
+festlegen kann. Das Bestätigen der Eingabe erstellt ein neues Materialobjekt
+und fügt dessen Daten in die \texttt{Material.json} im Root ein, damit sie
+zusammen mit den vorgefertigten Materialien für den Nutzer langzeitig
+gespeichert sind. In Abbildung 3 ist das Dialogfenster abgebildet.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=0.6]{./assets/neu.png}
+    \caption{Dialogfenster zum hinzufügen neuer Materialien}
+    \label{fig:GUI-neu}
+\end{figure}
 
+\texttt{Bestätigen} plottet den Reflexionsgrad in Abhägigkeit
+des angegeben Wellenlängenbereichs in den Graphen. Sollten die Parameter in
+einem ungültigen Bereich liegen, wird stattdessen eine Fehlermeldung geliefert.
+Weiteres Nutzen des Bestätigen-Buttons fügt die gewünschten Funktionen in den
+Graph hinzu, bis der Nutzer sich entscheidet, diesen mit \texttt{Zurücksetzen}
+zu leeren.
+
+Eine Übersicht zu den Parametern und validen Eingaben befindet sich in Tabelle
+1.
 \begin{table}[htbp]
     \centering
     \caption{Beschreibung der Eingabeparameter im Programm}
     \label{tab:Parameter}
     \begin{tabular}{|l|p{9cm}|}
         \hline
-        Parameter           & Beschreibung                                                     \\
+        Parameter           & Beschreibung                                                             \\
         \hline
-        Dicke               & Dicke der entsprechenden Schicht in Nanometern                   \\
+        Dicke               & Dicke der entsprechenden Schicht in Nanometern                           \\
         \hline
-        n-Real              & Reeler Teil des (komplexen) Brechungsindex der
-        entsprechenden Schicht                                                                 \\
+        n-real              & Realer Teil des (komplexen) Brechungsindex der
+        entsprechenden Schicht                                                                         \\
         \hline
         n-imaginärer        & Imaginärer Teil des (komplexen) Brechungsindex
-        der entsprechenden Schicht                                                             \\
+        der entsprechenden Schicht                                                                     \\
         \hline
-        Wellenlängenbereich & Gewünschter Wellenlängenbereich, der im Graphen
-        geplottet werden soll. Kann angegeben in der Form: \texttt{1.Bereich-1.Bereich(,
-        2.Bereich-2.Bereich, \dots)}                                                           \\
+        Wellenlängenbereich & Gewünschter Wellenlängenbereich $>0$, der im Graphen
+        geplottet werden soll. Kann angegeben werden in der Form: \texttt{1.Wellenlänge-2.Wellenlänge} \\
         \hline
-        Einfallswinkel      & Einfallswinkel in Gradmaß im Intervall $0-79^\circ$              \\
+        Einfallswinkel      & Einfallswinkel in Gradmaß im Bereich $0^\circ-89^\circ$                  \\
         \hline
-        Polarisation        & Art der Polarisation mit Auswahl zwischen senkrecht und parallel \\
+        Polarisation        & Art der Polarisation mit Auswahl zwischen senkrecht und parallel         \\
         \hline
     \end{tabular}
 \end{table}
 
 \section{Simulationsergebnisse}
 
-Die erste zu simulierende Schicht ist in Tabelle 2 zu sehen. Sie ist aufgeteilt
-in die jeweilen Materialien und ihre individuellen Dicken.
+Das Erste zu simulierende Schichtsystem ist in Tabelle 2 zu sehen. Es ist
+aufgeteilt in die jeweiligen Materialien und ihren individuellen Dicken und
+soll im sichtbaren Spektrum simuliert werden. Hierfür nehmen wir einen
+Wellenlängenbereich von 400nm bis 700nm mit einem senkrechten Einfallswinkel.
 \begin{table}[h]
     \centering
     \caption{Zu simulierendes Schichtsystem}
@@ -242,23 +274,15 @@ in die jeweilen Materialien und ihre individuellen Dicken.
     \end{tabular}
 \end{table}
 
-Für die übrigen Parameter wird von einem Wellenlängenbereich von 400nm bis
-700nm ausgegangen. Dieser Bereich wird in vierer Schritten von 0$^\circ$ bis
-75$^\circ$ geplottet, wobei dieser Prozess zwei mal wiederholt wird, um die
-beiden Graphen in Abbildung 3 und Abbildung 4 zu generieren, die senkrecht und
-parallel polarisieren.
-
-\begin{figure}[htbp]
+Das Ergbenis ist in Abbildung 4 dargestellt und zeigt keine physikalischen
+Auffälligkeiten, die auf einen Fehler deuten würden. Die Funktion ist im
+ausgewählten Bereich stetig, was auf mathematische Stabilität deutet.
+\begin{figure}[htpb]
     \centering
-    \includegraphics[scale=0.3]{./assets/Ergebnisse Parallel.png}
-    \caption{Simulationsergebnisse für paralelle Polarisation}
-    \label{fig:Ergebnis Parallel}
-\end{figure}
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[scale=0.3]{./assets/Ergebnisse Senkrecht.png}
-    \caption{Simulationsergebnisse für senkrechte Polarisation}
-    \label{fig:Ergebnis Senkrecht}
+    \includegraphics[scale=0.5]{./assets/1 Ergebnis Parallel 0.png}
+    \caption{1. Simulationsergebnis für $R(\lambda)$ bei senkrechtem Einfall}
+    \label{fig:Ergebnis1-0-p}
 \end{figure}
 
+\printbibliography[]
 \end{document}
