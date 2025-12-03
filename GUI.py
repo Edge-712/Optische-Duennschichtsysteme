@@ -142,6 +142,7 @@ class MainWindow(QMainWindow):
 
             for i in range(0, self.grid.rowCount()):
                 m = self.grid.cellWidget(i, 0).currentData()  # type: ignore
+                m.d = float(self.grid.cellWidget(i, 1).text())  # type: ignore
 
                 if self.grid.rowCount() == 1:
                     raise ValueError
