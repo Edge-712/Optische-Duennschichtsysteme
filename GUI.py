@@ -89,10 +89,6 @@ class MainWindow(QMainWindow):
 
         # Modus wählen
 
-        reflectancewl = QRadioButton()
-
-        reflectanceangl = QRadioButton()
-
         # Layout
         gridmat_layout = QVBoxLayout()
         gridmat_layout.addWidget(self.grid)
@@ -107,12 +103,6 @@ class MainWindow(QMainWindow):
 
         layout_h = QHBoxLayout()
         layout_h.addWidget(toolbar)
-        layout_h.addStretch(1)
-
-        layout_h.addWidget(QLabel("R(\u03bb):"))
-        layout_h.addWidget(reflectancewl)
-        layout_h.addWidget(QLabel("R(\u03c6):"))
-        layout_h.addWidget(reflectanceangl)
         layout_h.addStretch(1)
 
         layout_h.addWidget(reset_button)
@@ -138,13 +128,13 @@ class MainWindow(QMainWindow):
         """Erstellt den nötigen Graph und aktualisiert die Plots"""
 
         try:
-            wavelength_splits = wavelength0.text().split(",")
-            wavelengths = [i.split("-") for i in wavelength_splits]
-
-            if float(angle.text()) > 89 or float(angle.text()) < 0:
-                raise ValueError()
+            wavelengths = wavelength0.text().split("-")
+            angles = angle.text().split("-")
+            for items in angles:
+                if float(items) > 89 or float(items) < 0:
+                    raise ValueError()
             for items in wavelengths:
-                if float(items[0]) <= 0 or float(items[1]) <= 0:
+                if float(items) <= 0 or float(items) <= 0:
                     raise ValueError()
 
             # Speichern der User-Inputs
@@ -163,29 +153,46 @@ class MainWindow(QMainWindow):
                     raise ValueError
                 new_material_list.append(m)
 
-            wavelength_lists = [
-                np.linspace(
-                    float(pairs[0]) * 1e-9,
-                    float(pairs[1]) * 1e-9,
+            if len(wavelengths) > 1:
+                wavelength_lists = np.linspace(
+                    float(wavelengths[0]) * 1e-9,
+                    float(wavelengths[1]) * 1e-9,
                     400,
                 )
-                for pairs in wavelengths
-            ]
-            label = [i.name for i in new_material_list]
-            label.append(angle.text() + "\u00b0")
-            label.append(polarization.currentText())
-            for wavelength_list in wavelength_lists:
+
+                label = [i.name for i in new_material_list]
+                label.append(angle.text() + "\u00b0")
+                label.append(polarization.currentText())
+
                 reflect_list = reflectance(
                     new_material_list,
-                    wavelength_list,
+                    wavelength_lists,
                     polarization.currentText(),
                     float(angle.text()) * (np.pi / 180),
                 )
+                self.canvas.axes.set_xlabel("Wellenlänge [nm]")
+                self.canvas.axes.set_ylabel("Reflexionsgrad R")
                 self.canvas.axes.plot(
-                    wavelength_list * 1e9, reflect_list, label=str(label)
+                    wavelength_lists * 1e9, reflect_list, label=str(label)
                 )
                 self.canvas.axes.legend()
-
+            elif len(angles) > 1:
+                label = [i.name for i in new_material_list]
+                label.append(wavelengths[0] + "nm")
+                label.append(polarization.currentText())
+                angles = (
+                    np.linspace(float(angles[0]), float(angles[1]), 100) * np.pi / 180
+                )
+                reflect_list = reflectance(
+                    new_material_list,
+                    float(wavelengths[0]) * 1e-9,
+                    polarization.currentText(),
+                    angles,
+                )
+                self.canvas.axes.set_xlabel("Einfallswinkel (\u03c6)")
+                self.canvas.axes.set_ylabel("Reflexion R")
+                self.canvas.axes.plot(angles, reflect_list, label=str(label))
+                self.canvas.axes.legend()
             self.canvas.draw()
 
         except (ValueError, ZeroDivisionError, ArithmeticError):
