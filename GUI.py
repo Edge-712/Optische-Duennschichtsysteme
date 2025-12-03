@@ -19,6 +19,7 @@ from PyQt6.QtWidgets import (
     QDialog,
     QLabel,
     QCheckBox,
+    QRadioButton,
 )
 from PyQt6.QtGui import QIcon, QPalette, QColor
 
@@ -86,6 +87,12 @@ class MainWindow(QMainWindow):
         reset_button = QPushButton("Zurücksetzen")
         reset_button.clicked.connect(self.reset)
 
+        # Modus wählen
+
+        reflectancewl = QRadioButton()
+
+        reflectanceangl = QRadioButton()
+
         # Layout
         gridmat_layout = QVBoxLayout()
         gridmat_layout.addWidget(self.grid)
@@ -100,6 +107,14 @@ class MainWindow(QMainWindow):
 
         layout_h = QHBoxLayout()
         layout_h.addWidget(toolbar)
+        layout_h.addStretch(1)
+
+        layout_h.addWidget(QLabel("R(\u03bb):"))
+        layout_h.addWidget(reflectancewl)
+        layout_h.addWidget(QLabel("R(\u03c6):"))
+        layout_h.addWidget(reflectanceangl)
+        layout_h.addStretch(1)
+
         layout_h.addWidget(reset_button)
         layout_v.addLayout(layout_h)
         layout_v.addLayout(self.layout_h0)
