@@ -111,14 +111,19 @@ def transfer_matrix(material_list, d_list, wavelength, polarization, theta0):
     return M
 
 
-def reflectance(material_list, wavelengths, polarization, theta0):
+def reflectance(material_list, wavelengths, polarization, theta):
     """Berechnet den Reflexionsgrad R(λ)"""
     R = []
 
     d_list = [i.d * 1e-9 for i in material_list if i.d != np.inf]
 
-    for wl in wavelengths:
-        M = transfer_matrix(material_list, d_list, wl, polarization, theta0)
+    wls = np.atleast_1d(wavelengths)
+    thetas = np.atleast_1d(theta)
+
+    for wl, theta0 in np.broadcast(wls, thetas):
+        M = transfer_matrix(
+            material_list, d_list, float(wl), polarization, float(theta0)
+        )
         r = M[1, 0] / M[0, 0]
         R.append(np.abs(r) ** 2)
     return np.array(R)
@@ -133,3 +138,7 @@ def reflectance(material_list, wavelengths, polarization, theta0):
 # ]
 
 material_list = Material.toMaterial()
+
+wl = 600e-9
+angles = np.linspace(0, 89, 100) * np.pi / 180
+R_theta = reflectance(material_list, wl, "Senkrecht", angles)
