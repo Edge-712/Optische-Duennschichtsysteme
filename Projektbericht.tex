@@ -48,26 +48,26 @@ Fachgebieten einige Anwendungen, z.B.:
 Dafür bedient man sich meist verschiedenster Materialien wie
 z.B.Titanoxid, Magnesiumfluorid oder Aluminiumoxid, die alle einen
 individuellen Brechungsindex besitzen.
-Diese Eigenschaft werden in allen Anwendungen als das essentielle
+Diese Eigenschaften werden in allen Anwendungen als das essentielle
 Werkzeug genutzt, um das jeweilige Ziel im gewünschten Wellenbereich zu erreichen.
 Dies kann z.B. im Fall von Brillengläsern destruktive Interferenz sein, bei anderen
 Anwendungen, wie Spiegeln, aber auch konstruktive Interferenz.
 
 Im Folgenden wird die Berechnung des bereits besprochenen Reflexions- und
 Transmissionsgrades beschrieben, um ein möglichst realistisches Programm zur
-Erfassung eben dieser zu entwickeln. Sie wird in Abhägigkeit der vorliegenden
-Brechungsindize, dicke der Schichten und dem Einfallswinkel berechnet.
+Erfassung eben dieser zu entwickeln. Sie wird in Abhängigkeit der vorliegenden
+Brechungsindizes, Dicke der Schichten und dem Einfallswinkel berechnet.
 
 Das größte Problem, das es hier zu lösen gilt, ist die Berechnung des
 Reflexions- und Transmissionsgrades, da es durch die Existenz mehrerer
-Schichten, zu einem endlosen Prozess von Rekalkulationen durch Teilwellen
+Schichten zu einem endlosen Prozess von Rekalkulationen durch Teilwellen
 kommt, bei der bei jedem Durchdringen einer der Schichten ein neuer Prozess in
 beide Richtungen gestartet wird, was die Berechnung auf üblichem Wege
 erschwert. Eine Visualisierung des Prozesses in einem Mehrschichtsystem ist in
 Abbildung 1 dargestellt. Um dieses Problem zu lösen wird die
 Transfermatrixmethode angewandt, welche anhand der Brechungsindizes, des
 Einfallswinkels und den Reflexions- und Transmissionskoeffizienten, an jeder
-Grenzfläche, ein Reflexionspektrum als Resultat liefert.
+Grenzfläche, ein Reflexionsspektrum als Resultat liefert.
 
 \begin{figure}[b]
     \centering
@@ -88,8 +88,8 @@ beschrieben werden. Dabei ist die Absorption
 \[e^{-\frac{\kappa\omega}{c}z}\]
 und die Phasenverschiebung
 \[e^{i\frac{n \omega}{c}z}.\]
-Diese beiden Komponenenten sind essentiell für spätere Berechnungen von
-Schichteigenschaft mit der Transfermatrixmethode.
+Diese beiden Komponenten sind essentiell für spätere Berechnungen von
+Schichteigenschaften mit der Transfermatrixmethode.
 
 Des Weiteren ist es wichtig den Brechungsindex als Funktion der Wellenlänge
 $n(\lambda)$ zu betrachten, um präzise Resultate zu erlangen, da Dispersion
@@ -103,21 +103,21 @@ Reflexions- und Transmissionskoeffizienten von elektromagnetischen Wellen an
 einer Grenzfläche zwischen zwei Schichten werden mit den Fresnelschen Formeln
 ermittelt\cite{Hecht+2018}.
 
-$\alpha$ ist der Einfallswinkel des Lichts auf die Grenzfläche und $\beta$ der
+$\theta_1$ ist der Einfallswinkel des Lichts auf die Grenzfläche und $\theta_2$ der
 Brechungswinkel. Der Brechungswinkel lässt sich
 durch das Snelliussche Brechungsgesetz definieren\cite{Hecht+2018}:
-\[n_1 \sin\alpha = n_2 \sin\beta\]
-Durch Auflösen nach $\beta$ entsteht folgende Gleichung:
-\[\beta = \arcsin(\frac{n_1}{n_2}\sin\alpha)\]
+\[n_1 \sin\theta_1 = n_2 \sin\theta_2\]
+Durch Auflösen nach $\theta_2$ entsteht folgende Gleichung:
+\[\theta_2 = \arcsin(\frac{n_1}{n_2}\sin\theta_1)\]
 zusätzlich muss die Polarisation berücksichtigt werden. Abhängig davon, ob das
 Licht senkrecht oder parallel zur Einfallsebene schwingt, variieren die
 Formeln.
 
 Senkrechte Polarisation:
-\[r_s = \frac{n_1 \cos\alpha - n_2 \cos\beta}{n_1 \cos\alpha + n_2 \cos\beta}, \quad t_s = \frac{2n_1 \cos\alpha}{n_1 \cos\alpha + n_2 \cos\beta}\]
+\[r_s = \frac{n_1 \cos\theta_1 - n_2 \cos\theta_2}{n_1 \cos\theta_1 + n_2 \cos\theta_2}, \quad t_s = \frac{2n_1 \cos\theta_1}{n_1 \cos\theta_1 + n_2 \cos\theta_2}\]
 
 Parallele Polarisation:
-\[r_p = \frac{n_2 \cos\alpha - n_1 \cos\beta}{n_2 \cos\alpha + n_1 \cos\beta}, \quad t_p = \frac{2n_1 \cos\alpha}{n_2 \cos\alpha + n_1 \cos\beta}\]
+\[r_p = \frac{n_2 \cos\theta_1 - n_1 \cos\theta_2}{n_2 \cos\theta_1 + n_1 \cos\theta_2}, \quad t_p = \frac{2n_1 \cos\theta_1}{n_2 \cos\theta_1 + n_1 \cos\theta_2}\]
 \[\]
 $n_1$ und $n_2$ stellen die Brechungsindizes der linken und rechten Schicht beim Grenzübergang da.
 
@@ -149,8 +149,8 @@ aus den fresnelschen Formeln entsprechen. Die Matrix P hat die Form
         0              & e^{i \varphi}
     \end{pmatrix}\]
 mit
-\[\varphi = \frac{2 \pi n d \cos(\beta)}{\lambda},\]
-wobei d die Dicke, n der Brechungsindex und $\beta$ der Brechungswinkel der
+\[\varphi = \frac{2 \pi n d \cos(\theta_2)}{\lambda},\]
+wobei d die Dicke, n der Brechungsindex und $\theta_2$ der Brechungswinkel der
 Schicht sind. Die Transfermatrix selbst ergibt sich nun aus der Multiplikation
 der enstandenen Matrizen
 \[M = D_0 \cdot P_0 \cdot D_{1} \cdot P_{1} \dots D_{n-1} \cdot P_n \cdot D_n\]
@@ -159,6 +159,76 @@ Intensität einer elektromagnetischen Welle,
 \[R = \left| \frac{M_{21}}{M_{11}} \right|^2\]
 zu bestimmen.
 \section{Algorithmische Umsetzung}
+Die mathematischen Beziehungen, die in Kapitel 2 beschrieben werden, finden in
+einer modular strukturierten Softwarearchitektur Umsetzung. Diese teilt den
+Berechnungsprozess in klar voneinander getrennte Komponenten auf. Das Programm
+umfasst die Materialverwaltung, die Berechnung der Fresnel-Koeffizienten, die
+konsistente Konstruktion der Transfermatrix und darauf basierende
+Reflexionsberechnungen.
+
+Alle Schritte sind durch eigene Funktionen oder Klassen voneinander abgegrenzt,
+was das Programm wartbar und erweiterbar macht und es ermöglicht, dass es mit
+beliebigen Schichtsystemen verwendet werden kann
+\subsection{Materialmodellierung}
+Zur Repräsentation einer Schicht dient die Klasse \texttt{Material}. Sie
+speichert:
+\begin{itemize}
+    \item den Namen des Materials,
+    \item die Schichtdicke d (bei Halbräumen: $d = \infty$)
+    \item optional einen festen Brechungsindex oder eine disperse
+          Brechungsindex-Funktion.
+\end{itemize}
+
+Für die gegebene Wellenlänge $\lambda$ liefert sie den komplexen Brechungsindex
+der entsprechenden Schicht. Je nach Material kommen verschiedene bewährte
+Formeln zum Einsatz. Dadurch wird eine realistische Nachbildung der
+Wellenlängenabhängigkeit möglich, ohne dass Anpassungen an den späteren
+optischen Berechnungen erforderlich sind. Die Klasse ist zudem dafür zuständig,
+die Materialparameter aus der JSON-Datei zu laden. Die Schichtfolge kann
+flexibel über die Benutzeroberfläche festgelegt werden, ohne dass eine
+Anpassung des Programmcodes erforderlich ist.
+\subsection{Berechnung der Grenzflächenkoeffizienten}
+Die Funktion
+\begin{center}
+    \texttt{fresenel\_coefficients(n1, n2, theta1, polarization)}
+\end{center}
+übernimmt die numerische Umsetzung der Fresnel-Gleichungen an einer Grenzfläche zwischen
+zwei Schichten. Sie berechnet:
+\begin{itemize}
+    \item den Brechungswinkel $\theta_2$ mit dem Snelliusschen Gesetz
+    \item die Reflexions- und Transmissionskoeffizienten r und t,
+    \item den für die Transfermatrix benötigten Phasenverlauf.
+\end{itemize}
+Die Funktion unterscheidet streng zwischen den beiden Polarisationen:
+\begin{itemize}
+    \item \texttt{Senkrecht} (s-polarisiert)
+    \item \texttt{Parallel} (p-polarisiert)
+\end{itemize}
+und gibt die zugehörigen Koeffizienten zurück.
+Damit ist die Polarisation vollständig als Parameter steuerbar, was eine Simulation beider
+physikalischen Fälle ermöglicht.
+
+\subsection{Aufbau der Transfermatrix}
+Die Funktion durchläuft alle Schichten und führt für jede Grenzfläche die
+folgenden Schritte aus:
+
+\begin{itemize}
+    \item Ermittlung der optischen Parameter der Grenzfläche: Die Fresnel-Koeffizienten
+          werden aus den Brechungsindizes der angrenzenden Schichten berechnet.
+    \item Generierung der Grenzflächenmatrix D: Diese Matrix beinhaltet nur Informationen
+          über Reflexion und Transmission an der jeweiligen Schichtgrenze.
+    \item Generierung der Propagationsmatrix P: Die Phasenverschiebung für alle endlichen
+          Schichten wird in Übereinstimmung mit der Dicke, dem Einfallswinkel und dem
+          Brechungsindex berechnet.
+    \item Multiplikatives Einbauen beider Matrizen in die Gesamtmatrix:
+\end{itemize}
+Die Transfermatrix wird iterativ aufgebaut durch
+\[M \leftarrow M \cdot D \cdot P,\]
+was sicherstellt, dass der aktuelle optische Zustand des Lichtfelds im
+Mehrschichtsystem erhalten bleibt. Dabei werden Schichten mit unendlicher Dicke
+(Luft und Substrat) automatisch identifiziert, und ihnen wird keine
+Propagationsmatrix zugewiesen. So wird das physikalische Modell exakt
+wiedergegeben
 \section{Benutzerhandbuch}
 Hier wird die grafische Nutzeroberfläche der Software präsentiert, zusammen mit
 einzelnen Funktionen, denen es eine Erläuterung bedarft.
@@ -170,8 +240,16 @@ finden, welche über pip mit dem Befehl
 \begin{center}
     \texttt{pip install -r requirements.txt}
 \end{center}
-zu installieren sind. Anschließend wird das Programm nach erfolgreicher
-Installation mit
+zu installieren sind. Beachtet werden sollte hierbei, dass eine globale
+Installation auf Linux Distributionen nicht auf den selben Weg möglich ist.
+Hierfür sollte vorher mit
+\begin{center}
+    \texttt{python -m venv .venv}
+\end{center}
+eine virtuelle Umgebung für das Programm erstellt werden. Die installation ist
+daraufhin nach Aktivieren dieser virtuellen Umbegung wie vorher beschrieben
+auszuführen. Anschließend wird die Software nach erfolgreicher Installation mit
+
 \begin{center}
     \texttt{Python GUI.py}
 \end{center}
@@ -215,11 +293,20 @@ gespeichert sind. In Abbildung 3 ist das Dialogfenster abgebildet.
 \end{figure}
 
 \texttt{Bestätigen} plottet den Reflexionsgrad in Abhägigkeit
-des angegeben Wellenlängenbereichs in den Graphen. Sollten die Parameter in
-einem ungültigen Bereich liegen, wird stattdessen eine Fehlermeldung geliefert.
-Weiteres Nutzen des Bestätigen-Buttons fügt die gewünschten Funktionen in den
-Graph hinzu, bis der Nutzer sich entscheidet, diesen mit \texttt{Zurücksetzen}
-zu leeren.
+
+der gegebenen Parameter in den Graphen. Wichtig ist hierbei die Definition des
+Wellenlängenbereichs und des Einfallswinkels, da sich die berechnete Funktion
+sich je nach Angabe ändert. Hierbei muss eins der Folgenden Muster eingehalten
+werden:
+\begin{align*}
+    (\text{\texttt{1.Wellenlänge - 2.Wellenlänge}, \quad \texttt{Einfallswinkel}})    & \rightarrow R(\lambda) \\
+    (\text{\texttt{Wellenlänge}, \quad \texttt{1.Einfallswinkel - 2.Einfallswinkel}}) & \rightarrow R(\theta)
+\end{align*}
+
+Sollten die Parameter in einem ungültigen Bereich liegen, wird stattdessen eine
+Fehlermeldung geliefert. Weiteres Nutzen des Bestätigen-Buttons fügt die
+gewünschten Funktionen in den Graph hinzu, bis der Nutzer sich entscheidet,
+diesen mit \texttt{Zurücksetzen} zu leeren.
 
 Eine Übersicht zu den Parametern und validen Eingaben befindet sich in Tabelle
 1.
@@ -331,14 +418,14 @@ liefert.
 \begin{figure}[htbp]
     \centering
     \includegraphics[scale=0.5]{./assets/2. Simulationsergebnis Wellenlänge.png}
-    \caption{Darstellung der Reflexion und Transmission im Mehrschichtsystem}
+    \caption{Darstellung der Simulationsergebnisse für die EUV-Schicht nach Wellenlänge bei Senkrechtem Einfallswinkel}
     \label{fig:Ergebnis2-0}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[scale=0.5]{./assets/2. Simulationsergebnis Einfallswinkel.png}
-    \caption{Darstellung der Reflexion und Transmission im Mehrschichtsystem}
+    \caption{Darstellung Simulationsergebnisse für EUV-Schicht nach Einfallswinkel}
     \label{fig:Ergebnis2-1}
 \end{figure}
 
