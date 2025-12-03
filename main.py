@@ -1,5 +1,6 @@
 import numpy as np
 import json
+import matplotlib.pyplot as plt
 
 # /////////////////////////
 #   d: Dicke in m
@@ -39,6 +40,14 @@ class Material:
                 + (0.124412303 * wavelength**2) / (wavelength**2 - 0.0269835916)
                 + (0.827100531 * wavelength**2) / (wavelength**2 - 100.384588)
             )
+        elif self.name == "Quarz":
+            return np.sqrt(
+                1
+                + (0.6961663 * wavelength**2) / (wavelength**2 - 0.0684043**2)
+                + (0.4079426 * wavelength**2) / (wavelength**2 - 0.1162414**2)
+                + (0.8974794 * wavelength**2) / (wavelength**2 - 9.896161**2)
+            )
+
         else:
             return self.n
 
@@ -139,6 +148,33 @@ def reflectance(material_list, wavelengths, polarization, theta):
 
 material_list = Material.toMaterial()
 
-wl = 600e-9
-angles = np.linspace(0, 89, 100) * np.pi / 180
-R_theta = reflectance(material_list, wl, "Senkrecht", angles)
+# # Komplexe Brechzahlen bei 13.5 nm
+# Mo = Material("Mo", 2.8, 1 - 7.6044e-2 + 6.4100e-3j)
+# Si = Material("Si", 4.1, 1 - 9.3781e-4 + 1.7260e-3j)
+
+# euv_list = [Material("Luft", np.inf)]
+# for i in range(0, 40):
+#     if i % 2 == 0:
+#         euv_list.append(Mo)
+#     else:
+#         euv_list.append(Si)
+
+# euv_list.append(Material("Quarz", np.inf))
+
+# lambda_design = 13.5e-9
+# wavelengths_euv = np.linspace(10e-9, 40e-9, 300)
+
+# angles = np.linspace(0, 89 * np.pi / 180, 300)
+
+# R_euv = reflectance(euv_list, wavelengths_euv, "Senkrecht", 0)
+
+# plt.figure()
+# plt.subplot(111)
+# plt.plot(wavelengths_euv * 1e9, R_euv, color="red")
+# plt.title("Reflexionsspektrum (EUV)\n40× (Mo/Si)-Schichten")
+# plt.xlabel("Wellenlänge in nm")
+# plt.ylabel("Reflexionsgrad R")
+# plt.grid(True)
+
+# plt.tight_layout()
+# plt.show()

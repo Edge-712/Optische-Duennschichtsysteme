@@ -19,7 +19,6 @@ from PyQt6.QtWidgets import (
     QDialog,
     QLabel,
     QCheckBox,
-    QRadioButton,
 )
 from PyQt6.QtGui import QIcon, QPalette, QColor
 
