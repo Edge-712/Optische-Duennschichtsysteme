@@ -281,7 +281,65 @@ ausgewählten Bereich stetig, was auf mathematische Stabilität deutet.
     \centering
     \includegraphics[scale=0.5]{./assets/1 Ergebnis Parallel 0.png}
     \caption{1. Simulationsergebnis für $R(\lambda)$ bei senkrechtem Einfall}
-    \label{fig:Ergebnis1-0-p}
+    \label{fig:Ergebnis1-0}
+\end{figure}
+
+Die zweite zu simulierende Schicht befindet sich in Tabelle 3. Es wurde
+versucht für diese Schicht bei extremen Ultraviolettlicht eine passende Dicke
+der Schichten zu ermitteln, um optimale Reflektivität zu garantieren.
+\begin{table}[htpb]
+    \centering
+    \caption{Zu simulierendes EUV-Schichtsystem}
+    \label{tab:Angabe2}
+    \begin{tabular}{|l |c|}
+        \hline
+        Material & Brechzahl bei 13.5 nm                                 \\
+        \hline
+        Mo       & $1 - 7,6044 \cdot 10^{-2} -  6,4100 \cdot 10^{-3}i $  \\
+        \hline
+        Si       & $1 -  9,3781 \cdot 10^{-4} - 1,7260 \cdot 10^{-3}i  $ \\
+        \hline
+        SiO$_2$  & $1- 0,0218338 - 0,010721i$                            \\
+        \hline
+    \end{tabular}
+\end{table}
+
+Dabei war eine optimale Schichtdicke für den Einfallswinkel 15$^\circ$ und eine
+weitere optimale Schichtdicke für senkrechten Einfall. Die Werte für die
+optimale Dicke lassen sich durch die im Programm liegenden Funktionen ermitteln
+und sind in Tabelle 4 zu sehen.
+\begin{table}[htpb]
+    \centering
+    \caption{Optimierte Schichtdicke für EUV-Schicht}
+    \label{tab:Schicktdicke}
+    \begin{tabular}{|l |c| c|}
+        \hline
+        Material & optimierte Dicke für 0$^\circ$ & optimierte Dicke für 15$^\circ$ \\
+        \hline
+        Mo       & $2,8nm$                        & $2,8nm$                         \\
+        \hline
+        Si       & $4,1nm$                        & $4,35nm$                        \\
+        \hline
+    \end{tabular}
+\end{table}
+Die Ergebnisse in Abbildung 5 und 6 sind die
+gewünschten Funktionen für die EUV-Schicht mit ihren optimierten Dicken. Der
+Hochpunkt bei etwa 13.5nm in Abbildung 5 bestätigt die Werte der Schichtdicke,
+während der Reflexionsgrad für $15^\circ$ ebenfalls ein akzeptables Ergebnis
+liefert.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=0.5]{./assets/2. Simulationsergebnis Wellenlänge.png}
+    \caption{Darstellung der Reflexion und Transmission im Mehrschichtsystem}
+    \label{fig:Ergebnis2-0}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=0.5]{./assets/2. Simulationsergebnis Einfallswinkel.png}
+    \caption{Darstellung der Reflexion und Transmission im Mehrschichtsystem}
+    \label{fig:Ergebnis2-1}
 \end{figure}
 
 \printbibliography[]
