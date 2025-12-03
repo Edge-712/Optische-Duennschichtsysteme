@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber Projektbericht"] 1764719573.4875 "Projektbericht.bcf" "Projektbericht.bbl" "Projektbericht" 1764719580.43094 0
-  "./assets/Quellen.bib" 1764717289 2905 b013d6ee0312dab5ffba71f0c5cd6c2c ""
-  "Projektbericht.bcf" 1764719580 108885 4408ac72a984d46f6c931c4520daa695 "pdflatex"
+["biber Projektbericht"] 1764725677.09679 "Projektbericht.bcf" "Projektbericht.bbl" "Projektbericht" 1764725680.62609 0
+  "./assets/Quellen.bib" 1764725672 2905 b013d6ee0312dab5ffba71f0c5cd6c2c ""
+  "Projektbericht.bcf" 1764725680 108885 4408ac72a984d46f6c931c4520daa695 "pdflatex"
   (generated)
   "Projektbericht.bbl"
   "Projektbericht.blg"
   (rewritten before read)
-["pdflatex"] 1764719578.63821 "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" "Projektbericht.pdf" "Projektbericht" 1764719580.4315 0
+["pdflatex"] 1764725678.81619 "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" "Projektbericht.pdf" "Projektbericht" 1764725680.62671 0
   "C:/Users/oaygu/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1764714587 82873 a91d9f63007862f29e716a534e85bce5 ""
   "C:/Users/oaygu/AppData/Local/MiKTeX/fonts/tfm/public/rsfs/rsfs10.tfm" 1764513171 688 37338d6ab346c2f1466b29e195316aa4 ""
   "C:/Users/oaygu/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1763041832 13333512 401dd78c9023be05c1b32edec95bfcde ""
@@ -108,16 +108,16 @@
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/ot1ztmcm.fd" 1585253778 346 aee7226812ba4138ac67a018466b488d ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/ts1ptm.fd" 1585253778 653 96f56dc5d1ef1fe1121f1cfeec70ee0c ""
   "C:/Users/oaygu/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
-  "Projektbericht.aux" 1764719580 2924 5a4c8ed9f3eb15bec03998d4dc2b640e "pdflatex"
-  "Projektbericht.bbl" 1764719575 7051 6c93f71c0bf742435e039ec1569ce5b0 "biber Projektbericht"
-  "Projektbericht.run.xml" 1764719580 2411 f055ff63bf8059081bde6b573281fb57 "pdflatex"
-  "Projektbericht.tex" 1764719571 13665 25d44b37b8adcc1775155d28ec2a8068 ""
-  "Projektbericht.toc" 1764719580 622 c3ce017b39a87b5d1e0560e76ef6a83a "pdflatex"
-  "assets/1 Ergebnis Parallel 0.png" 1764718116 36265 ffffee03d8cbcf67438c0214b5c7108a ""
-  "assets/GUI.png" 1764710069 613285 ec69b9a71997862d0026d8fcb645623b ""
-  "assets/Grafik Reflexion.png" 1764702064 26968 fdc18c112ac1a28e55f141cd3f8f7260 ""
-  "assets/neu.png" 1764711029 203534 a128a04c9cdbab09a68f36207b529c49 ""
-  "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" 1764719571 13665 25d44b37b8adcc1775155d28ec2a8068 ""
+  "Projektbericht.aux" 1764725680 2924 5a4c8ed9f3eb15bec03998d4dc2b640e "pdflatex"
+  "Projektbericht.bbl" 1764725678 7051 6c93f71c0bf742435e039ec1569ce5b0 "biber Projektbericht"
+  "Projektbericht.run.xml" 1764725680 2411 f055ff63bf8059081bde6b573281fb57 "pdflatex"
+  "Projektbericht.tex" 1764725672 13665 25d44b37b8adcc1775155d28ec2a8068 ""
+  "Projektbericht.toc" 1764725680 622 c3ce017b39a87b5d1e0560e76ef6a83a "pdflatex"
+  "assets/1 Ergebnis Parallel 0.png" 1764725672 36265 ffffee03d8cbcf67438c0214b5c7108a ""
+  "assets/GUI.png" 1764725672 613285 ec69b9a71997862d0026d8fcb645623b ""
+  "assets/Grafik Reflexion.png" 1764725672 26968 fdc18c112ac1a28e55f141cd3f8f7260 ""
+  "assets/neu.png" 1764725672 203534 a128a04c9cdbab09a68f36207b529c49 ""
+  "c:/Users/oaygu/Documents/Duennschichtsysteme/Projektbericht.tex" 1764725672 13665 25d44b37b8adcc1775155d28ec2a8068 ""
   (generated)
   "Projektbericht.aux"
   "Projektbericht.bcf"
