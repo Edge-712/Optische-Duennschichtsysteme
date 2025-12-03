@@ -1,0 +1,433 @@
+\documentclass[12pt, oneside, final]{article}
+\usepackage[ngerman]{babel}
+\usepackage[a4paper, left=35mm,top=26mm,right=26mm,bottom=15mm]{geometry}
+\usepackage{mathptmx}
+\usepackage{amsmath}
+\usepackage[
+    backend = biber,
+    style = numeric,
+    sorting = nty
+]{biblatex}
+\addbibresource{./assets/Quellen.bib}
+\usepackage{graphicx}
+\setlength{\parskip}{0.5em}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\nouppercase{\rightmark}}
+\fancyhead[R]{\thepage}
+
+\makeatletter    
+\renewcommand{\sectionmark}[1]{\markboth{\thesection\ #1}{\thesection\ #1}}
+\renewcommand{\subsectionmark}[1]{\markright{\thesubsection\ #1}}
+\makeatother
+
+\author{Oğuzhan Aygün, Abdul-Malik Jakupi}
+\title{Projektarbeit: Optische Dünnschichtsysteme}
+\date{WiSe 2025}
+
+\begin{document}
+\maketitle
+\clearpage
+\tableofcontents
+\clearpage
+\section{Das Prinzip optischer Dünnschichtsysteme}
+
+Der Begriff optische Dünnschichtsysteme bezeichnet üblicherweise ein System aus
+oft nur wenigen Nanometer dünnen Schichten, dessen Zweck darin liegt, Wellen
+und ihre \textit{Interferenz} gezielt zu nutzen, um einen gewünschten
+Reflexions- und Transmissionsgrad zu erreichen. Dünnschichtsysteme sind ein
+wichtiger Bestandteil im Bereich der Optik und haben auch in anderen
+Fachgebieten einige Anwendungen, z.B.:
+\begin{itemize}
+    \item Antireflexbeschichtungen in Brillengläsern, Hochreflexschichten wie in Spiegeln
+          oder Kameraobjektiven in der Optik
+    \item Beschichtung von Geräten in der Medizintechnik
+    \item Herstellung von Prozessoren bei Mikroelektronik
+\end{itemize}
+Dafür bedient man sich meist verschiedenster Materialien wie
+z.B.Titanoxid, Magnesiumfluorid oder Aluminiumoxid, die alle einen
+individuellen Brechungsindex besitzen.
+Diese Eigenschaften werden in allen Anwendungen als das essentielle
+Werkzeug genutzt, um das jeweilige Ziel im gewünschten Wellenbereich zu erreichen.
+Dies kann z.B. im Fall von Brillengläsern destruktive Interferenz sein, bei anderen
+Anwendungen, wie Spiegeln, aber auch konstruktive Interferenz.
+
+Im Folgenden wird die Berechnung des bereits besprochenen Reflexions- und
+Transmissionsgrades beschrieben, um ein möglichst realistisches Programm zur
+Erfassung eben dieser zu entwickeln. Sie wird in Abhängigkeit der vorliegenden
+Brechungsindizes, Dicke der Schichten und dem Einfallswinkel berechnet.
+
+Das größte Problem, das es hier zu lösen gilt, ist die Berechnung des
+Reflexions- und Transmissionsgrades, da es durch die Existenz mehrerer
+Schichten zu einem endlosen Prozess von Rekalkulationen durch Teilwellen kommt,
+bei der bei jedem Durchdringen einer der Schichten ein neuer Prozess in beide
+Richtungen gestartet wird, was die Berechnung auf üblichem Wege erschwert. Eine
+Visualisierung des Prozesses in einem Mehrschichtsystem ist in Abbildung 1
+dargestellt. Um dieses Problem zu lösen wird die Transfermatrixmethode
+angewandt, welche anhand der Brechungsindizes, des Einfallswinkels und den
+Reflexions- und Transmissionskoeffizienten, an jeder Grenzfläche, ein
+Reflexionsspektrum als Resultat liefert.
+
+\begin{figure}[b]
+    \centering
+    \includegraphics[scale=0.2]{./assets/Grafik Reflexion.png}
+    \caption{Darstellung der Reflexion und Transmission im Mehrschichtsystem}
+    \label{fig:Reflexion}
+\end{figure}
+
+\section{Mathematisch-Physikalisches Modell}
+\subsection{Brechungsindex}
+Der (komplexe) Brechungsindex der jeweiligen Schicht hat die Form
+\[\tilde{n} = n + i\kappa.\]
+Sein realer Teil bestimmt die Brechung des Lichts an der Grenzfläche, während
+sein imaginärer Teil die Absorption des Lichts beschreibt. Die
+Wellenausbreitung kann durch den Term
+\[e^{i\frac{n \omega}{c}z} \cdot e^{-\frac{\kappa\omega}{c}z}.\]
+beschrieben werden. Dabei ist die Absorption
+\[e^{-\frac{\kappa\omega}{c}z}\]
+und die Phasenverschiebung
+\[e^{i\frac{n \omega}{c}z}.\]
+Diese beiden Komponenten sind essentiell für spätere Berechnungen von
+Schichteigenschaften mit der Transfermatrixmethode.
+
+Des Weiteren ist es wichtig den Brechungsindex als Funktion der Wellenlänge
+$n(\lambda)$ zu betrachten, um präzise Resultate zu erlangen, da Dispersion
+berücksichtigt werden muss. Dafür wird im Laufe der Arbeit, wenn möglich, die
+Sellmeier-Gleichung verwendet\cite{10.1063/1.555616}.
+\[n^2(\lambda) = 1 + \sum_{i} \frac{B_i \lambda^2}{\lambda^2 - C_i}\]
+Für manche Materialien wie Gase mussten für ein präziseres Ergebnis andere
+Approximationen genutzt werden\cite{Kren:11}.
+\subsection{Reflexion und Transmission}
+Reflexions- und Transmissionskoeffizienten von elektromagnetischen Wellen an
+einer Grenzfläche zwischen zwei Schichten werden mit den Fresnelschen Formeln
+ermittelt\cite{Hecht+2018}.
+
+$\theta_1$ ist der Einfallswinkel des Lichts auf die Grenzfläche und $\theta_2$ der
+Brechungswinkel. Der Brechungswinkel lässt sich
+durch das Snelliussche Brechungsgesetz definieren\cite{Hecht+2018}:
+\[n_1 \sin\theta_1 = n_2 \sin\theta_2\]
+Durch Auflösen nach $\theta_2$ entsteht folgende Gleichung:
+\[\theta_2 = \arcsin(\frac{n_1}{n_2}\sin\theta_1)\]
+zusätzlich muss die Polarisation berücksichtigt werden. Abhängig davon, ob das
+Licht senkrecht oder parallel zur Einfallsebene schwingt, variieren die
+Formeln.
+
+Senkrechte Polarisation:
+\[r_s = \frac{n_1 \cos\theta_1 - n_2 \cos\theta_2}{n_1 \cos\theta_1 + n_2 \cos\theta_2}, \quad t_s = \frac{2n_1 \cos\theta_1}{n_1 \cos\theta_1 + n_2 \cos\theta_2}\]
+
+Parallele Polarisation:
+\[r_p = \frac{n_2 \cos\theta_1 - n_1 \cos\theta_2}{n_2 \cos\theta_1 + n_1 \cos\theta_2}, \quad t_p = \frac{2n_1 \cos\theta_1}{n_2 \cos\theta_1 + n_1 \cos\theta_2}\]
+\[\]
+$n_1$ und $n_2$ stellen die Brechungsindizes der linken und rechten Schicht beim Grenzübergang da.
+
+Dieser Prozess liefert nun die Koeffizienten an der Grenzfläche zwischen zwei
+Schichten und muss für jede Schicht, bzw. jeden Grenzübergang erfolgen. Die
+Resultate werden in der Transfermatrixmethode verwertet.
+\subsection{Die Transfermatrixmethode}
+Es handelt sich bei der Transfermatrixmethode um eine elegante mathematische
+Lösung für das Problem der unendlichen Teilwellen\cite{Hecht+2018}. Anstatt den
+Verlauf des Lichtstrahls zu verfolgen, wird das gesamte Mehrschichtsystem
+betrachtet. Die Grundlage hierfür sind die fresnelschen Formeln, da sie das
+Verhältnis der Amplituden auf der linken und rechten Seite der Grenzfläche
+beschreiben. Das resultierende Gleichungssystem kann auch in Matrixschreibweise
+geschrieben werden, sodass klar wird, dass durch Matrixmultiplikation in den
+wie folgt definierten Matrizen, der Reflexionsgrad berechnet werden kann.
+
+Es werden jeweils zwei Arten von Matrizen gebildet, dabei bestimmt die Matrix D
+die Reflexion und Transmission an der Grenzfläche, während die Matrix P die
+Phasenverschiebung innerhalb einer Schicht beschreibt. Die Matrix D besitzt die
+Form
+\[D = \frac{1}{t}\begin{pmatrix}
+        1 & r \\
+        r & 1
+    \end{pmatrix},\]
+wobei $r$ dem berechneten Reflexions- und $t$ dem Transmissionskoeffizienten
+aus den fresnelschen Formeln entsprechen. Die Matrix P hat die Form
+\[P = \begin{pmatrix}
+        e^{-i \varphi} & 0             \\
+        0              & e^{i \varphi}
+    \end{pmatrix}\]
+mit
+\[\varphi = \frac{2 \pi n d \cos(\theta_2)}{\lambda},\]
+wobei d die Dicke, n der Brechungsindex und $\theta_2$ der Brechungswinkel der
+Schicht sind. Die Transfermatrix selbst ergibt sich nun aus der Multiplikation
+der enstandenen Matrizen
+\[M = D_0 \cdot P_0 \cdot D_{1} \cdot P_{1} \dots D_{n-1} \cdot P_n \cdot D_n\]
+und wird anschließend genutzt um den Reflexionsgrad R, nach der Definition der
+Intensität einer elektromagnetischen Welle,
+\[R = \left| \frac{M_{21}}{M_{11}} \right|^2\]
+zu bestimmen.
+\section{Algorithmische Umsetzung}
+Die mathematischen Beziehungen, die in Kapitel 2 beschrieben werden, finden in
+einer modular strukturierten Softwarearchitektur Umsetzung. Diese teilt den
+Berechnungsprozess in klar voneinander getrennte Komponenten auf. Das Programm
+umfasst die Materialverwaltung, die Berechnung der Fresnel-Koeffizienten, die
+konsistente Konstruktion der Transfermatrix und darauf basierende
+Reflexionsberechnungen.
+
+Alle Schritte sind durch eigene Funktionen oder Klassen voneinander abgegrenzt,
+was das Programm wartbar und erweiterbar macht und es ermöglicht, dass es mit
+beliebigen Schichtsystemen verwendet werden kann
+\subsection{Materialmodellierung}
+Zur Repräsentation einer Schicht dient die Klasse \texttt{Material}. Sie
+speichert:
+\begin{itemize}
+    \item den Namen des Materials,
+    \item die Schichtdicke d (bei Halbräumen: $d = \infty$)
+    \item optional einen festen Brechungsindex oder eine disperse
+          Brechungsindex-Funktion.
+\end{itemize}
+
+Für die gegebene Wellenlänge $\lambda$ liefert sie den komplexen Brechungsindex
+der entsprechenden Schicht. Je nach Material kommen verschiedene bewährte
+Formeln zum Einsatz. Dadurch wird eine realistische Nachbildung der
+Wellenlängenabhängigkeit möglich, ohne dass Anpassungen an den späteren
+optischen Berechnungen erforderlich sind. Die Klasse ist zudem dafür zuständig,
+die Materialparameter aus der JSON-Datei zu laden. Die Schichtfolge kann
+flexibel über die Benutzeroberfläche festgelegt werden, ohne dass eine
+Anpassung des Programmcodes erforderlich ist.
+\subsection{Berechnung der Grenzflächenkoeffizienten}
+Die Funktion
+\begin{center}
+    \texttt{fresenel\_coefficients(n1, n2, theta1, polarization)}
+\end{center}
+übernimmt die numerische Umsetzung der Fresnel-Gleichungen an einer Grenzfläche zwischen
+zwei Schichten. Sie berechnet:
+\begin{itemize}
+    \item den Brechungswinkel $\theta_2$ mit dem Snelliusschen Gesetz
+    \item die Reflexions- und Transmissionskoeffizienten r und t,
+    \item den für die Transfermatrix benötigten Phasenverlauf.
+\end{itemize}
+Die Funktion unterscheidet streng zwischen den beiden Polarisationen:
+\begin{itemize}
+    \item \texttt{Senkrecht} (s-polarisiert)
+    \item \texttt{Parallel} (p-polarisiert)
+\end{itemize}
+und gibt die zugehörigen Koeffizienten zurück.
+Damit ist die Polarisation vollständig als Parameter steuerbar, was eine Simulation beider
+physikalischen Fälle ermöglicht.
+
+\subsection{Aufbau der Transfermatrix}
+Die Funktion durchläuft alle Schichten und führt für jede Grenzfläche die
+folgenden Schritte aus:
+
+\begin{itemize}
+    \item Ermittlung der optischen Parameter der Grenzfläche: Die Fresnel-Koeffizienten
+          werden aus den Brechungsindizes der angrenzenden Schichten berechnet.
+    \item Generierung der Grenzflächenmatrix D: Diese Matrix beinhaltet nur Informationen
+          über Reflexion und Transmission an der jeweiligen Schichtgrenze.
+    \item Generierung der Propagationsmatrix P: Die Phasenverschiebung für alle endlichen
+          Schichten wird in Übereinstimmung mit der Dicke, dem Einfallswinkel und dem
+          Brechungsindex berechnet.
+    \item Multiplikatives Einbauen beider Matrizen in die Gesamtmatrix:
+\end{itemize}
+Die Transfermatrix wird iterativ aufgebaut durch
+\[M \leftarrow M \cdot D \cdot P,\]
+was sicherstellt, dass der aktuelle optische Zustand des Lichtfelds im
+Mehrschichtsystem erhalten bleibt. Dabei werden Schichten mit unendlicher Dicke
+(Luft und Substrat) automatisch identifiziert, und ihnen wird keine
+Propagationsmatrix zugewiesen. So wird das physikalische Modell exakt
+wiedergegeben
+\section{Benutzerhandbuch}
+Hier wird die grafische Nutzeroberfläche der Software präsentiert, zusammen mit
+einzelnen Funktionen, denen es eine Erläuterung bedarft.
+
+Zu aller erst müssen die Abhägigkeiten installiert werden. Da die Software auf
+Python basiert, kann dies am einfachsten über das Paketverwaltungsprogramm pip
+getätigt werden. In der Repository ist eine \texttt{requirements.txt} dafür zu
+finden, welche über pip mit dem Befehl
+\begin{center}
+    \texttt{pip install -r requirements.txt}
+\end{center}
+zu installieren sind. Beachtet werden sollte hierbei, dass eine globale
+Installation auf Linux Distributionen nicht auf den selben Weg möglich ist.
+Hierfür sollte vorher mit
+\begin{center}
+    \texttt{python -m venv .venv}
+\end{center}
+eine virtuelle Umgebung für das Programm erstellt werden. Die installation ist
+daraufhin nach Aktivieren dieser virtuellen Umbegung wie vorher beschrieben
+auszuführen. Anschließend wird die Software nach erfolgreicher Installation mit
+
+\begin{center}
+    \texttt{Python GUI.py}
+\end{center}
+ausgeführt.
+
+Nun sollte eine GUI zu sehen sein, welche aus einer Tabelle, einem Graphen und
+einzelnen zu bestimmenden Parametern unter beiden Flächen besteht. Dies ist
+zusätzlich in Abbildung 2 zusehen.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=0.45]{./assets/GUI.png}
+    \caption{Beschreibung der Benutzeroberfläche}
+    \label{fig:GUI}
+\end{figure}
+Es stehen in der Tabelle bereits 2 Zeilen vorangefertigt zur Verfügung. Sie
+stellen in der Software das Einfallsmedium und Substrat da und können
+entsprechend nicht entfernt werden. Am Einfallsmedium befindet sich in der
+letzten Spalte ein Button, welcher eine weitere Zeile, bzw. Schicht, direkt
+nach ihr selbst generiert und einfügt. Alle Zeilen, die eine Schicht
+repräsentieren, welche weder das Einfallsmedium, noch das Substrat sind,
+besitzen zwei Buttons in ihrer letzten Spalte. Das Pluszeichen hat die selbe
+Funktion, wie beim Einfallsmedium, während das Minuszeichen die Schicht, in der
+sie beeinhaltet ist, aus der Simulation löscht.
+
+In der ersten Spalte unter \texttt{Material} ist ein Dropdown-Menü mit der
+Aufschrifft Presets zu sehen. Benutzer können hier eine Auswahl von 5
+vorgefertigten Schichten wählen, welche bereits alle Parameter belegt haben. Es
+steht dem Nutzer jedoch offen die Dicke der Schicht anzupassen. Alternativ
+besteht auch die Möglichkeit mit dem Button unter der Tabelle ein neues
+Material anzulegen. Das betätigen öffnet ein zusätzliches Fenster, in dem der
+Nutzer einen Namen für das Material und einen komplexen Brechungsindex
+festlegen kann. Das Bestätigen der Eingabe erstellt ein neues Materialobjekt
+und fügt dessen Daten in die \texttt{Material.json} im Root ein, damit sie
+zusammen mit den vorgefertigten Materialien für den Nutzer langzeitig
+gespeichert sind. In Abbildung 3 ist das Dialogfenster abgebildet.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=0.6]{./assets/neu.png}
+    \caption{Dialogfenster zum hinzufügen neuer Materialien}
+    \label{fig:GUI-neu}
+\end{figure}
+
+\texttt{Bestätigen} plottet den Reflexionsgrad in Abhägigkeit
+
+der gegebenen Parameter in den Graphen. Wichtig ist hierbei die Definition des
+Wellenlängenbereichs und des Einfallswinkels, da sich die berechnete Funktion
+sich je nach Angabe ändert. Hierbei muss eins der Folgenden Muster eingehalten
+werden:
+\begin{align*}
+    (\text{\texttt{1.Wellenlänge - 2.Wellenlänge}, \quad \texttt{Einfallswinkel}})    & \rightarrow R(\lambda) \\
+    (\text{\texttt{Wellenlänge}, \quad \texttt{1.Einfallswinkel - 2.Einfallswinkel}}) & \rightarrow R(\theta)
+\end{align*}
+
+Sollten die Parameter in einem ungültigen Bereich liegen, wird stattdessen eine
+Fehlermeldung geliefert. Weiteres Nutzen des Bestätigen-Buttons fügt die
+gewünschten Funktionen in den Graph hinzu, bis der Nutzer sich entscheidet,
+diesen mit \texttt{Zurücksetzen} zu leeren.
+
+Eine Übersicht zu den Parametern und validen Eingaben befindet sich in Tabelle
+1.
+\begin{table}[htbp]
+    \centering
+    \caption{Beschreibung der Eingabeparameter im Programm}
+    \label{tab:Parameter}
+    \begin{tabular}{|l|p{9cm}|}
+        \hline
+        Parameter           & Beschreibung                                                             \\
+        \hline
+        Dicke               & Dicke der entsprechenden Schicht in Nanometern                           \\
+        \hline
+        n-real              & Realer Teil des (komplexen) Brechungsindex der
+        entsprechenden Schicht                                                                         \\
+        \hline
+        n-imaginärer        & Imaginärer Teil des (komplexen) Brechungsindex
+        der entsprechenden Schicht                                                                     \\
+        \hline
+        Wellenlängenbereich & Gewünschter Wellenlängenbereich $>0$, der im Graphen
+        geplottet werden soll. Kann angegeben werden in der Form: \texttt{1.Wellenlänge-2.Wellenlänge} \\
+        \hline
+        Einfallswinkel      & Einfallswinkel in Gradmaß im Bereich $0^\circ-89^\circ$                  \\
+        \hline
+        Polarisation        & Art der Polarisation mit Auswahl zwischen senkrecht und parallel         \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\section{Simulationsergebnisse}
+
+Das Erste zu simulierende Schichtsystem ist in Tabelle 2 zu sehen. Es ist
+aufgeteilt in die jeweiligen Materialien und ihren individuellen Dicken und
+soll im sichtbaren Spektrum simuliert werden. Hierfür nehmen wir einen
+Wellenlängenbereich von 400nm bis 700nm mit einem senkrechten Einfallswinkel.
+\begin{table}[h]
+    \centering
+    \caption{Zu simulierendes Schichtsystem}
+    \label{tab:Angabe1}
+    \begin{tabular}{|l |c|}
+        \hline
+        Material    & Dicke in nm \\
+        \hline
+        Luft        & $\infty$    \\
+        \hline
+        MgF$_2$     & 102         \\
+        TiO$_2$     & 105         \\
+        AL$_2$O$_3$ & 79          \\
+        \hline
+        Glas        & $\infty$    \\
+        \hline
+    \end{tabular}
+\end{table}
+
+Das Ergbenis ist in Abbildung 4 dargestellt und zeigt keine physikalischen
+Auffälligkeiten, die auf einen Fehler deuten würden. Die Funktion ist im
+ausgewählten Bereich stetig, was auf mathematische Stabilität deutet.
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[scale=0.5]{./assets/1 Ergebnis Parallel 0.png}
+    \caption{1. Simulationsergebnis für $R(\lambda)$ bei senkrechtem Einfall}
+    \label{fig:Ergebnis1-0}
+\end{figure}
+
+Die zweite zu simulierende Schicht befindet sich in Tabelle 3. Es wurde
+versucht für diese Schicht bei extremen Ultraviolettlicht eine passende Dicke
+der Schichten zu ermitteln, um optimale Reflektivität zu garantieren.
+\begin{table}[htpb]
+    \centering
+    \caption{Zu simulierendes EUV-Schichtsystem}
+    \label{tab:Angabe2}
+    \begin{tabular}{|l |c|}
+        \hline
+        Material & Brechzahl bei 13.5 nm                                 \\
+        \hline
+        Mo       & $1 - 7,6044 \cdot 10^{-2} -  6,4100 \cdot 10^{-3}i $  \\
+        \hline
+        Si       & $1 -  9,3781 \cdot 10^{-4} - 1,7260 \cdot 10^{-3}i  $ \\
+        \hline
+        SiO$_2$  & $1- 0,0218338 - 0,010721i$                            \\
+        \hline
+    \end{tabular}
+\end{table}
+
+Dabei war eine optimale Schichtdicke für den Einfallswinkel 15$^\circ$ und eine
+weitere optimale Schichtdicke für senkrechten Einfall. Die Werte für die
+optimale Dicke lassen sich durch die im Programm liegenden Funktionen ermitteln
+und sind in Tabelle 4 zu sehen.
+\begin{table}[htpb]
+    \centering
+    \caption{Optimierte Schichtdicke für EUV-Schicht}
+    \label{tab:Schicktdicke}
+    \begin{tabular}{|l |c| c|}
+        \hline
+        Material & optimierte Dicke für 0$^\circ$ & optimierte Dicke für 15$^\circ$ \\
+        \hline
+        Mo       & $2,8nm$                        & $2,8nm$                         \\
+        \hline
+        Si       & $4,1nm$                        & $4,35nm$                        \\
+        \hline
+    \end{tabular}
+\end{table}
+Die Ergebnisse in Abbildung 5 und 6 sind die
+gewünschten Funktionen für die EUV-Schicht mit ihren optimierten Dicken. Der
+Hochpunkt bei etwa 13.5nm in Abbildung 5 bestätigt die Werte der Schichtdicke,
+während der Reflexionsgrad für $15^\circ$ ebenfalls ein akzeptables Ergebnis
+liefert.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=0.5]{./assets/2. Simulationsergebnis Wellenlänge.png}
+    \caption{Darstellung der Simulationsergebnisse für die EUV-Schicht nach Wellenlänge bei Senkrechtem Einfallswinkel}
+    \label{fig:Ergebnis2-0}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[scale=0.5]{./assets/2. Simulationsergebnis Einfallswinkel.png}
+    \caption{Darstellung Simulationsergebnisse für EUV-Schicht nach Einfallswinkel}
+    \label{fig:Ergebnis2-1}
+\end{figure}
+
+\printbibliography[]
+\end{document}
