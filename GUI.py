@@ -191,7 +191,9 @@ class MainWindow(QMainWindow):
                 )
                 self.canvas.axes.set_xlabel("Einfallswinkel (\u03c6)")
                 self.canvas.axes.set_ylabel("Reflexion R")
-                self.canvas.axes.plot(angles, reflect_list, label=str(label))
+                self.canvas.axes.plot(
+                    angles * 180 / np.pi, reflect_list, label=str(label)
+                )
                 self.canvas.axes.legend()
             self.canvas.draw()
 
