@@ -41,8 +41,8 @@ wichtiger Bestandteil im Bereich der Optik und haben auch in anderen
 Fachgebieten einige Anwendungen, z.B.:
 \begin{itemize}
     \item Antireflexbeschichtungen in Brillengläsern, Hochreflexschichten wie in Spiegeln
-          oder Kameraobjektiven in der Optik
-    \item Beschichtung von Geräten in der Medizintechnik
+          oder Kameraobjektiven in der Optik,
+    \item Beschichtung von Geräten in der Medizintechnik,
     \item Herstellung von Prozessoren bei Mikroelektronik.
 \end{itemize}
 Dafür bedient man sich meist verschiedenster Materialien wie
@@ -93,22 +93,20 @@ Schichteigenschaften mit der Transfermatrixmethode.
 Des Weiteren ist es wichtig den Brechungsindex als Funktion der Wellenlänge
 $n(\lambda)$ zu betrachten, um präzise Resultate zu erlangen, da Dispersion
 berücksichtigt werden muss. Dafür wird im Laufe der Arbeit, wenn möglich, die
-Sellmeier-Gleichung verwendet~\cite{10.1063/1.555616}.
-\[n^2(\lambda) = 1 + \sum_{i} \frac{B_i \lambda^2}{\lambda^2 - C_i}\]
+Sellmeier-Gleichung verwendet~\cite{10.1063/1.555616}:
+\[n^2(\lambda) = 1 + \sum_{i} \frac{B_i \lambda^2}{\lambda^2 - C_i}.\]
 Für manche Materialien wie Gase mussten für ein präziseres Ergebnis andere
 Approximationen genutzt werden~\cite{Kren:11}.
 \subsection{Reflexion und Transmission}
 Reflexions- und Transmissionskoeffizienten von elektromagnetischen Wellen an
 einer Grenzfläche zwischen zwei Schichten werden mit den fresnelschen Formeln
-ermittelt~\cite{Hecht+2018}.
-
-$\theta_1$ ist der Einfallswinkel des Lichts auf die Grenzfläche und $\theta_2$ der
-Brechungswinkel. Der Brechungswinkel lässt sich
-durch das snelliussche Brechungsgesetz definieren~\cite{Hecht+2018}:
-\[n_1 \sin\theta_1 = n_2 \sin\theta_2\]
+ermittelt~\cite{Hecht+2018}. $\theta_1$ ist der Einfallswinkel des Lichts auf
+die Grenzfläche und $\theta_2$ der Brechungswinkel. Der Brechungswinkel lässt
+sich durch das snelliussche Brechungsgesetz definieren~\cite{Hecht+2018}:
+\[n_1 \sin\theta_1 = n_2 \sin\theta_2.\]
 Durch Auflösen nach $\theta_2$ entsteht folgende Gleichung:
-\[\theta_2 = \arcsin(\frac{n_1}{n_2}\sin\theta_1)\]
-zusätzlich muss die Polarisation berücksichtigt werden. Abhängig davon, ob das
+\[\theta_2 = \arcsin(\frac{n_1}{n_2}\sin\theta_1).\]
+Zusätzlich muss die Polarisation berücksichtigt werden. Abhängig davon, ob das
 Licht senkrecht oder parallel zur Einfallsebene schwingt, variieren die
 Formeln.
 
@@ -117,9 +115,7 @@ Senkrechte Polarisation:
 
 Parallele Polarisation:
 \[r_p = \frac{n_2 \cos\theta_1 - n_1 \cos\theta_2}{n_2 \cos\theta_1 + n_1 \cos\theta_2}, \quad t_p = \frac{2n_1 \cos\theta_1}{n_2 \cos\theta_1 + n_1 \cos\theta_2}\]
-\[\]
-$n_1$ und $n_2$ stellen die Brechungsindizes der linken und rechten Schicht beim Grenzübergang da.
-
+$n_1$ und $n_2$ stellen die Brechungsindizes der linken und rechten Schicht beim Grenzübergang dar.
 Dieser Prozess liefert nun die Koeffizienten an der Grenzfläche zwischen zwei
 Schichten und muss für jede Schicht, bzw. jeden Grenzübergang erfolgen. Die
 Resultate werden in der Transfermatrixmethode verwertet.
@@ -200,8 +196,8 @@ zwei Schichten. Sie berechnet:
 \end{itemize}
 Die Funktion unterscheidet streng zwischen den beiden Polarisationen:
 \begin{itemize}
-    \item \texttt{Senkrecht} (s-polarisiert)
-    \item \texttt{Parallel} (p-polarisiert)
+    \item \texttt{senkrecht} (s-polarisiert)
+    \item \texttt{parallel} (p-polarisiert)
 \end{itemize}
 und gibt die zugehörigen Koeffizienten zurück.
 Damit ist die Polarisation vollständig als Parameter steuerbar, was eine Simulation beider
@@ -214,11 +210,11 @@ folgenden Schritte aus:
 \begin{itemize}
     \item Ermittlung der optischen Parameter der Grenzfläche: Die Fresnel-Koeffizienten
           werden aus den Brechungsindizes der angrenzenden Schichten berechnet.
-    \item Generierung der Grenzflächenmatrix D: Diese Matrix beinhaltet nur Informationen
-          über Reflexion und Transmission an der jeweiligen Schichtgrenze.
-    \item Generierung der Propagationsmatrix P: Die Phasenverschiebung für alle endlichen
-          Schichten wird in Übereinstimmung mit der Dicke, dem Einfallswinkel und dem
-          Brechungsindex berechnet.
+    \item Generierung der Grenzflächenmatrix D:\@ Diese Matrix beinhaltet nur
+          Informationen über Reflexion und Transmission an der jeweiligen Schichtgrenze.
+    \item Generierung der Propagationsmatrix P:\@ Die Phasenverschiebung für alle
+          endlichen Schichten wird in Übereinstimmung mit der Dicke, dem Einfallswinkel
+          und dem Brechungsindex berechnet.
     \item Multiplikatives Einbauen beider Matrizen in die Gesamtmatrix:
 \end{itemize}
 Die Transfermatrix wird iterativ aufgebaut durch
@@ -419,6 +415,6 @@ liefert.
     \includegraphics[scale=0.5]{./assets/2. Simulationsergebnis Einfallswinkel.png}
     \caption{Darstellung Simulationsergebnisse für EUV-Schicht nach Einfallswinkel}\label{fig:Ergebnis2-1}
 \end{figure}
-
+\clearpage
 \printbibliography[]
 \end{document}
