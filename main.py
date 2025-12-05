@@ -1,6 +1,5 @@
 import numpy as np
 import json
-import matplotlib.pyplot as plt
 
 # /////////////////////////
 #   d: Dicke in m
@@ -14,6 +13,7 @@ class Material:
     """Material-Klasse für simplere Bearbeitung über GUI"""
 
     def refractive_index(self, wavelength):
+        wavelength = wavelength * 1e6
         if self.name == "Luft":
             return 1 + (1.181494e-4 + (9.708931e-3) / (75.4 - wavelength ** (-2)))
 
@@ -51,10 +51,19 @@ class Material:
         else:
             return self.n
 
-    def __init__(self, name, d, n=None):
+    def __init__(
+        self,
+        name: str,
+        d: float,
+        B: list[float] = None,  # type: ignore
+        C: list[float] = None,  # type: ignore
+        n: complex = None,  # type: ignore
+    ):
         self.d = d
         self.n = n
         self.name = name
+        self.B = B
+        self.C = C
 
     def __str__(self):
         return self.name
@@ -67,9 +76,9 @@ class Material:
         with open("Material.json", "r") as file:
             data = json.load(file)
             material_list = [
-                Material(i["name"], i["d"])
+                Material(i["name"], i["d"], i["B"], i["C"])
                 if i["n"] == "None"
-                else Material(i["name"], i["d"], complex(i["n"]))
+                else Material(name=i["name"], d=i["d"], n=complex(i["n"]))
                 for i in data
             ]
             return material_list
@@ -138,43 +147,4 @@ def reflectance(material_list, wavelengths, polarization, theta):
     return np.array(R)
 
 
-# material_list = [
-#     Material("Luft", np.inf),
-#     Material("MgF\u2082", 100),
-#     Material("TiO\u2082", 100),
-#     Material("Al\u2082O\u2083", 100),
-#     Material("Glas", np.inf),
-# ]
-
 material_list = Material.toMaterial()
-
-# # Komplexe Brechzahlen bei 13.5 nm
-# Mo = Material("Mo", 2.8, 1 - 7.6044e-2 + 6.4100e-3j)
-# Si = Material("Si", 4.1, 1 - 9.3781e-4 + 1.7260e-3j)
-
-# euv_list = [Material("Luft", np.inf)]
-# for i in range(0, 40):
-#     if i % 2 == 0:
-#         euv_list.append(Mo)
-#     else:
-#         euv_list.append(Si)
-
-# euv_list.append(Material("Quarz", np.inf))
-
-# lambda_design = 13.5e-9
-# wavelengths_euv = np.linspace(10e-9, 40e-9, 300)
-
-# angles = np.linspace(0, 89 * np.pi / 180, 300)
-
-# R_euv = reflectance(euv_list, wavelengths_euv, "Senkrecht", 0)
-
-# plt.figure()
-# plt.subplot(111)
-# plt.plot(wavelengths_euv * 1e9, R_euv, color="red")
-# plt.title("Reflexionsspektrum (EUV)\n40× (Mo/Si)-Schichten")
-# plt.xlabel("Wellenlänge in nm")
-# plt.ylabel("Reflexionsgrad R")
-# plt.grid(True)
-
-# plt.tight_layout()
-# plt.show()
