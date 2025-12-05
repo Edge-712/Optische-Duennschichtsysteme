@@ -1,5 +1,7 @@
 import numpy as np
 import json
+from typing import Literal
+
 
 # /////////////////////////
 #   d: Dicke in m
@@ -7,47 +9,19 @@ import json
 #   theta: Winkel in rad
 #   wavelength: Wellenlänge in m
 # ////////////////////////
-
-
 class Material:
     """Material-Klasse für simplere Bearbeitung über GUI"""
 
     def refractive_index(self, wavelength):
         wavelength = wavelength * 1e6
-        if self.name == "Luft":
-            return 1 + (1.181494e-4 + (9.708931e-3) / (75.4 - wavelength ** (-2)))
-
-        elif self.name == "MgF\u2082":
-            return np.sqrt(
-                1.27620
-                + (0.60967 * wavelength**2) / (wavelength**2 - 0.08636**2)
-                + (0.0080 * wavelength**2) / (wavelength**2 - 18.0**2)
-                + (2.14973 * wavelength**2) / (wavelength**2 - 25.0**2)
-            )
-        elif self.name == "TiO\u2082":
-            return np.sqrt(5.913 + 0.2441 / (wavelength**2 - 0.0803))
-        elif self.name == "Al\u2082O\u2083":
-            return np.sqrt(
-                1
-                + (1.4313493 * wavelength**2) / (wavelength**2 - 0.0726631**2)
-                + (0.65054713 * wavelength**2) / (wavelength**2 - 0.1193242**2)
-                + (5.3414021 * wavelength**2) / (wavelength**2 - 18.028251**2)
-            )
-        elif self.name == "Glas":
-            return np.sqrt(
-                1
-                + (1.1273555 * wavelength**2) / (wavelength**2 - 0.00720341707)
-                + (0.124412303 * wavelength**2) / (wavelength**2 - 0.0269835916)
-                + (0.827100531 * wavelength**2) / (wavelength**2 - 100.384588)
-            )
-        elif self.name == "Quarz":
-            return np.sqrt(
-                1
-                + (0.6961663 * wavelength**2) / (wavelength**2 - 0.0684043**2)
-                + (0.4079426 * wavelength**2) / (wavelength**2 - 0.1162414**2)
-                + (0.8974794 * wavelength**2) / (wavelength**2 - 9.896161**2)
-            )
-
+        if self.n_type == 0:
+            return self.n
+        elif self.n_type == 1:
+            n = 0
+            wl = wavelength**2
+            for i in range(0, len(self.B) - 1):
+                n += (self.B[i] * wl) / (wl - self.C[i])
+            return np.sqrt(1 + n)
         else:
             return self.n
 
@@ -55,13 +29,15 @@ class Material:
         self,
         name: str,
         d: float,
-        B: list[float] = None,  # type: ignore
-        C: list[float] = None,  # type: ignore
+        n_type: int,
+        B: list = None,  # type: ignore
+        C: list = None,  # type: ignore
         n: complex = None,  # type: ignore
     ):
+        self.name = name
         self.d = d
         self.n = n
-        self.name = name
+        self.n_type = n_type
         self.B = B
         self.C = C
 
@@ -69,7 +45,14 @@ class Material:
         return self.name
 
     def toJson(self):
-        return {"name": self.name, "d": self.d, "n": str(self.n)}
+        return {
+            "name": self.name,
+            "d": self.d,
+            "n_type": self.n_type,
+            "B": self.B,
+            "C": self.C,
+            "n": str(self.n),
+        }
 
     @staticmethod
     def toMaterial():
@@ -78,7 +61,14 @@ class Material:
             material_list = [
                 Material(i["name"], i["d"], i["B"], i["C"])
                 if i["n"] == "None"
-                else Material(name=i["name"], d=i["d"], n=complex(i["n"]))
+                else Material(
+                    name=i["name"],
+                    d=i["d"],
+                    n_type=i["n_type"],
+                    B=i["B"],
+                    C=i["C"],
+                    n=complex(i["n"]),
+                )
                 for i in data
             ]
             return material_list

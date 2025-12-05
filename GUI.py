@@ -290,13 +290,27 @@ class MainWindow(QMainWindow):
         layouth.addWidget(namef)
         layoutv.addLayout(layouth)
 
+        calc_label = QLabel("Berechnungs-Typ: ")
+        calc_type = QComboBox()
+        calc_type.setPlaceholderText("Typ")
+        calc_type.addItem("Sellmeier", userData=1)
+        calc_type.addItem("Benutzerdefiniert", userData=0)
+
+        layouth = QHBoxLayout()
+        layouth.addWidget(calc_label)
+        layouth.addWidget(calc_type)
+
+        layoutv.addLayout(layouth)
+
         index = QLabel("Brechungsindex: ")
         real = QLineEdit()
         real.setPlaceholderText("Reell")
+        real.setEnabled(False)
         imaginary = QLineEdit()
         imaginary.setPlaceholderText("Imaginär")
-        imaginary.setDisabled(True)
+        imaginary.setEnabled(False)
         check = QCheckBox()
+        check.setEnabled(False)
         check.clicked.connect(lambda: imaginary.setDisabled(imaginary.isEnabled()))
         check.clicked.connect(lambda: imaginary.clear())
 
@@ -308,26 +322,73 @@ class MainWindow(QMainWindow):
 
         layoutv.addLayout(layouth)
 
-        confirm = QPushButton("Bestätigen")
-        confirm.clicked.connect(lambda: self.check_index(namef.text(), real, imaginary))
+        coefficient_label = QLabel("Sellmeier-Koeffizienten")
 
+        coefficientB = QLineEdit()
+        coefficientB.setEnabled(False)
+        coefficientB.setPlaceholderText("B1, B2, ..., Bn-1, Bn")
+
+        coefficientC = QLineEdit()
+        coefficientC.setEnabled(False)
+        coefficientC.setPlaceholderText("C1, C2, ..., Cn-1, Cn")
+
+        layouth = QHBoxLayout()
+        layouth.addWidget(coefficient_label)
+        layouth.addWidget(coefficientB)
+        layouth.addWidget(coefficientC)
+
+        layoutv.addLayout(layouth)
+
+        confirm = QPushButton("Bestätigen")
         layoutv.addWidget(confirm)
 
         dialog.setLayout(layoutv)
 
+        def switch_buttons():
+            if calc_type.currentData() == 1:
+                coefficientB.setEnabled(True)
+                coefficientC.setEnabled(True)
+                real.setEnabled(False)
+                imaginary.setEnabled(False)
+                check.setEnabled(False)
+                check.setChecked(False)
+            else:
+                coefficientB.setEnabled(False)
+                coefficientC.setEnabled(False)
+                real.setEnabled(True)
+                imaginary.setEnabled(False)
+                check.setEnabled(True)
+                check.setChecked(False)
+
+        def check_index():
+            if imaginary.isEnabled():
+                n = complex(float(real.text()), float(imaginary.text()))
+            else:
+                n = float(real.text())
+
+            bliststr = coefficientB.text().split(",")
+            blistfloat = [float(i) for i in bliststr]
+            cliststr = coefficientC.text().split(",")
+            clistfloat = [float(i) for i in cliststr]
+            material_list.append(
+                Material(
+                    name=namef.text(),
+                    d=100,
+                    n_type=calc_type.currentData(),
+                    B=blistfloat,
+                    C=clistfloat,
+                    n=n,
+                )
+            )
+            jsonlist = [i.toJson() for i in material_list]
+
+            with open("Material.json", "w") as file:
+                json.dump(jsonlist, file, indent=4)
+
+        calc_type.activated.connect(switch_buttons)
+        confirm.clicked.connect(check_index)
+
         dialog.exec()
-
-    def check_index(self, name: str, real: QLineEdit, imaginary: QLineEdit):
-        if imaginary.isEnabled():
-            n = complex(float(real.text()), float(imaginary.text()))
-        else:
-            n = float(real.text())
-
-        material_list.append(Material(name, 100, n))
-        jsonlist = [i.toJson() for i in material_list]
-
-        with open("Material.json", "w") as file:
-            json.dump(jsonlist, file, indent=4)
 
 
 class PlotCanvas(FigureCanvasQTAgg):
