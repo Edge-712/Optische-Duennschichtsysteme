@@ -1,0 +1,2 @@
+{"rule":"GERMAN_SPELLER_RULE","sentence":"^\\QDie Funktion fresenelcoefficients(n1, n2, theta1, polarization) übernimmt die numerische Umsetzung der Fresnel-Gleichungen an einer Grenzfläche zwischen zwei Schichten.\\E$"}
+{"rule":"DE_MULTITOKEN_SPELLING_TWO","sentence":"^\\QSie berechnet: den Brechungswinkel \\E(?:Dummy|Ina|Jimmy-|Dummy-|Maniquí-|Maniquíes-|Dummy\\+|Dummy's\\+)[0-9]+\\Q mit dem snelliusschen Gesetz die Reflexions- und Transmissionskoeffizienten r und t, den für die Transfermatrix benötigten Phasenverlauf.\\E$"}

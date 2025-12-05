@@ -1,0 +1,6 @@
+Sellmeier-Gleichung
+Fresnelschen
+Snelliussche
+fresnelschen
+Fresnel-Koeffizienten
+snelliussche
