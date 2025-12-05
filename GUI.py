@@ -323,6 +323,9 @@ class MainWindow(QMainWindow):
         layoutv.addLayout(layouth)
 
         coefficient_label = QLabel("Sellmeier-Koeffizienten")
+        coefficientA = QLineEdit()
+        coefficientA.setEnabled(False)
+        coefficientA.setPlaceholderText("A=1")
 
         coefficientB = QLineEdit()
         coefficientB.setEnabled(False)
@@ -334,6 +337,7 @@ class MainWindow(QMainWindow):
 
         layouth = QHBoxLayout()
         layouth.addWidget(coefficient_label)
+        layouth.addWidget(coefficientA)
         layouth.addWidget(coefficientB)
         layouth.addWidget(coefficientC)
 
@@ -346,6 +350,7 @@ class MainWindow(QMainWindow):
 
         def switch_buttons():
             if calc_type.currentData() == 1:
+                coefficientA.setEnabled(True)
                 coefficientB.setEnabled(True)
                 coefficientC.setEnabled(True)
                 real.setEnabled(False)
@@ -353,6 +358,7 @@ class MainWindow(QMainWindow):
                 check.setEnabled(False)
                 check.setChecked(False)
             else:
+                coefficientA.setEnabled(False)
                 coefficientB.setEnabled(False)
                 coefficientC.setEnabled(False)
                 real.setEnabled(True)
@@ -362,24 +368,38 @@ class MainWindow(QMainWindow):
 
         def check_index():
             if imaginary.isEnabled():
-                n = complex(float(real.text()), float(imaginary.text()))
+                n = complex(f"{real.text()}+{imaginary.text()}j")
             else:
-                n = float(real.text())
+                if real.text() == "":
+                    n = 0
+                else:
+                    n = complex(real.text())
 
-            bliststr = coefficientB.text().split(",")
-            blistfloat = [float(i) for i in bliststr]
-            cliststr = coefficientC.text().split(",")
-            clistfloat = [float(i) for i in cliststr]
-            material_list.append(
-                Material(
-                    name=namef.text(),
-                    d=100,
-                    n_type=calc_type.currentData(),
-                    B=blistfloat,
-                    C=clistfloat,
-                    n=n,
+            if calc_type.currentData() == 1:
+                bliststr = coefficientB.text().split(",")
+                blistfloat = [eval(i) for i in bliststr]
+                cliststr = coefficientC.text().split(",")
+                clistfloat = [eval(i) for i in cliststr]
+
+                material_list.append(
+                    Material(
+                        name=namef.text(),
+                        n_type=calc_type.currentData(),
+                        d=100,
+                        A=float(coefficientA.text()),  # type: ignore
+                        B=blistfloat,
+                        C=clistfloat,
+                    )
                 )
-            )
+            elif calc_type.currentData() == 0:
+                material_list.append(
+                    Material(
+                        name=namef.text(),
+                        n_type=calc_type.currentData(),
+                        d=100,
+                        n=n,
+                    )
+                )
             jsonlist = [i.toJson() for i in material_list]
 
             with open("Material.json", "w") as file:

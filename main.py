@@ -21,25 +21,33 @@ class Material:
             wl = wavelength**2
             for i in range(0, len(self.B) - 1):
                 n += (self.B[i] * wl) / (wl - self.C[i])
-            return np.sqrt(1 + n)
+            return np.sqrt(1 + self.A + n)
+        elif self.n_type == 3:
+            global_vars = {**np.__dict__}
+            local_var = {"x": wavelength}
+            return eval(self.formula.strip(), global_vars, local_var)
         else:
             return self.n
 
     def __init__(
         self,
         name: str,
-        d: float,
         n_type: int,
+        d: float = None,  # type: ignore
+        A: float = 0,
         B: list = None,  # type: ignore
         C: list = None,  # type: ignore
-        n: complex = None,  # type: ignore
+        n: complex = 0,  # type: ignore
+        formula: str = None,  # type: ignore
     ):
         self.name = name
         self.d = d
         self.n = n
         self.n_type = n_type
+        self.A = A
         self.B = B
         self.C = C
+        self.formula = formula
 
     def __str__(self):
         return self.name
@@ -49,9 +57,11 @@ class Material:
             "name": self.name,
             "d": self.d,
             "n_type": self.n_type,
+            "A": self.A,
             "B": self.B,
             "C": self.C,
             "n": str(self.n),
+            "formula": self.formula,
         }
 
     @staticmethod
@@ -59,15 +69,15 @@ class Material:
         with open("Material.json", "r") as file:
             data = json.load(file)
             material_list = [
-                Material(i["name"], i["d"], i["B"], i["C"])
-                if i["n"] == "None"
-                else Material(
+                Material(
                     name=i["name"],
                     d=i["d"],
                     n_type=i["n_type"],
+                    A=i["A"],
                     B=i["B"],
                     C=i["C"],
                     n=complex(i["n"]),
+                    formula=i["formula"],
                 )
                 for i in data
             ]
@@ -77,6 +87,7 @@ class Material:
 # Fresnel-Formeln & Transfermatrix
 def fresnel_coefficients(n1, n2, theta1, polarization):
     """Berechne Fresnel-Koeffizienten (Reflexion & Transmission)"""
+    print(f"{n1} und {n2}")
     theta2 = np.arcsin(n1 / n2 * np.sin(theta1))
     if polarization == "Senkrecht":
         r = (n1 * np.cos(theta1) - n2 * np.cos(theta2)) / (
