@@ -22,7 +22,7 @@ class Material:
             for i in range(0, len(self.B) - 1):
                 n += (self.B[i] * wl) / (wl - self.C[i])
             return np.sqrt(1 + self.A + n)
-        elif self.n_type == 3:
+        elif self.n_type == 2:
             global_vars = {**np.__dict__}
             local_var = {"x": wavelength}
             return eval(self.formula.strip(), global_vars, local_var)
@@ -87,7 +87,6 @@ class Material:
 # Fresnel-Formeln & Transfermatrix
 def fresnel_coefficients(n1, n2, theta1, polarization):
     """Berechne Fresnel-Koeffizienten (Reflexion & Transmission)"""
-    print(f"{n1} und {n2}")
     theta2 = np.arcsin(n1 / n2 * np.sin(theta1))
     if polarization == "Senkrecht":
         r = (n1 * np.cos(theta1) - n2 * np.cos(theta2)) / (

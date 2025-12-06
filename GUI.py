@@ -294,7 +294,8 @@ class MainWindow(QMainWindow):
         calc_type = QComboBox()
         calc_type.setPlaceholderText("Typ")
         calc_type.addItem("Sellmeier", userData=1)
-        calc_type.addItem("Benutzerdefiniert", userData=0)
+        calc_type.addItem("Fester Brechungsindex", userData=0)
+        calc_type.addItem("Benutzerdefiniert", userData=2)
 
         layouth = QHBoxLayout()
         layouth.addWidget(calc_label)
@@ -329,17 +330,28 @@ class MainWindow(QMainWindow):
 
         coefficientB = QLineEdit()
         coefficientB.setEnabled(False)
-        coefficientB.setPlaceholderText("B1, B2, ..., Bn-1, Bn")
+        coefficientB.setPlaceholderText("B1, B2, ...")
 
         coefficientC = QLineEdit()
         coefficientC.setEnabled(False)
-        coefficientC.setPlaceholderText("C1, C2, ..., Cn-1, Cn")
+        coefficientC.setPlaceholderText("C1, C2, ...")
 
         layouth = QHBoxLayout()
         layouth.addWidget(coefficient_label)
         layouth.addWidget(coefficientA)
         layouth.addWidget(coefficientB)
         layouth.addWidget(coefficientC)
+
+        layoutv.addLayout(layouth)
+
+        formula_label = QLabel("Formel:")
+        formula = QLineEdit()
+        formula.setPlaceholderText("Für Wellenlänge: x")
+        formula.setEnabled(False)
+
+        layouth = QHBoxLayout()
+        layouth.addWidget(formula_label)
+        layouth.addWidget(formula)
 
         layoutv.addLayout(layouth)
 
@@ -357,7 +369,8 @@ class MainWindow(QMainWindow):
                 imaginary.setEnabled(False)
                 check.setEnabled(False)
                 check.setChecked(False)
-            else:
+                formula.setEnabled(False)
+            elif calc_type.currentData() == 0:
                 coefficientA.setEnabled(False)
                 coefficientB.setEnabled(False)
                 coefficientC.setEnabled(False)
@@ -365,6 +378,16 @@ class MainWindow(QMainWindow):
                 imaginary.setEnabled(False)
                 check.setEnabled(True)
                 check.setChecked(False)
+                formula.setEnabled(False)
+            else:
+                coefficientA.setEnabled(False)
+                coefficientB.setEnabled(False)
+                coefficientC.setEnabled(False)
+                real.setEnabled(False)
+                imaginary.setEnabled(False)
+                check.setEnabled(False)
+                check.setChecked(False)
+                formula.setEnabled(True)
 
         def check_index():
             if imaginary.isEnabled():
@@ -400,6 +423,16 @@ class MainWindow(QMainWindow):
                         n=n,
                     )
                 )
+            else:
+                material_list.append(
+                    Material(
+                        name=namef.text(),
+                        n_type=calc_type.currentData(),
+                        d=100,
+                        formula=formula.text(),
+                    )
+                )
+
             jsonlist = [i.toJson() for i in material_list]
 
             with open("Material.json", "w") as file:
