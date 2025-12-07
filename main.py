@@ -1,6 +1,5 @@
 import numpy as np
 import json
-from typing import Literal
 
 
 # /////////////////////////
@@ -10,9 +9,27 @@ from typing import Literal
 #   wavelength: Wellenlänge in m
 # ////////////////////////
 class Material:
-    """Material-Klasse für simplere Bearbeitung über GUI"""
+    """Material-Klasse zur Simulation von Schichtmaterialen und ihren Eigenschaften.
+
+    Attributes:
+        name (str): Name des Materials.
+        name_type (int): Parameter der die Art der Berechnung des Brechungsindex definiert.
+        d (float): Dicke der Schicht in Nanometer.
+        A (float): Optionaler Parameter zur Sellmeier-Gleichung.
+        B (float): B-Koeffizient der Sellmeier-Gleichung.
+        C (float): C-Koeffizient der Sellmeier-Gleichung.
+        n (complex): Optionale Komplexe Brechzahl, falls sich für einen fixen Wert entschieden wird.
+        formula (string): Optionaler Benutzerdefinierte Formel zur Bestimmung des Brechungsindex.
+    """
 
     def refractive_index(self, wavelength):
+        """Berechnet den Brechungsindex auf die gewünschte Art und liefert ihn zurück.
+
+        Args:
+            wavelength: Für Funktion der Wellenlänge eine Liste an Wellenlängen, andernfalls eine einzige Wellenlänge in Meter.
+        Returns:
+            Liefert den Brechungsindex zurück.
+        """
         wavelength = wavelength * 1e6
         if self.n_type == 0:
             return self.n
@@ -50,9 +67,19 @@ class Material:
         self.formula = formula
 
     def __str__(self):
+        """To-String Methode für Ausgabe von Material-Objekten.
+
+        Returns:
+            Name des Materials.
+        """
         return self.name
 
     def toJson(self):
+        """Nimmt alle Parameter des Material-Objekts und formt sie in ein Dictionary.
+
+        Returns:
+            Dictionary in Form des Material-Objekts.
+        """
         return {
             "name": self.name,
             "d": self.d,
@@ -66,6 +93,12 @@ class Material:
 
     @staticmethod
     def toMaterial():
+        """Liest eine lokale Material.json ein und wandelt alle Daten in die Form eines Material-Objekts um.
+
+        Returns:
+            Material Array mit allen Objekten aus der Material.json im Root.
+
+        """
         with open("Material.json", "r") as file:
             data = json.load(file)
             material_list = [
@@ -86,7 +119,15 @@ class Material:
 
 # Fresnel-Formeln & Transfermatrix
 def fresnel_coefficients(n1, n2, theta1, polarization):
-    """Berechne Fresnel-Koeffizienten (Reflexion & Transmission)"""
+    """Berechnet Fresnel-Koeffizienten (Reflexion & Transmission)
+
+    Args:
+        n1 (float): Brechungsindex der linken Schicht.
+        n2 (float): Brechungsindex der rechten Schicht.
+        theta1 (float): Einfallswinkel in Radiant.
+        polarization (string): Polarisation "Senkrecht" oder "Parallel".
+
+    """
     theta2 = np.arcsin(n1 / n2 * np.sin(theta1))
     if polarization == "Senkrecht":
         r = (n1 * np.cos(theta1) - n2 * np.cos(theta2)) / (
@@ -104,7 +145,15 @@ def fresnel_coefficients(n1, n2, theta1, polarization):
 
 
 def transfer_matrix(material_list, d_list, wavelength, polarization, theta0):
-    """Berechnet die Gesamttransfermatrix eines Mehrschichtsystems."""
+    """Berechnet die Gesamttransfermatrix eines Mehrschichtsystems.
+
+    Args:
+        material_list (list): Liste an Material-Objekten.
+        d_list (list): Liste der jeweiligen Dicken aus den Material-Objekten in Nanometer.
+        wavelength (float, list): Für Funktion der Wellenlänge eine Liste an Wellenlängen, andernfalls eine einzige Wellenlänge in Meter.
+        polarization (str): Polarisation als "Senkrecht" oder "Parallel".
+        theta0 (float): Einfallswinkel in Radiant.
+    """
     M = np.identity(2, dtype=complex)
     theta = [theta0]
 
@@ -130,7 +179,14 @@ def transfer_matrix(material_list, d_list, wavelength, polarization, theta0):
 
 
 def reflectance(material_list, wavelengths, polarization, theta):
-    """Berechnet den Reflexionsgrad R(λ)"""
+    """Berechnet den Reflexionsgrad als Funktion des Einfallswinkels oder der Wellenlänge.
+
+    Args:
+        material_list (list): Liste von Material-Objekten.
+        wavelengths (list, float): Für Funktion der Wellenlänge eine Liste an Wellenlängen, andernfalls eine einzige Wellenlänge in Meter.
+        polarization (str): Polarization als "Senkrecht" oder "Parallel".
+
+    """
     R = []
 
     d_list = [i.d * 1e-9 for i in material_list if i.d != np.inf]
