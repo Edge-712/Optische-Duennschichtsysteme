@@ -19,8 +19,9 @@ from PyQt6.QtWidgets import (
     QDialog,
     QLabel,
     QCheckBox,
+    QPlainTextEdit,
 )
-from PyQt6.QtGui import QIcon, QPalette, QColor
+from PyQt6.QtGui import QIcon
 
 
 class MainWindow(QMainWindow):
@@ -296,6 +297,7 @@ class MainWindow(QMainWindow):
         calc_type.addItem("Sellmeier", userData=1)
         calc_type.addItem("Fester Brechungsindex", userData=0)
         calc_type.addItem("Benutzerdefiniert", userData=2)
+        calc_type.addItem("Interpolation", userData=3)
 
         layouth = QHBoxLayout()
         layouth.addWidget(calc_label)
@@ -355,6 +357,16 @@ class MainWindow(QMainWindow):
 
         layoutv.addLayout(layouth)
 
+        table_label = QLabel("Tabelle")
+        table = QPlainTextEdit()
+        table.setEnabled(False)
+
+        layouth = QHBoxLayout()
+        layouth.addWidget(table_label)
+        layouth.addWidget(table)
+
+        layoutv.addLayout(layouth)
+
         confirm = QPushButton("Bestätigen")
         layoutv.addWidget(confirm)
 
@@ -370,6 +382,7 @@ class MainWindow(QMainWindow):
                 check.setEnabled(False)
                 check.setChecked(False)
                 formula.setEnabled(False)
+                table.setEnabled(False)
             elif calc_type.currentData() == 0:
                 coefficientA.setEnabled(False)
                 coefficientB.setEnabled(False)
@@ -379,7 +392,8 @@ class MainWindow(QMainWindow):
                 check.setEnabled(True)
                 check.setChecked(False)
                 formula.setEnabled(False)
-            else:
+                table.setEnabled(False)
+            elif calc_type.currentData() == 2:
                 coefficientA.setEnabled(False)
                 coefficientB.setEnabled(False)
                 coefficientC.setEnabled(False)
@@ -388,6 +402,35 @@ class MainWindow(QMainWindow):
                 check.setEnabled(False)
                 check.setChecked(False)
                 formula.setEnabled(True)
+                table.setEnabled(False)
+            else:
+                coefficientA.setEnabled(False)
+                coefficientB.setEnabled(False)
+                coefficientC.setEnabled(False)
+                real.setEnabled(False)
+                imaginary.setEnabled(False)
+                check.setEnabled(False)
+                check.setChecked(False)
+                formula.setEnabled(False)
+                table.setEnabled(True)
+
+        def parse_table_data(text):
+            wls, ns, ks = [], [], []
+            lines = text.strip().split("\n")
+            for line in lines:
+                line = line.strip()
+                if not line or line[0].isalpha() or line.startswith("#"):
+                    continue
+
+                parts = line.replace(",", ".").replace(";", " ").split()
+                try:
+                    if len(parts) >= 2:
+                        wls.append(float(parts[0]))
+                        ns.append(float(parts[1]))
+                        ks.append(float(parts[2]) if len(parts) > 2 else 0.0)
+                except ValueError:
+                    continue
+            return {"wavelengths": wls, "n_values": ns, "k_values": ks}
 
         def check_index():
             if imaginary.isEnabled():
@@ -423,6 +466,16 @@ class MainWindow(QMainWindow):
                         n=n,
                     )
                 )
+            elif calc_type.currentData() == 3:
+                material_list.append(
+                    Material(
+                        name=namef.text(),
+                        n_type=calc_type.currentData(),
+                        d=100,
+                        table=parse_table_data(table.toPlainText()),
+                    )
+                )
+
             else:
                 material_list.append(
                     Material(
@@ -453,16 +506,6 @@ class PlotCanvas(FigureCanvasQTAgg):
 
 app = QApplication(sys.argv)
 app.setStyle("Fusion")
-# palette = QPalette()
-# palette.setColor(QPalette.ColorRole.Window, QColor(240, 240, 240))
-# palette.setColor(QPalette.ColorRole.WindowText, QColor(0, 0, 0))
-# palette.setColor(QPalette.ColorRole.Text, QColor(0, 0, 0))
-# palette.setColor(QPalette.ColorRole.ButtonText, QColor(0, 0, 0))
-# palette.setColor(QPalette.ColorRole.Button, QColor(240, 240, 240))
-# palette.setColor(QPalette.ColorRole.Base, QColor(255, 255, 255))
-# palette.setColor(QPalette.ColorRole.PlaceholderText, QColor(118, 118, 118))
-
-# app.setPalette(palette)
 
 window = MainWindow()
 window.show()

@@ -16,17 +16,25 @@ class Material:
         n_type (int): Parameter der die Art der Berechnung des Brechungsindex definiert.
         d (float): Dicke der Schicht in Nanometer.
         A (float): Optionaler Parameter zur Sellmeier-Gleichung.
-        B (float): B-Koeffizient der Sellmeier-Gleichung.
-        C (float): C-Koeffizient der Sellmeier-Gleichung.
+        B (float): Optionaler B-Koeffizient der Sellmeier-Gleichung.
+        C (float): Optionaler C-Koeffizient der Sellmeier-Gleichung.
         n (complex): Optionale Komplexe Brechzahl, falls sich für einen fixen Wert entschieden wird.
         formula (string): Optionale Benutzerdefinierte Formel zur Bestimmung des Brechungsindex.
+        table (dict): Optionale Messdaten für Emittlung des Brechungsindex durch Interpolation
     """
 
     def refractive_index(self, wavelength):
         """Berechnet den Brechungsindex auf die gewünschte Art und liefert ihn zurück.
 
+        Die Berechnung erfolgt abhänging von n_type:
+
+        * 0: Fester Brechungsindex
+        * 1: Sellmeier-Gleichung
+        * 2: Benutzerdefiniert
+        * 3: Interpolation
+
         Args:
-            wavelength: Für Funktion der Wellenlänge eine Liste an Wellenlängen, andernfalls eine einzige Wellenlänge in Meter.
+            wavelength (float): Eine Wellenlänge in Metern.
         Returns:
             Liefert den Brechungsindex zurück.
         """
@@ -36,13 +44,23 @@ class Material:
         elif self.n_type == 1:
             n = 0
             wl = wavelength**2
-            for i in range(0, len(self.B) - 1):
+            for i in range(0, len(self.B)):
                 n += (self.B[i] * wl) / (wl - self.C[i])
             return np.sqrt(1 + self.A + n)
         elif self.n_type == 2:
             global_vars = {**np.__dict__}
             local_var = {"x": wavelength}
             return eval(self.formula.strip(), global_vars, local_var)
+        elif self.n_type == 3:
+            if not self.table or "wavelengths" not in self.table:
+                return 1.0 + 0j
+            wl = np.array(self.table["wavelengths"])
+            n = np.array(self.table["n_values"])
+            k = np.array(self.table["k_values"])
+
+            n_interp = np.interp(wavelength, wl, n, left=n[0], right=n[-1])
+            k_interp = np.interp(wavelength, wl, k, left=k[0], right=k[-1])
+            return n_interp + 1j * k_interp
         else:
             return self.n
 
@@ -56,6 +74,7 @@ class Material:
         C: list = [],
         n: complex = 0,
         formula: str = "",
+        table: dict = {},
     ):
         self.name = name
         self.d = d
@@ -65,6 +84,7 @@ class Material:
         self.B = B
         self.C = C
         self.formula = formula
+        self.table = table
 
     def __str__(self):
         """To-String Methode für Ausgabe von Material-Objekten.
@@ -89,6 +109,7 @@ class Material:
             "C": self.C,
             "n": str(self.n),
             "formula": self.formula,
+            "table": self.table,
         }
 
     @staticmethod
@@ -111,6 +132,7 @@ class Material:
                     C=i["C"],
                     n=complex(i["n"]),
                     formula=i["formula"],
+                    table=i["table"],
                 )
                 for i in data
             ]
@@ -125,7 +147,7 @@ def fresnel_coefficients(n1, n2, theta1, polarization):
         n1 (float): Brechungsindex der linken Schicht.
         n2 (float): Brechungsindex der rechten Schicht.
         theta1 (float): Einfallswinkel in Radiant.
-        polarization (string): Polarisation "Senkrecht" oder "Parallel".
+        polarization (str): Polarisation "Senkrecht" oder "Parallel".
 
     Returns:
         Liefert die Reflexions- und Transmissionskoeffizienten zusammen mit dem Brechungswinkel zurück.
@@ -152,7 +174,7 @@ def transfer_matrix(material_list, d_list, wavelength, polarization, theta0):
     Args:
         material_list (list): Liste an Material-Objekten.
         d_list (list): Liste der jeweiligen Dicken aus den Material-Objekten in Nanometer.
-        wavelength (float, list): Für Funktion der Wellenlänge eine Liste an Wellenlängen, andernfalls eine einzige Wellenlänge in Meter.
+        wavelength (list | float): Für Funktion der Wellenlänge eine Liste an Wellenlängen, andernfalls eine einzige Wellenlänge in Meter.
         polarization (str): Polarisation als "Senkrecht" oder "Parallel".
         theta0 (float): Einfallswinkel in Radiant.
 
@@ -188,9 +210,9 @@ def reflectance(material_list, wavelengths, polarization, theta):
 
     Args:
         material_list (list): Liste von Material-Objekten.
-        wavelengths (list, float): Für Funktion der Wellenlänge eine Liste an Wellenlängen, andernfalls eine einzige Wellenlänge in Meter.
+        wavelengths (list | float): Für Funktion der Wellenlänge eine Liste an Wellenlängen, andernfalls eine einzige Wellenlänge in Meter.
         polarization (str): Polarization als "Senkrecht" oder "Parallel".
-        theta (list,float): Für Funktion der Wellenlänge ein Float, andernfalls eine Liste an Winkeln. Beides in Radiant
+        theta (list | float): Für Funktion der Wellenlänge ein Float, andernfalls eine Liste an Winkeln. Beides in Radiant
 
     Returns:
         Eine Liste von allen Reflexionsgraden in Abhängigkeit von entweder der Wellenlänge oder des Einfallswinkels.
