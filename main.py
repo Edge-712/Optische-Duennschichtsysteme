@@ -13,13 +13,13 @@ class Material:
 
     Attributes:
         name (str): Name des Materials.
-        name_type (int): Parameter der die Art der Berechnung des Brechungsindex definiert.
+        n_type (int): Parameter der die Art der Berechnung des Brechungsindex definiert.
         d (float): Dicke der Schicht in Nanometer.
         A (float): Optionaler Parameter zur Sellmeier-Gleichung.
         B (float): B-Koeffizient der Sellmeier-Gleichung.
         C (float): C-Koeffizient der Sellmeier-Gleichung.
         n (complex): Optionale Komplexe Brechzahl, falls sich für einen fixen Wert entschieden wird.
-        formula (string): Optionaler Benutzerdefinierte Formel zur Bestimmung des Brechungsindex.
+        formula (string): Optionale Benutzerdefinierte Formel zur Bestimmung des Brechungsindex.
     """
 
     def refractive_index(self, wavelength):
@@ -50,12 +50,12 @@ class Material:
         self,
         name: str,
         n_type: int,
-        d: float = None,  # type: ignore
+        d: float = 0,
         A: float = 0,
-        B: list = None,  # type: ignore
-        C: list = None,  # type: ignore
-        n: complex = 0,  # type: ignore
-        formula: str = None,  # type: ignore
+        B: list = [],
+        C: list = [],
+        n: complex = 0,
+        formula: str = "",
     ):
         self.name = name
         self.d = d
@@ -96,7 +96,7 @@ class Material:
         """Liest eine lokale Material.json ein und wandelt alle Daten in die Form eines Material-Objekts um.
 
         Returns:
-            Material Array mit allen Objekten aus der Material.json im Root.
+            Material-Liste mit allen Objekten aus der Material.json im Root.
 
         """
         with open("Material.json", "r") as file:
@@ -127,6 +127,8 @@ def fresnel_coefficients(n1, n2, theta1, polarization):
         theta1 (float): Einfallswinkel in Radiant.
         polarization (string): Polarisation "Senkrecht" oder "Parallel".
 
+    Returns:
+        Liefert die Reflexions- und Transmissionskoeffizienten zusammen mit dem Brechungswinkel zurück.
     """
     theta2 = np.arcsin(n1 / n2 * np.sin(theta1))
     if polarization == "Senkrecht":
@@ -153,6 +155,9 @@ def transfer_matrix(material_list, d_list, wavelength, polarization, theta0):
         wavelength (float, list): Für Funktion der Wellenlänge eine Liste an Wellenlängen, andernfalls eine einzige Wellenlänge in Meter.
         polarization (str): Polarisation als "Senkrecht" oder "Parallel".
         theta0 (float): Einfallswinkel in Radiant.
+
+    Returns:
+        Liefert eine vollendete Transfermatrix zurück.
     """
     M = np.identity(2, dtype=complex)
     theta = [theta0]
@@ -185,6 +190,10 @@ def reflectance(material_list, wavelengths, polarization, theta):
         material_list (list): Liste von Material-Objekten.
         wavelengths (list, float): Für Funktion der Wellenlänge eine Liste an Wellenlängen, andernfalls eine einzige Wellenlänge in Meter.
         polarization (str): Polarization als "Senkrecht" oder "Parallel".
+        theta (list,float): Für Funktion der Wellenlänge ein Float, andernfalls eine Liste an Winkeln. Beides in Radiant
+
+    Returns:
+        Eine Liste von allen Reflexionsgraden in Abhängigkeit von entweder der Wellenlänge oder des Einfallswinkels.
 
     """
     R = []
