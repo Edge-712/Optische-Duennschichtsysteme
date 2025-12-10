@@ -296,7 +296,7 @@ class MainWindow(QMainWindow):
         calc_type.setPlaceholderText("Typ")
         calc_type.addItem("Sellmeier", userData=1)
         calc_type.addItem("Fester Brechungsindex", userData=0)
-        calc_type.addItem("Benutzerdefiniert", userData=2)
+        calc_type.addItem("Formel", userData=2)
         calc_type.addItem("Interpolation", userData=3)
 
         layouth = QHBoxLayout()
@@ -328,7 +328,7 @@ class MainWindow(QMainWindow):
         coefficient_label = QLabel("Sellmeier-Koeffizienten")
         coefficientA = QLineEdit()
         coefficientA.setEnabled(False)
-        coefficientA.setPlaceholderText("A=1")
+        coefficientA.setPlaceholderText("A=0")
 
         coefficientB = QLineEdit()
         coefficientB.setEnabled(False)
