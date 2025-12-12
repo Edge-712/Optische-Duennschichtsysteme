@@ -283,6 +283,9 @@ class MainWindow(QMainWindow):
         dialog = QDialog()
         layoutv = QVBoxLayout()
 
+        dialog.setWindowTitle("Neues Material")
+        dialog.setWindowIcon(QIcon("./python.png"))
+
         name = QLabel("Name: ")
         namef = QLineEdit()
         namef.setPlaceholderText("Material")
