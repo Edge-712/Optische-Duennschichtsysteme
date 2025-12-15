@@ -315,16 +315,11 @@ class MainWindow(QMainWindow):
         imaginary = QLineEdit()
         imaginary.setPlaceholderText("Imaginär")
         imaginary.setEnabled(False)
-        check = QCheckBox()
-        check.setEnabled(False)
-        check.clicked.connect(lambda: imaginary.setDisabled(imaginary.isEnabled()))
-        check.clicked.connect(lambda: imaginary.clear())
 
         layouth = QHBoxLayout()
         layouth.addWidget(index)
         layouth.addWidget(real)
         layouth.addWidget(imaginary)
-        layouth.addWidget(check)
 
         layoutv.addLayout(layouth)
 
@@ -382,8 +377,6 @@ class MainWindow(QMainWindow):
                 coefficientC.setEnabled(True)
                 real.setEnabled(False)
                 imaginary.setEnabled(False)
-                check.setEnabled(False)
-                check.setChecked(False)
                 formula.setEnabled(False)
                 table.setEnabled(False)
             elif calc_type.currentData() == 0:
@@ -391,9 +384,7 @@ class MainWindow(QMainWindow):
                 coefficientB.setEnabled(False)
                 coefficientC.setEnabled(False)
                 real.setEnabled(True)
-                imaginary.setEnabled(False)
-                check.setEnabled(True)
-                check.setChecked(False)
+                imaginary.setEnabled(True)
                 formula.setEnabled(False)
                 table.setEnabled(False)
             elif calc_type.currentData() == 2:
@@ -402,8 +393,6 @@ class MainWindow(QMainWindow):
                 coefficientC.setEnabled(False)
                 real.setEnabled(False)
                 imaginary.setEnabled(False)
-                check.setEnabled(False)
-                check.setChecked(False)
                 formula.setEnabled(True)
                 table.setEnabled(False)
             else:
@@ -412,8 +401,6 @@ class MainWindow(QMainWindow):
                 coefficientC.setEnabled(False)
                 real.setEnabled(False)
                 imaginary.setEnabled(False)
-                check.setEnabled(False)
-                check.setChecked(False)
                 formula.setEnabled(False)
                 table.setEnabled(True)
 

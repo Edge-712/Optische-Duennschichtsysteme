@@ -224,6 +224,29 @@ Mehrschichtsystem erhalten bleibt. Dabei werden Schichten mit unendlicher Dicke
 (Luft und Substrat) automatisch identifiziert, und ihnen wird keine
 Propagationsmatrix zugewiesen. So wird das physikalische Modell exakt
 wiedergegeben
+\subsection{Berechnung des Reflexionsgrades}
+Die Funktion
+\begin{center}
+    \texttt{reflectance(material\_list, wavelengths, polarization, theta)}
+\end{center}
+fasst alle vorher beschriebenen Schritte zu einer vollständigen Simulation zusammen.
+Sie übernimmt die folgenden Aufgaben:
+\begin{itemize}
+    \item die Umrechnung der Schichtdicken in SI-Einheiten,
+    \item die Berechnung für beliebige spektrale Abtastungen,
+    \item die Berücksichtigung von einem oder mehreren Einfallswinkeln sowie
+    \item den Aufruf der Transfermatrix und die Herausarbeitung des
+          Reflexionskoeffizienten.
+\end{itemize}
+Der Amplitudenreflexionskoeffizient wird aus der Transfermatrix bestimmt:
+\begin{center}
+    \texttt{r = M[1,0] / M[0,0]}
+\end{center}
+woraus letztlich der Reflexionsgrad resultiert:
+\[R = |r|^2.\]
+Weil die Berechnung vollständig vektorisiert ist, können ganze Winkel- oder
+Wellenlängenbereiche mit nur einem Funktionsaufruf evaluiert werden, ohne dass
+der Nutzer zusätzliche Einstellungen vornehmen muss.
 \section{Benutzerhandbuch}
 Hier wird die grafische Nutzeroberfläche der Software präsentiert, zusammen mit
 einzelnen Funktionen, denen es eine Erläuterung bedarf.
