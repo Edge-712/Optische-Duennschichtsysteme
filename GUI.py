@@ -423,8 +423,10 @@ class MainWindow(QMainWindow):
             return {"wavelengths": wls, "n_values": ns, "k_values": ks}
 
         def check_index():
-            if imaginary.isEnabled():
-                n = complex(f"{real.text()}+{imaginary.text()}j")
+            if imaginary.text() != "":
+                real_temp = eval(real.text())
+                imaginary_temp = eval(imaginary.text())
+                n = complex(f"{real_temp}+{imaginary_temp}j")
             else:
                 if real.text() == "":
                     n = 0

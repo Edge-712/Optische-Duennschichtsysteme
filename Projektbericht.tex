@@ -353,10 +353,12 @@ Eine Übersicht zu den Parametern und validen Eingaben befindet sich in Tabelle
 
 \section{Simulationsergebnisse}
 
-Das Erste zu simulierende Schichtsystem ist in Tabelle 2 zu sehen. Es ist
-aufgeteilt in die jeweiligen Materialien und ihren individuellen Dicken und
-soll im sichtbaren Spektrum simuliert werden. Hierfür nehmen wir einen
-Wellenlängenbereich von 400 nm bis 700 nm mit einem senkrechten Einfallswinkel.
+In diesem Kapitel werden zwei der Extremen unserer Anwendung beobachtet. Zuerst
+wird eine Antireflexbeschichtung betrachtet. Sie ist aufgeteilt in die
+jeweiligen Materialien und ihren individuellen Dicken, welche in Tabelle 2 zu
+sehen sind und soll im sichtbaren Spektrum simuliert werden. Hierfür nehmen wir
+einen Wellenlängenbereich von 400 nm bis 800 nm mit einem senkrechten
+Einfallswinkel.
 \begin{table}[h]
     \centering
     \caption{Zu simulierendes Schichtsystem}\label{tab:Angabe1}
@@ -374,20 +376,16 @@ Wellenlängenbereich von 400 nm bis 700 nm mit einem senkrechten Einfallswinke
         \hline
     \end{tabular}
 \end{table}
-
 Das Ergebnis ist in Abbildung 4 dargestellt und zeigt keine physikalischen
 Auffälligkeiten, die auf einen Fehler deuten würden. Die Funktion ist im
 ausgewählten Bereich stetig, was auf mathematische Stabilität deutet.
-\begin{figure}[htpb]
-    \centering
-    \includegraphics[scale=0.5]{./assets/1 Ergebnis Parallel 0.png}
-    \caption{1. Simulationsergebnis für $R(\lambda)$ bei senkrechtem Einfall}
-    \label{fig:Ergebnis1-0}
-\end{figure}
+Zusätzlich kann der Reflexionsgrad mit dem eines Lichtstrahls der von Luft auf
+bloßes Glas trifft, im Graph verglichen werden.
 
-Die zweite zu simulierende Schicht befindet sich in Tabelle 3. Es wurde
-versucht für diese Schicht bei extremem Ultraviolettlicht eine passende Dicke
-der Schichten zu ermitteln, um optimale Reflexivität zu garantieren.
+Die zweite zu simulierende Schicht befindet sich in Tabelle 3. Betrachtet wird
+hierbei ein Hochreflektor im EUV-Bereich. Es wurde versucht für dieses
+Schichtsystem bei extremem Ultraviolettlicht eine passende Dicke der Schichten
+zu ermitteln, um optimale Reflexivität zu garantieren.
 \begin{table}[htpb]
     \centering
     \caption{Zu simulierendes EUV-Schichtsystem}\label{tab:Angabe2}
@@ -403,40 +401,32 @@ der Schichten zu ermitteln, um optimale Reflexivität zu garantieren.
         \hline
     \end{tabular}
 \end{table}
-
-Dabei war eine optimale Schichtdicke für den Einfallswinkel 15$^\circ$ und eine
-weitere optimale Schichtdicke für senkrechten Einfall. Die Werte für die
-optimale Dicke lassen sich durch die im Programm liegenden Funktionen ermitteln
-und sind in Tabelle 4 zu sehen.
-\begin{table}[htpb]
+\begin{table}[htbp]
     \centering
     \caption{Optimierte Schichtdicke für EUV-Schicht}\label{tab:Schicktdicke}
     \begin{tabular}{|l |c| c|}
         \hline
-        Material & optimierte Dicke für 0$^\circ$ & optimierte Dicke für 15$^\circ$ \\
+        Material & optimierte Dicke für 0$^\circ$ \\
         \hline
-        Mo       & $2,8nm$                        & $2,8nm$                         \\
+        Mo       & $2,8nm$                        \\
         \hline
-        Si       & $4,1nm$                        & $4,35nm$                        \\
+        Si       & $4,1nm$                        \\
         \hline
     \end{tabular}
 \end{table}
-Die Ergebnisse in Abbildung 5 und 6 sind die
-gewünschten Funktionen für die EUV-Schicht mit ihren optimierten Dicken. Der
-Hochpunkt bei etwa 13.5 nm in Abbildung 5 bestätigt die Werte der Schichtdicke,
-während der Reflexionsgrad für $15^\circ$ ebenfalls ein akzeptables Ergebnis
-liefert.
-
-\begin{figure}[htbp]
+\begin{figure}[htpb]
     \centering
-    \includegraphics[scale=0.5]{./assets/2. Simulationsergebnis Wellenlänge.png}
-    \caption{Darstellung der Simulationsergebnisse für die EUV-Schicht nach Wellenlänge bei Senkrechtem Einfallswinkel}\label{fig:Ergebnis2-0}
+    \includegraphics[scale=0.5]{./assets/1 Ergebnis Senkrecht.png}
+    \caption{1. Simulationsergebnis für $R(\lambda)$ bei senkrechtem Einfall}\label{fig:Ergebnis1-0}
 \end{figure}
-
-\begin{figure}[htbp]
+Die idealen Werte für den senkrechten Einfall sind in Tabelle 4 zu sehen.
+Die Ergebnisse in Abbildung 5 ist die gewünschte Funktion für die EUV-Schicht
+mit ihren optimierten Dicken. Der Hochpunkt bei etwa 13.5 nm bestätigt die
+gewählten Werte der Schichtdicke als optimal für die gewünschte Anwendung.
+\begin{figure}[h!]
     \centering
-    \includegraphics[scale=0.5]{./assets/2. Simulationsergebnis Einfallswinkel.png}
-    \caption{Darstellung Simulationsergebnisse für EUV-Schicht nach Einfallswinkel}\label{fig:Ergebnis2-1}
+    \includegraphics[scale=0.6]{./assets/Hochreflektor EUV.png}
+    \caption{Darstellung von $R(\lambda)$ für die EUV-Schicht bei Senkrechtem Einfallswinkel}\label{fig:Ergebnis2-0}
 \end{figure}
 \clearpage
 \printbibliography[]
