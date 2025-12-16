@@ -169,11 +169,16 @@ Zur Repräsentation einer Schicht dient die Klasse \texttt{Material}. Sie
 speichert:
 \begin{itemize}
     \item den Namen des Materials,
-    \item die Schichtdicke d (bei Halbräumen: $d = \infty$)
-    \item optional einen festen Brechungsindex oder eine disperse
-          Brechungsindex-Funktion.
+    \item den Parameter \texttt{n\_type} der die Art der Berechnung des Brechungsindex
+          definiert
+    \item die Schichtdicke \texttt{d} (bei Halbräumen: $d = \infty$)
+    \item den optionalen Parameter \texttt{A} für die Sellmeier-Gleichung
+    \item den optionalen B-Koeffizienten der Sellmeier-Gleichung,
+    \item den optionalen C-Koeffizient der Sellmeier-Gleichung,
+    \item einen optionalen festen Brechungsindex,
+    \item eine optionale Benutzerdefinierte Formel zur Bestimmung des Brechungsindex,
+    \item und optionale Messdaten zur Ermittlung des Brechungsindex durch Interpolation.
 \end{itemize}
-
 Für die gegebene Wellenlänge $\lambda$ liefert sie den komplexen Brechungsindex
 der entsprechenden Schicht. Je nach Material kommen verschiedene bewährte
 Formeln zum Einsatz. Dadurch wird eine realistische Nachbildung der
@@ -188,36 +193,35 @@ Die Funktion
     \texttt{fresenel\_coefficients(n1, n2, theta1, polarization)}
 \end{center}
 übernimmt die numerische Umsetzung der Fresnel-Gleichungen an einer Grenzfläche zwischen
-zwei Schichten. Sie berechnet:
-\begin{itemize}
-    \item den Brechungswinkel $\theta_2$ mit dem snelliusschen Gesetz
-    \item die Reflexions- und Transmissionskoeffizienten r und t,
-    \item den für die Transfermatrix benötigten Phasenverlauf.
-\end{itemize}
-Die Funktion unterscheidet streng zwischen den beiden Polarisationen:
-\begin{itemize}
-    \item \texttt{senkrecht} (s-polarisiert)
-    \item \texttt{parallel} (p-polarisiert)
-\end{itemize}
+zwei Schichten. Sie berechnet zuerst den Brechungswinkel $\theta_2$ mit dem snelliusschen Gesetz\cite{Hecht+2018},
+die Reflexions- und Transmissionskoeffizienten r und t und den für die Transfermatrix benötigten Phasenverlauf.
+Die Funktion unterscheidet streng zwischen den beiden Polarisationen
+\begin{center}
+    \texttt{senkrecht} (s-polarisiert) \quad und \quad
+    \texttt{parallel} (p-polarisiert)
+\end{center}
 und gibt die zugehörigen Koeffizienten zurück.
 Damit ist die Polarisation vollständig als Parameter steuerbar, was eine Simulation beider
 physikalischen Fälle ermöglicht.
 
 \subsection{Aufbau der Transfermatrix}
-Die Funktion durchläuft alle Schichten und führt für jede Grenzfläche die
-folgenden Schritte aus:
-
-\begin{itemize}
-    \item Ermittlung der optischen Parameter der Grenzfläche: Die Fresnel-Koeffizienten
-          werden aus den Brechungsindizes der angrenzenden Schichten berechnet.
-    \item Generierung der Grenzflächenmatrix D:\@ Diese Matrix beinhaltet nur
-          Informationen über Reflexion und Transmission an der jeweiligen Schichtgrenze.
-    \item Generierung der Propagationsmatrix P:\@ Die Phasenverschiebung für alle
-          endlichen Schichten wird in Übereinstimmung mit der Dicke, dem Einfallswinkel
-          und dem Brechungsindex berechnet.
-    \item Multiplikatives Einbauen beider Matrizen in die Gesamtmatrix:
-\end{itemize}
-Die Transfermatrix wird iterativ aufgebaut durch
+Die Funktion \begin{center} \small \texttt{transfer\_matrix(material\_list, d\_list,
+        wavelength, polarization, theta0)}
+\end{center}
+durchläuft alle Schichten und führt für jede Grenzfläche die
+bekannten Schritte aus dem mathematisch-physikalischen Modell aus. Sie
+ermittelt die fresnelschen Koeffizienten aus den Brechungsindizes der
+angrenzenden Schichten, wobei für die Brechungsindizes für jede einzelne
+Wellenlänge die Material-Methode
+\begin{center}
+    \texttt{reflective\_index(self, wavelength)}
+\end{center}
+genutzt wird. Daraufhin wird mit den Reflexions- und Transmissionskoeffizienten
+die Grenzflächenmatrix D generiert und anschließend für alle endlichen
+Schichten in Übereinstimmung mit der Dicke, dem Einfallswinkel und dem
+Brechungsindex, auch die Propagationsmatrix P. Zuletzt werden beide Matrizen
+multiplikativ in die Gesamtmatrix eingebaut. Die Transfermatrix wird iterativ
+aufgebaut durch
 \[M \leftarrow M \cdot D \cdot P,\]
 was sicherstellt, dass der aktuelle optische Zustand des Lichtfelds im
 Mehrschichtsystem erhalten bleibt. Dabei werden Schichten mit unendlicher Dicke
@@ -229,15 +233,11 @@ Die Funktion
 \begin{center}
     \texttt{reflectance(material\_list, wavelengths, polarization, theta)}
 \end{center}
-fasst alle vorher beschriebenen Schritte zu einer vollständigen Simulation zusammen.
-Sie übernimmt die folgenden Aufgaben:
-\begin{itemize}
-    \item die Umrechnung der Schichtdicken in SI-Einheiten,
-    \item die Berechnung für beliebige spektrale Abtastungen,
-    \item die Berücksichtigung von einem oder mehreren Einfallswinkeln sowie
-    \item den Aufruf der Transfermatrix und die Herausarbeitung des
-          Reflexionskoeffizienten.
-\end{itemize}
+fasst alle vorher beschriebenen Schritte zu einer vollständigen Simulation
+zusammen. Sie übernimmt, die Umrechnung der Schichtdicken in SI-Einheiten,
+berechnet beliebige spektrale Abtastungen, berücksichtigt dabei mehrere oder
+einen Einfallswinkel, ruft die Transfermatrix auf und kümmert sich zuletzt um
+die Herausarbeitung des Reflexionskoeffizienten.
 Der Amplitudenreflexionskoeffizient wird aus der Transfermatrix bestimmt:
 \begin{center}
     \texttt{r = M[1,0] / M[0,0]}

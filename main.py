@@ -20,7 +20,7 @@ class Material:
         C (float): Optionaler C-Koeffizient der Sellmeier-Gleichung.
         n (complex): Optionale Komplexe Brechzahl, falls sich für einen fixen Wert entschieden wird.
         formula (string): Optionale Benutzerdefinierte Formel zur Bestimmung des Brechungsindex.
-        table (dict): Optionale Messdaten für Emittlung des Brechungsindex durch Interpolation
+        table (dict): Optionale Messdaten für Ermittlung des Brechungsindex durch Interpolation
     """
 
     def refractive_index(self, wavelength):
