@@ -1,5 +1,6 @@
 \documentclass[12pt, oneside, final]{article}
 \usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc} % richtige Silbentrennung || nicht löschen!
 \usepackage[a4paper, left=35mm,top=26mm,right=26mm,bottom=15mm]{geometry}
 \usepackage{mathptmx}
 \usepackage{amsmath}
@@ -95,8 +96,9 @@ $n(\lambda)$ zu betrachten, um präzise Resultate zu erlangen, da Dispersion
 berücksichtigt werden muss. Dafür wird im Laufe der Arbeit, wenn möglich, die
 Sellmeier-Gleichung verwendet~\cite{10.1063/1.555616}:
 \[n^2(\lambda) = 1 + \sum_{i} \frac{B_i \lambda^2}{\lambda^2 - C_i}.\]
-Für manche Materialien wie Gase mussten für ein präziseres Ergebnis andere
-Approximationen genutzt werden~\cite{Kren:11}.
+Für manche Materialien werden zum Zweck eines präziseren Ergebnisses von der
+Sellmeier-Gleichung abweichende Formeln oder Interpolation von
+Messwertetabellen genutzt.~\cite{Kren:11}.
 \subsection{Reflexion und Transmission}
 Reflexions- und Transmissionskoeffizienten von elektromagnetischen Wellen an
 einer Grenzfläche zwischen zwei Schichten werden mit den fresnelschen Formeln
@@ -125,20 +127,27 @@ Lösung für das Problem der unendlichen Teilwellen~\cite{Hecht+2018}. Anstatt
 den Verlauf des Lichtstrahls zu verfolgen, wird das gesamte Mehrschichtsystem
 betrachtet. Die Grundlage hierfür sind die fresnelschen Formeln, da sie das
 Verhältnis der Amplituden auf der linken und rechten Seite der Grenzfläche
-beschreiben. Das resultierende Gleichungssystem kann auch in Matrixschreibweise
-geschrieben werden, sodass klar wird, dass durch Matrixmultiplikation in den
-wie folgt definierten Matrizen, der Reflexionsgrad berechnet werden kann.
+beschreiben und dadurch folgendes Gleichungssystem bilden:
+\[R_{i+1}^{\prime} = R_i \cdot t_{i,i+1} + L_{i+1}^{\prime} \cdot r_{i+1,i}\]
+\[L_i = R_i \cdot r_{i,i+1} + L_{i+1}^{\prime} \cdot t_{i+1,i}.\]
+Das resultierende Gleichungssystem kann auch in der Matrixschreibweise
+\[\begin{pmatrix} t_{i,i+1} & 0 \\ -r_{i,i+1} & 1 \end{pmatrix}
+    \begin{pmatrix} R_i \\ L_i \end{pmatrix} =
+    \begin{pmatrix} 1 & -r_{i+1,i} \\ 0 & t_{i+1,i} \end{pmatrix}
+    \begin{pmatrix} R_{i+1}^{\prime} \\ L_{i+1}^{\prime} \end{pmatrix}\]
+geschrieben werden, was das Muster für die Grenzflächen- und
+Propagationsmatrizen liefert.
 
-Es werden jeweils zwei Arten von Matrizen gebildet, dabei bestimmt die Matrix D
-die Reflexion und Transmission an der Grenzfläche, während die Matrix P die
-Phasenverschiebung innerhalb einer Schicht beschreibt. Die Matrix D besitzt die
-Form
+Es werden jeweils zwei Arten von Matrizen gebildet, dabei bestimmt die
+Grenzflächenmatrix D die Reflexion und Transmission an der Grenzfläche, während
+die Propagationsmatrix P die Phasenverschiebung innerhalb einer Schicht
+beschreibt. Die Grenzflächenmatrix besitzt die Form
 \[D = \frac{1}{t}\begin{pmatrix}
         1 & r \\
         r & 1
     \end{pmatrix},\]
 wobei $r$ dem berechneten Reflexions- und $t$ dem Transmissionskoeffizienten
-aus den fresnelschen Formeln entsprechen. Die Matrix P hat die Form
+aus den fresnelschen Formeln entsprechen. Die Propagationsmatrix hat die Form
 \[P = \begin{pmatrix}
         e^{-i \varphi} & 0             \\
         0              & e^{i \varphi}
@@ -152,7 +161,7 @@ Multiplikation der entstandenen Matrizen
 und wird anschließend genutzt um den Reflexionsgrad R, nach der Definition der
 Intensität einer elektromagnetischen Welle,
 \[R = \left| \frac{M_{21}}{M_{11}} \right|^2\]
-zu bestimmen.
+zu bestimmen.\clearpage
 \section{Algorithmische Umsetzung}
 Die mathematischen Beziehungen, die in Kapitel 2 beschrieben werden, finden in
 einer modular strukturierten Softwarearchitektur Umsetzung. Diese teilt den
@@ -165,20 +174,16 @@ Alle Schritte sind durch eigene Funktionen oder Klassen voneinander abgegrenzt,
 was das Programm wartbar und erweiterbar macht und es ermöglicht, dass es mit
 beliebigen Schichtsystemen verwendet werden kann
 \subsection{Materialmodellierung}
+
 Zur Repräsentation einer Schicht dient die Klasse \texttt{Material}. Sie
-speichert:
-\begin{itemize}
-    \item den Namen des Materials,
-    \item den Parameter \texttt{n\_type} der die Art der Berechnung des Brechungsindex
-          definiert,
-    \item die Schichtdicke \texttt{d} (bei Halbräumen: $d = \infty$),
-    \item den optionalen Parameter \texttt{A} für die Sellmeier-Gleichung,
-    \item den optionalen B-Koeffizienten der Sellmeier-Gleichung,
-    \item den optionalen C-Koeffizient der Sellmeier-Gleichung,
-    \item einen optionalen festen Brechungsindex,
-    \item eine optionale Benutzerdefinierte Formel zur Bestimmung des Brechungsindex,
-    \item und optionale Messdaten zur Ermittlung des Brechungsindex durch Interpolation.
-\end{itemize}
+speichert den Namen \texttt{name} des verwendeten Materials, eine Schichtdicke
+\texttt{d} und einen Berechnungstyp \texttt{n\_type}. Dieser Berechnungstyp
+entscheidet dann welche optionalen Parameter der Klasse festgelegt werden, die
+später zur Berechnung von Brechungsindizes genutzt wird. Dabei handelt es sich
+entweder um einen festen komplexen Brechungsindex \texttt{n}, die
+Sellmeier-Koeffizient \texttt{B} und \texttt{C}, eine Formel in Form vom string
+\texttt{formula} oder eine Messwerttabelle \texttt{table} als Dictionary.
+
 Für die gegebene Wellenlänge $\lambda$ liefert sie den komplexen Brechungsindex
 der entsprechenden Schicht. Je nach Material kommen verschiedene bewährte
 Formeln zum Einsatz. Dadurch wird eine realistische Nachbildung der
@@ -193,17 +198,16 @@ Die Funktion
     \texttt{fresenel\_coefficients(n1, n2, theta1, polarization)}
 \end{center}
 übernimmt die numerische Umsetzung der Fresnel-Gleichungen an einer Grenzfläche zwischen
-zwei Schichten. Sie berechnet zuerst den Brechungswinkel $\theta_2$ mit dem snelliusschen Gesetz\cite{Hecht+2018},
+zwei Schichten. Sie berechnet zuerst den Brechungswinkel $\theta_2$ mit dem snelliusschen Gesetz~\cite{Hecht+2018},
 die Reflexions- und Transmissionskoeffizienten r und t und den für die Transfermatrix benötigten Phasenverlauf.
 Die Funktion unterscheidet streng zwischen den beiden Polarisationen
 \begin{center}
-    \texttt{senkrecht} (s-polarisiert) \quad und \quad
-    \texttt{parallel} (p-polarisiert)
+    \texttt{'Senkrecht'} (s-polarisiert) \quad und \quad
+    \texttt{'Parallel'} (p-polarisiert)
 \end{center}
 und gibt die zugehörigen Koeffizienten zurück.
 Damit ist die Polarisation vollständig als Parameter steuerbar, was eine Simulation beider
-physikalischen Fälle ermöglicht.
-
+physikalischen Fälle ermöglicht.\clearpage
 \subsection{Aufbau der Transfermatrix}
 Die Funktion \begin{center} \small \texttt{transfer\_matrix(material\_list, d\_list,
         wavelength, polarization, theta0)}
