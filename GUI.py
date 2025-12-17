@@ -329,7 +329,7 @@ class MainWindow(QMainWindow):
                 textfield_d.setEnabled(False)
             elif index == self.grid.rowCount() - 1:
                 self.grid.setCellWidget(index, 2, QLineEdit(""))
-                self.grid.cellWidget(index, 2).setEnabled(False)
+                self.grid.cellWidget(index, 2).setEnabled(False)  # type: ignore
                 textfield_d.setText("inf")
                 textfield_d.setEnabled(False)
             else:
