@@ -317,13 +317,17 @@ class MainWindow(QMainWindow):
             combobox0.activated.connect(lambda: self.set_values(combobox0, textfield_d))
             for material in material_list:
                 combobox0.addItem(material.name, material)
-            add_button = QPushButton()
-            add_button.setIcon(QIcon.fromTheme("list-add"))
+            add_button = QPushButton("+")
+            add_button.setStyleSheet(
+                "font-size: 18px; font-weight: bold; padding-bottom: 2px;"
+            )
             add_button.clicked.connect(
                 lambda checked=False, c=combobox0: self.insert_Row(c)
             )
-            remove_button = QPushButton()
-            remove_button.setIcon(QIcon.fromTheme("list-remove"))
+            remove_button = QPushButton("-")
+            remove_button.setStyleSheet(
+                "font-size: 18px; font-weight: bold; padding-bottom: 2px;"
+            )
             remove_button.clicked.connect(
                 lambda checked=False, c=combobox0: self.delete_Row(c)
             )

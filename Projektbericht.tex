@@ -67,29 +67,24 @@ Werkzeug genutzt, um das jeweilige Ziel im gewünschten Wellenbereich zu erreich
 Dies kann z.B. im Fall von Brillengläsern destruktive Interferenz sein, bei anderen
 Anwendungen, wie Spiegeln, aber auch konstruktive Interferenz.
 
-Im Folgenden wird die Berechnung des bereits besprochenen Reflexions- und
-Transmissionsgrades beschrieben, um ein möglichst realistisches Programm zur
-Erfassung eben dieser zu entwickeln. Sie wird in Abhängigkeit der vorliegenden
-Brechungsindizes, Dicke der Schichten und dem Einfallswinkel berechnet.
+Im Folgenden wird Weg zur Berechnung des Reflexionsgrades beschrieben, um ein
+möglichst realistisches Programm zur Erfassung eben dieses zu entwickeln. Das
+größte Problem, das es hier zu lösen gilt, ist die Berücksichtigung aller
+Teilwellen die bei jedem Grenzübergang, wie in Abbildung~\ref{fig:Reflexion} zu
+sehen ist, innerhalb des Schichtsystems entstehen.
 
-Das größte Problem, das es hier zu lösen gilt, ist die Berechnung des
-Reflexions- und Transmissionsgrades, da es durch die Existenz mehrerer
-Schichten zu einem endlosen Prozess von Re-Kalkulationen durch Teilwellen
-kommt, bei der bei jedem Durchdringen einer der Schichten ein neuer Prozess in
-beide Richtungen gestartet wird, was die Berechnung auf üblichem Wege
-erschwert. Eine Visualisierung des Prozesses in einem Mehrschichtsystem ist in
-Abbildung~\ref{fig:Reflexion} dargestellt. Um dieses Problem zu lösen wird die
-Transfermatrixmethode angewandt, welche anhand der Brechungsindizes, des
-Einfallswinkels und den Reflexions- und Transmissionskoeffizienten, an jeder
-Grenzfläche, ein Reflexionsspektrum als Resultat liefert.
-
-\begin{figure}[h!]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[scale=0.3]{./assets/Teilwellen.pdf}
+    \includegraphics[scale=0.4]{./assets/Teilwellen.pdf}
     \caption{Darstellung der Reflexion und Transmission im Mehrschichtsystem}\label{fig:Reflexion}
 \end{figure}
-
+\clearpage
 \section{Mathematisch-Physikalisches Modell}
+Um das erwähnte Problem zu lösen wird die Transfermatrixmethode angewandt,
+welche es ermöglicht auch unter Berücksichtigung der Teilwellen einen
+Reflexionsgrad zu bestimmen. Bevor die Transfermatrixmethode angewandt werden
+kann, müssen noch andere Eigenschaften ermittelt werden, auf welche in den
+folgenden Unterkapiteln eingegangen wird.
 \subsection{Brechungsindex}
 Der komplexe Brechungsindex einer Schicht ist definiert als:
 \begin{equation}
@@ -250,11 +245,18 @@ Zur Repräsentation einer Schicht dient die Klasse \texttt{Material}. Sie
 speichert den Namen \texttt{name} des verwendeten Materials, eine Schichtdicke
 \texttt{d} und einen Berechnungstyp \texttt{n\_type}. Dieser Berechnungstyp
 entscheidet dann welche optionalen Parameter der Klasse festgelegt werden, die
-später zur Berechnung von Brechungsindizes genutzt wird. Dabei handelt es sich
-entweder um einen festen komplexen Brechungsindex \texttt{n}, die
-Sellmeier-Koeffizient \texttt{B} und \texttt{C}, eine Formel in Form vom string
-\texttt{formula} oder eine Messwerttabelle \texttt{table} als Dictionary.
+später zur Berechnung von Brechungsindizes genutzt wird. Bei diesen optionalen
+Parametern handelt es sich um:
+\begin{itemize}
+    \item einen festen komplexen Brechungsindex \texttt{n},
+    \item die Sellmeier-Koeffizient \texttt{B} und\texttt{C} und dem Parameter \texttt{A
+              = 0} für leichten Abweichungen,
+    \item eine benutzerdefinierte Funktion in Form von string\texttt{formula}, welche
+          später mit \texttt{eval(formula)} verwertet wird,
+    \item oder eine Messwerttabelle \texttt{table} mit den Spalten \texttt{Wellenlänge} |
+          \texttt{Realteil-n} | \texttt{Imaginärteil-n}
 
+\end{itemize}
 Für die gegebene Wellenlänge $\lambda$ liefert sie den komplexen Brechungsindex
 der entsprechenden Schicht. Je nach Material kommen verschiedene bewährte
 Formeln zum Einsatz. Dadurch wird eine realistische Nachbildung der
@@ -459,7 +461,8 @@ wird eine Antireflexbeschichtung betrachtet. Sie ist aufgeteilt in die
 jeweiligen Materialien und ihren individuellen Dicken, welche in
 Tabelle~\ref{tab:Angabe1} zu sehen sind und soll im sichtbaren Spektrum
 simuliert werden. Hierfür nehmen wir einen Wellenlängenbereich von 400 nm bis
-800 nm mit einem senkrechten Einfallswinkel.
+800 nm mit einem senkrechten Einfallswinkel. Anschließend betrachten wir den
+Reflexionsgrad in Abhängigkeit des Einfallswinkels.
 \begin{table}[h]
     \centering
     \caption{Zu simulierendes Schichtsystem}\label{tab:Angabe1}
@@ -469,9 +472,9 @@ simuliert werden. Hierfür nehmen wir einen Wellenlängenbereich von 400 nm bis
         \hline
         Luft        & $\infty$    \\
         \hline
-        MgF$_2$     & 102         \\
-        TiO$_2$     & 105         \\
-        AL$_2$O$_3$ & 79          \\
+        MgF$_2$     & 102,0       \\
+        TiO$_2$     & 105,0       \\
+        AL$_2$O$_3$ & 79,0        \\
         \hline
         Glas        & $\infty$    \\
         \hline
@@ -481,12 +484,24 @@ Das Ergebnis ist in Abbildung~\ref{fig:Ergebnis1-0} dargestellt und zeigt keine 
 Auffälligkeiten, die auf einen Fehler deuten würden. Die Funktion ist im
 ausgewählten Bereich stetig, was auf mathematische Stabilität deutet.
 Zusätzlich kann der Reflexionsgrad mit dem eines Lichtstrahls der von Luft auf
-bloßes Glas trifft, im Graph verglichen werden.
+bloßes Glas trifft, im Graph verglichen werden, um die Verbesserung der Reflexivität
+durch die Antireflexbeschichtung zu bestätigen.
+
+Es wird außerdem, wie in Abbildung~\ref{fig:Ergebnis1-1} zu sehen ist, der
+Reflexionsgrad in Abhängigkeit vom Einfallswinkel bestimmt. Es wird bis etwa
+40$^\circ$ Reflexivität von nahezu 0 beobachtet, was bestätigt, dass die
+Entspiegelung optimal simuliert wird. Ab 60$^\circ$ steigt der Reflexionsgrad
+steil an, was bei flachen Winkeln zu erwarten ist und dadurch in der Norm
+liegt.
 
 Die zweite zu simulierende Schicht befindet sich in Tabelle~\ref{tab:Angabe2}.
 Betrachtet wird hierbei ein Hochreflektor im EUV-Bereich. Es wurde versucht für
-dieses Schichtsystem bei extremem Ultraviolettlicht eine passende Dicke der
-Schichten zu ermitteln, um optimale Reflexivität zu garantieren.
+dieses Schichtsystem bei extremem Ultraviolettlicht optimale Reflexivität zu
+garantieren. Wichtig ist hierbei, dass hier 2 Schichten mit jeweils einem hohen
+und einem niedrigen Brechungsindex gepaart sind. Um einen hohen Reflexionsgrad
+zu erreichen werden meist bis zu 40 bis 60 dieser Schichtpaare aneinander
+gereiht, es wird sich im Anschluss aber nur auf 15 Paare beschränkt, da dies
+bereits ein repräsentatives Ergebnis liefert.
 \begin{table}[htpb]
     \centering
     \caption{Zu simulierendes EUV-Schichtsystem}\label{tab:Angabe2}
@@ -504,30 +519,49 @@ Schichten zu ermitteln, um optimale Reflexivität zu garantieren.
 \end{table}
 \begin{table}[htbp]
     \centering
-    \caption{Optimierte Schichtdicke für EUV-Schicht}\label{tab:Schicktdicke}
+    \caption{Schichtdicke für EUV-Schicht}\label{tab:Schicktdicke}
     \begin{tabular}{|l |c| c|}
         \hline
-        Material & optimierte Dicke für 0$^\circ$ \\
+        Material & Dicke$^\circ$ \\
         \hline
-        Mo       & $2,8nm$                        \\
+        Luft     & $\infty$      \\
         \hline
-        Si       & $4,1nm$                        \\
+        Mo       & $2,8nm$       \\
+        Si       & $4,1nm$       \\
+        \hline
+        SiO$_2$  & $\infty$      \\
         \hline
     \end{tabular}
 \end{table}
-\begin{figure}[htpb]
-    \centering
-    \includegraphics[scale=0.5]{./assets/1 Ergebnis Senkrecht.png}
-    \caption{1. Simulationsergebnis für $R(\lambda)$ bei senkrechtem Einfall}\label{fig:Ergebnis1-0}
-\end{figure}
-Die idealen Werte für den senkrechten Einfall sind in Tabelle~\ref{tab:Schicktdicke} zu sehen.
-Das Ergebnis in Abbildung~\ref{fig:Ergebnis2-0} ist die gewünschte Funktion für die EUV-Schicht
-mit ihren optimierten Dicken. Der Hochpunkt bei etwa 13.5 nm bestätigt die
-gewählten Werte der Schichtdicke als optimal für die gewünschte Anwendung.
+
+Die gewählten Schichtdicken sind in Tabelle~\ref{tab:Schicktdicke} zu sehen.
+Das Ergebnis in Abbildung~\ref{fig:Ergebnis2-0} ist die gewünschte Funktion für
+die EUV-Schicht. Der Hochpunkt bei etwa 13.5 nm lässt vermuten, dass die
+Simulation, genau wie im ersten Simulationsergebnis, realitätsgetreu ist. In
+Abbildung~\ref{fig:Ergebnis2-1} ist dasselbe Schichtsystem in Abhängigkeit vom
+Einfallswinkel in Grad dargestellt, dessen steigender Reflexionsgrad bei
+0$^\circ$ und ab 75$^\circ$ ebenfalls eine realistische Simulation vermuten
+lässt.
+
 \begin{figure}[h!]
     \centering
-    \includegraphics[scale=0.6]{./assets/Hochreflektor EUV.png}
-    \caption{Darstellung von $R(\lambda)$ für die EUV-Schicht bei Senkrechtem Einfallswinkel}\label{fig:Ergebnis2-0}
+    \includegraphics[scale=0.5]{./assets/Simulationsergebnis 1.pdf}
+    \caption{Darstellung von $R(\lambda)$ für die Antireflexbeschichtung bei senkrechtem Einfall}\label{fig:Ergebnis1-0}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.5]{./assets/1. Simluationsergebnis Winkel.pdf}
+    \caption{Darstellung von $R(\varphi)$ für die Antireflexbeschichtung bei einer Wellenlänge von 550 nm}\label{fig:Ergebnis1-1}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.5]{./assets/2. Simulationsergebnis.pdf}
+    \caption{Darstellung von $R(\lambda)$ für die EUV-Schicht bei Senkrechtem Einfall}\label{fig:Ergebnis2-0}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.5]{./assets/2. Simulationsergebnis Winkel.pdf}
+    \caption{Darstellung von $R(\varphi)$ für die EUV-Schicht bei einer Wellenlänge von 13.5 nm}\label{fig:Ergebnis2-1}
 \end{figure}
 \clearpage
 \printbibliography[]
