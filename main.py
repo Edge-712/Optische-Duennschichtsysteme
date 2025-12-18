@@ -157,12 +157,14 @@ def fresnel_coefficients(n1, n2, theta1, polarization):
         r = (n1 * np.cos(theta1) - n2 * np.cos(theta2)) / (
             n1 * np.cos(theta1) + n2 * np.cos(theta2)
         )
-        t = (2 * n1 * np.cos(theta1)) / (n1 * np.cos(theta1) + n2 * np.cos(theta2))
+        t = (2 * n1 * np.cos(theta1)) / \
+            (n1 * np.cos(theta1) + n2 * np.cos(theta2))
     elif polarization == "Parallel":
         r = (n2 * np.cos(theta1) - n1 * np.cos(theta2)) / (
             n2 * np.cos(theta1) + n1 * np.cos(theta2)
         )
-        t = (2 * n1 * np.cos(theta1)) / (n2 * np.cos(theta1) + n1 * np.cos(theta2))
+        t = (2 * n1 * np.cos(theta1)) / \
+            (n2 * np.cos(theta1) + n1 * np.cos(theta2))
     else:
         raise ValueError("Polarization must be 's' or 'p'")
     return r, t, theta2
