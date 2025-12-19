@@ -33,7 +33,7 @@ class MainWindow(QMainWindow):
             super().__init__()
             self.setWindowTitle("Optische Dünnschichtsysteme")
             self.resize(1280, 720)
-            self.setWindowIcon(QIcon("./python.png"))
+            self.setWindowIcon(QIcon("./assets/python.png"))
             self.central_widget = QWidget()
             self.default_page()
             self.setCentralWidget(self.central_widget)
@@ -415,7 +415,7 @@ class MaterialDialog(QDialog):
     def __init__(self, parent: QMainWindow):
         super().__init__()
         try:
-            self.setWindowIcon(QIcon("./python.png"))
+            self.setWindowIcon(QIcon("./assets/python.png"))
             self.setWindowTitle("Neues Material")
             self.setup_UI()
         except BaseException:
